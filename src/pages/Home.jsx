@@ -60,7 +60,7 @@ const CATEGORIES = [
         tagline: 'Potenciá tu marca',
         desc: 'Puntos comerciales de alto tráfico y gran visibilidad para llevar tu proyecto al siguiente nivel.',
         filter: 'local',
-        img: 'https://images.unsplash.com/photo-1555529771-755830009df4?w=900&q=85',
+        img: 'https://imgur.com/i28MbEP.jpg',
         count: 'Ver locales',
         tag: 'COMERCIAL',
     },
@@ -248,7 +248,7 @@ function ZoneCard({ zone, onClick }) {
 
             {/* Content */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
-                <p className="text-primary text-[0.65rem] font-display font-bold tracking-[0.2em] uppercase mb-1.5">{zone.tagline}</p>
+                <p className="text-metallic text-[0.65rem] font-display font-bold tracking-[0.2em] uppercase mb-1.5">{zone.tagline}</p>
                 <h3 className="font-display font-black text-white text-[1.5rem] leading-tight mb-3">{zone.name}</h3>
 
                 {/* Description — slides in on hover */}
@@ -304,7 +304,7 @@ function ZoneSwiperCard({ zone, onClick }) {
                 <span className="text-[0.5rem] font-display font-black tracking-[0.18em] uppercase bg-primary text-white px-2.5 py-1.5 rounded-full">{zone.tag}</span>
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-5">
-                <p className="text-primary text-[0.6rem] font-display font-bold tracking-[0.18em] uppercase mb-1">{zone.tagline}</p>
+                <p className="text-metallic text-[0.6rem] font-display font-bold tracking-[0.18em] uppercase mb-1">{zone.tagline}</p>
                 <h3 className="font-display font-black text-white text-[1.2rem] leading-tight mb-2">{zone.name}</h3>
                 <div className="flex items-center justify-between">
                     <span className="text-white/50 text-[0.7rem] font-display">{zone.count}</span>
@@ -469,57 +469,48 @@ export default function Home() {
         <div className="bg-white">
 
             {/* ════ HERO ════════════════════════════════════════════ */}
-            <section className="min-h-[calc(100vh-70px)] grid grid-cols-1 lg:grid-cols-2">
-                <div className="relative flex flex-col justify-center px-[8%] py-24 lg:py-0 bg-white">
-                    <div
-                        className="absolute inset-0 bg-cover bg-center lg:hidden"
-                        style={{ backgroundImage: 'url(https://imgur.com/9eiqGps.jpg)' }}
-                    />
-                    <div className="absolute inset-0 bg-textPrimary/72 lg:hidden" />
-                    <div className="relative z-10">
-                        <div className="inline-flex items-center gap-2 bg-primary/20 lg:bg-primary/10 rounded-full px-4 py-1.5 mb-7 w-fit">
-                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                            <span className="font-display text-[0.6rem] font-bold tracking-[0.2em] uppercase text-primary lg:text-secondary">
-                                Mar del Plata · Argentina
-                            </span>
-                        </div>
-                        <h1
-                            className="font-display font-black text-white lg:text-primary leading-[1.08] mb-5"
-                            style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.9rem)' }}
-                        >
-                            La llave para<br />
-                            la <span className="text-primary">felicidad</span><br />
-                            empieza acá.
-                        </h1>
-                        <p className="text-white/75 lg:text-textSecondary text-[0.93rem] leading-[1.8] mb-8 max-w-[380px]">
-                            Encontrá tu propiedad ideal con el respaldo de nuestra trayectoria desde 1998 en compra, venta y alquiler en Mar del Plata.
-                        </p>
-                        <div className="flex gap-3 flex-wrap mb-10">
-                            <button
-                                onClick={() => navigate('/propiedades')}
-                                className="btn-primary cursor-pointer"
-                            >
-                                Ver propiedades <ArrowRight size={14} />
-                            </button>
-                            <button
-                                onClick={() => navigate('/contacto')}
-                                className="btn-secondary"
-                            >
-                                Tasar mi propiedad
-                            </button>
-                        </div>
-                        <div className="border-t border-white/20 lg:border-secondaryLight pt-0">
-                            <CountUpStats stats={STATS.slice(0, 3)} mobile={true} />
-                        </div>
+            <section className="min-h-[calc(100vh-70px)] relative flex flex-col justify-center overflow-hidden">
+                <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: 'url(/hero.jpg)' }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-textPrimary/90 via-textPrimary/60 to-transparent" />
+                
+                <div className="relative z-10 px-[8%] py-24 w-full max-w-4xl">
+                    <div className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-7 w-fit border border-primary/20">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                        <span className="font-display text-[0.6rem] font-bold tracking-[0.2em] uppercase text-white">
+                            Mar del Plata · Argentina
+                        </span>
                     </div>
-                </div>
-                <div className="relative hidden lg:block">
-                    <img
-                        src="https://imgur.com/cPQNYoz.jpg"
-                        alt="Caramello Propiedades"
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/15 to-transparent" />
+                    <h1
+                        className="font-display font-black text-white leading-[1.08] mb-5 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]"
+                        style={{ fontSize: 'clamp(2.5rem, 4.5vw, 4rem)' }}
+                    >
+                        La llave para<br />
+                        la <span className="text-primary">felicidad</span><br />
+                        empieza acá.
+                    </h1>
+                    <p className="text-white/90 text-[1.05rem] leading-[1.8] mb-8 max-w-[500px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                        Encontrá tu propiedad ideal con el respaldo de nuestra trayectoria desde 1998 en compra, venta y alquiler en Mar del Plata.
+                    </p>
+                    <div className="flex gap-4 flex-wrap mb-10">
+                        <button
+                            onClick={() => navigate('/propiedades')}
+                            className="btn-primary cursor-pointer"
+                        >
+                            Ver propiedades <ArrowRight size={14} />
+                        </button>
+                        <button
+                            onClick={() => navigate('/contacto')}
+                            className="btn-primary cursor-pointer"
+                        >
+                            Tasar mi propiedad <ArrowRight size={14} />
+                        </button>
+                    </div>
+                    <div className="border-t border-white/20 pt-8 mt-2 inline-block">
+                        <CountUpStats stats={STATS.slice(0, 3)} mobile={true} />
+                    </div>
                 </div>
             </section>
 
