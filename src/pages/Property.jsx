@@ -387,54 +387,58 @@ function GalleryModal({ imgs, startIndex, onClose }) {
     }, [])
 
     return (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={onClose}>
-            <button onClick={onClose} className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all z-10">
-                <X size={18} className="text-white" />
+        <div className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center p-4" onClick={onClose}>
+            {/* Nav bars / Top Elements */}
+            <button onClick={onClose} className="absolute top-5 right-5 md:top-8 md:right-8 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center transition-all z-50">
+                <X size={24} className="text-white" />
             </button>
 
-            <div className="absolute top-5 left-1/2 -translate-x-1/2 text-white/50 text-[0.78rem] font-display font-bold tracking-widest">
+            <div className="absolute top-6 md:top-10 left-1/2 -translate-x-1/2 text-white/50 text-[0.8rem] font-display font-bold tracking-widest z-50">
                 {current + 1} / {imgs.length}
             </div>
 
             {/* Main image */}
-            <div className="relative w-full max-w-5xl px-16 flex items-center" onClick={e => e.stopPropagation()}>
+            <div className="relative w-full h-full flex items-center justify-center py-20 px-4 md:px-16" onClick={onClose}>
                 <img
                     src={imgs[current]}
                     alt=""
-                    className="w-full max-h-[80vh] object-contain rounded-xl"
+                    className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
+                    onClick={e => e.stopPropagation()}
                 />
             </div>
 
             {/* Nav arrows */}
             <button
                 onClick={e => { e.stopPropagation(); setCurrent(c => (c - 1 + imgs.length) % imgs.length) }}
-                className="absolute left-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center transition-all"
+                className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 rounded-full bg-black/40 hover:bg-black/70 border border-white/10 flex items-center justify-center transition-all z-50"
             >
-                <ChevronLeft size={22} className="text-white" />
+                <ChevronLeft size={28} className="text-white" />
             </button>
             <button
                 onClick={e => { e.stopPropagation(); setCurrent(c => (c + 1) % imgs.length) }}
-                className="absolute right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center transition-all"
+                className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 rounded-full bg-black/40 hover:bg-black/70 border border-white/10 flex items-center justify-center transition-all z-50"
             >
-                <ChevronRight size={22} className="text-white" />
+                <ChevronRight size={28} className="text-white" />
             </button>
 
             {/* Thumbnails */}
-            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 px-4" onClick={e => e.stopPropagation()}>
-                {imgs.map((img, i) => (
-                    <button
-                        key={i}
-                        onClick={() => setCurrent(i)}
-                        className="rounded-lg overflow-hidden transition-all duration-200 shrink-0"
-                        style={{
-                            width: 64, height: 48,
-                            border: i === current ? '2px solid #12645F' : '2px solid transparent',
-                            opacity: i === current ? 1 : 0.5,
-                        }}
-                    >
-                        <img src={img} alt="" className="w-full h-full object-cover" />
-                    </button>
-                ))}
+            <div className="absolute bottom-6 md:bottom-8 left-0 right-0 flex justify-center gap-2 px-4 z-50" onClick={e => e.stopPropagation()}>
+                <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
+                    {imgs.map((img, i) => (
+                        <button
+                            key={i}
+                            onClick={(e) => { e.stopPropagation(); setCurrent(i) }}
+                            className="rounded-lg overflow-hidden transition-all duration-200 shrink-0"
+                            style={{
+                                width: 72, height: 54,
+                                border: i === current ? '2px solid #12645F' : '2px solid transparent',
+                                opacity: i === current ? 1 : 0.5,
+                            }}
+                        >
+                            <img src={img} alt="" className="w-full h-full object-cover" />
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     )
