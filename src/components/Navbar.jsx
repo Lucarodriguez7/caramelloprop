@@ -46,7 +46,7 @@ export default function Navbar() {
                     <LogoIcon size={34} />
                     <div className="flex flex-col leading-none">
                         <span className={`font-display font-bold text-[0.9rem] tracking-[0.02em] transition-colors duration-300 ${logoName}`}>
-                            Mariana Caramello
+                            Caramello
                         </span>
                         <span className={`font-display font-normal text-[0.58rem] tracking-[0.22em] uppercase mt-0.5 transition-colors duration-300 ${logoSub}`}>
                             Propiedades

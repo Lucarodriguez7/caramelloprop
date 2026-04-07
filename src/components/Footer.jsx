@@ -39,7 +39,7 @@ export default function Footer() {
                     <div className="flex items-center gap-3 mb-4">
                         <LogoIcon size={34} />
                         <div className="flex flex-col leading-none">
-                            <span className="font-display font-bold text-[0.9rem] text-white">Mariana Caramello</span>
+                            <span className="font-display font-bold text-[0.9rem] text-white">Caramello</span>
                             <span className="font-display font-normal text-[0.58rem] text-primary tracking-[0.22em] uppercase mt-0.5">Propiedades</span>
                         </div>
                     </div>

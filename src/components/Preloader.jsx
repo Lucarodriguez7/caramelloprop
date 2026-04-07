@@ -29,7 +29,7 @@ export default function Preloader() {
                 {/* Brand text */}
                 <div className="flex flex-col items-center gap-1 animate-[fadeUp_0.8s_ease-out_0.3s_both]">
                     <span className="font-display font-bold text-[1.1rem] tracking-[0.02em] text-textPrimary">
-                        Mariana Caramello
+                        Caramello
                     </span>
                     <span className="font-display font-medium text-[0.62rem] tracking-[0.28em] uppercase"
                         style={{

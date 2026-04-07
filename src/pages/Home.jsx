@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import CountUpStats from '../components/CountUpStats'
 import { ArrowRight, Star, Home as HomeIcon, Key, BarChart2, Building2, Trees, FileText, MapPin, ChevronRight, Search, Shield, TrendingUp, Phone, Users, ArrowUpRight } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react'
+import gsap from "gsap";
+
 
 const Instagram = ({ size = 24, className = "" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-instagram ${className}`}>
@@ -217,7 +219,6 @@ function ZoneCard({ zone, onClick }) {
                 transform: hovered ? 'translateY(-6px)' : 'none',
             }}
         >
-            {/* Background image */}
             <img
                 src={zone.img}
                 alt={zone.name}
@@ -227,8 +228,6 @@ function ZoneCard({ zone, onClick }) {
                     transition: 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 }}
             />
-
-            {/* Gradient overlay — bottom heavy */}
             <div
                 className="absolute inset-0"
                 style={{
@@ -238,20 +237,14 @@ function ZoneCard({ zone, onClick }) {
                     transition: 'background 0.4s ease',
                 }}
             />
-
-            {/* Tag */}
             <div className="absolute top-4 left-4">
                 <span className="text-[0.55rem] font-display font-black tracking-[0.18em] uppercase bg-primary text-white px-3 py-1.5 rounded-full">
                     {zone.tag}
                 </span>
             </div>
-
-            {/* Content */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
                 <p className="text-metallic text-[0.65rem] font-display font-bold tracking-[0.2em] uppercase mb-1.5">{zone.tagline}</p>
                 <h3 className="font-display font-black text-white text-[1.5rem] leading-tight mb-3">{zone.name}</h3>
-
-                {/* Description — slides in on hover */}
                 <div
                     style={{
                         maxHeight: hovered ? '80px' : '0px',
@@ -262,7 +255,6 @@ function ZoneCard({ zone, onClick }) {
                 >
                     <p className="text-white/75 text-[0.82rem] leading-[1.7] mb-4">{zone.desc}</p>
                 </div>
-
                 <div className="flex items-center justify-between">
                     <span className="text-white/50 text-[0.73rem] font-display">{zone.count}</span>
                     <span
@@ -277,8 +269,6 @@ function ZoneCard({ zone, onClick }) {
                     </span>
                 </div>
             </div>
-
-            {/* Cyan border glow on hover */}
             <div
                 className="absolute inset-0 rounded-2xl pointer-events-none"
                 style={{
@@ -345,7 +335,6 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
                 transform: hovered ? 'translateY(-4px)' : 'none',
             }}
         >
-            {/* Accent line top */}
             <div
                 className="h-[3px] w-full"
                 style={{
@@ -355,9 +344,7 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
                     transition: 'background 0.4s ease',
                 }}
             />
-
             <div className="p-7">
-                {/* Number + Icon row */}
                 <div className="flex items-start justify-between mb-6">
                     <div className={`w-12 h-12 ${iconBg} rounded-xl flex items-center justify-center text-secondary transition-all duration-300 group-hover:bg-primary group-hover:text-textPrimary`}>
                         <Icon size={21} />
@@ -372,11 +359,8 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
                         {num}
                     </span>
                 </div>
-
                 <h3 className="font-display font-bold text-primary text-[0.95rem] mb-2">{title}</h3>
                 <p className="text-[0.83rem] text-textSecondary leading-[1.7] mb-5">{desc}</p>
-
-                {/* Detail chips */}
                 <div
                     style={{
                         maxHeight: hovered ? '40px' : '0px',
@@ -387,8 +371,6 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
                 >
                     <p className="text-[0.72rem] font-display font-medium tracking-wide text-primary uppercase">{detail}</p>
                 </div>
-
-                {/* CTA arrow */}
                 <div className="flex items-center gap-1.5 mt-4 text-[0.72rem] font-display font-bold tracking-widest uppercase text-textPrimary/30 group-hover:text-primary transition-colors duration-300">
                     <span>Saber más</span>
                     <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -425,7 +407,6 @@ function InstagramCard({ post }) {
                     transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 }}
             />
-            {/* Hover overlay */}
             <div
                 className="absolute inset-0 flex flex-col items-center justify-center gap-2"
                 style={{
@@ -440,8 +421,6 @@ function InstagramCard({ post }) {
                     <Star size={10} fill="white" stroke="none" /> {post.likes}
                 </span>
             </div>
-
-            {/* Instagram gradient on bottom — always visible */}
             <div
                 className="absolute bottom-0 left-0 right-0 px-3 py-2.5"
                 style={{
@@ -456,12 +435,370 @@ function InstagramCard({ post }) {
     )
 }
 
-/* ── Main Home ──────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   HERO SECTION — Rediseñado
+══════════════════════════════════════════════════════════════ */
+function HeroSection({ navigate }) {
+    const sectionRef = useRef(null)
+    const bgDesktopRef = useRef(null)
+    const bgMobileRef = useRef(null)
+    const overlayRef = useRef(null)
+    const lineRef = useRef(null)
+    const eyebrowRef = useRef(null)
+    const titleLine1Ref = useRef(null)
+    const titleLine2Ref = useRef(null)
+    const titleLine3Ref = useRef(null)
+    const bodyRef = useRef(null)
+    const ctaRef = useRef(null)
+    const scrollRef = useRef(null)
+
+    useEffect(() => {
+        const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
+
+        // Zoom-out suave del fondo
+        tl.fromTo(
+            [bgDesktopRef.current, bgMobileRef.current],
+            { scale: 1.12 },
+            { scale: 1.04, duration: 2.2, ease: 'power3.out' },
+            0
+        )
+
+        // Overlay fade-in
+        tl.fromTo(
+            overlayRef.current,
+            { opacity: 0 },
+            { opacity: 1, duration: 1.4 },
+            0
+        )
+
+        // Línea decorativa vertical crece desde arriba
+        tl.fromTo(
+            lineRef.current,
+            { scaleY: 0, transformOrigin: 'top center' },
+            { scaleY: 1, duration: 0.9, ease: 'power3.inOut' },
+            0.4
+        )
+
+        // Eyebrow
+        tl.fromTo(
+            eyebrowRef.current,
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.7 },
+            0.55
+        )
+
+        // Título — cada línea en cascada con clip-path
+        tl.fromTo(
+            [titleLine1Ref.current, titleLine2Ref.current, titleLine3Ref.current],
+            { opacity: 0, y: 42 },
+            {
+                opacity: 1, y: 0,
+                duration: 0.85,
+                stagger: 0.13,
+            },
+            0.7
+        )
+
+        // Body
+        tl.fromTo(
+            bodyRef.current,
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.75 },
+            1.15
+        )
+
+        // CTAs
+        tl.fromTo(
+            ctaRef.current,
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.7 },
+            1.35
+        )
+
+        // Indicador scroll
+        tl.fromTo(
+            scrollRef.current,
+            { opacity: 0, y: -10 },
+            { opacity: 1, y: 0, duration: 0.6 },
+            1.7
+        )
+
+
+
+        // Dot del scroll — animación continua
+        const dot = scrollRef.current?.querySelector('.scroll-dot')
+        if (dot) {
+            gsap.to(dot, {
+                y: 8,
+                repeat: -1,
+                yoyo: true,
+                duration: 0.9,
+                ease: 'sine.inOut',
+                delay: 2,
+            })
+        }
+    }, [])
+
+
+
+    return (
+        <section
+            ref={sectionRef}
+            className="relative flex flex-col overflow-hidden"
+            style={{ minHeight: 'calc(100vh - 70px)' }}
+        >
+            {/* ── Fondo Desktop ─────────────────────────── */}
+            <div
+                ref={bgDesktopRef}
+                className="absolute inset-0 bg-cover bg-center hidden md:block will-change-transform"
+                style={{
+                    backgroundImage: 'url(https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=2000&q=80)',
+                    backgroundPosition: '60% center',
+                }}
+            />
+
+            {/* ── Fondo Mobile ──────────────────────────── */}
+            <div
+                ref={bgMobileRef}
+                className="absolute inset-0 bg-cover bg-center block md:hidden will-change-transform"
+                style={{
+                    backgroundImage: 'url(https://images.unsplash.com/photo-1600607686527-6fb886090705?w=800&q=80)',
+                    backgroundPosition: 'center 30%',
+                }}
+            />
+
+            {/* ── Overlay multicapa ─────────────────────── */}
+            <div ref={overlayRef} className="absolute inset-0">
+                {/* Capa base mobile */}
+                <div className="absolute inset-0 bg-[#0b1622]/55 md:bg-transparent" />
+
+                {/* Desktop — degradado lateral principal */}
+                <div
+                    className="absolute inset-0 hidden md:block"
+                    style={{
+                        background:
+                            'linear-gradient(105deg, rgba(10,20,34,0.93) 0%, rgba(10,20,34,0.74) 38%, rgba(10,20,34,0.28) 65%, transparent 100%)',
+                    }}
+                />
+
+                {/* Degradado inferior — zona de stats */}
+                <div
+                    className="absolute bottom-0 left-0 right-0 h-[48%]"
+                    style={{
+                        background:
+                            'linear-gradient(to top, rgba(8,16,28,0.90) 0%, rgba(8,16,28,0.52) 50%, transparent 100%)',
+                    }}
+                />
+
+                {/* Toque cálido — vignette amber en esquina inferior derecha */}
+                <div
+                    className="absolute bottom-0 right-0 w-[55%] h-[55%] hidden md:block"
+                    style={{
+                        background:
+                            'radial-gradient(ellipse at bottom right, rgba(180,120,40,0.10) 0%, transparent 70%)',
+                    }}
+                />
+            </div>
+
+            {/* ── Línea decorativa vertical ─────────────── */}
+            <div
+                ref={lineRef}
+                className="absolute top-0 bottom-0 hidden md:block"
+                style={{
+                    left: 'calc(8% - 1px)',
+                    width: '1px',
+                    background:
+                        'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.12) 20%, rgba(0,251,250,0.28) 50%, rgba(255,255,255,0.08) 80%, transparent 100%)',
+                }}
+            />
+
+            {/* ════════════════════════════════════════════
+                CONTENIDO PRINCIPAL
+            ════════════════════════════════════════════ */}
+            <div className="relative z-10 flex flex-col flex-1 px-[8%]">
+
+                <div className="flex-1 flex items-center">
+                    <div className="w-full max-w-[640px] pt-16 md:pt-24 pb-32 md:pb-48">
+
+                        {/* Eyebrow */}
+                        <div
+                            ref={eyebrowRef}
+                            className="inline-flex items-center gap-2.5 mb-7 opacity-0"
+                        >
+                            <span
+                                className="block w-6 h-[1px]"
+                                style={{ background: 'rgba(0,251,250,0.7)' }}
+                            />
+                            <span
+                                className="font-display text-[0.58rem] tracking-[0.32em] uppercase"
+                                style={{ color: 'rgba(0,251,250,0.85)' }}
+                            >
+                                Mar del Plata · Desde 1998
+                            </span>
+                        </div>
+
+                        {/* Título en 3 líneas con animación escalonada */}
+                        <h1
+                            className="font-sans font-black text-white leading-[1.05] tracking-[-0.02em] mb-8"
+                            style={{ fontSize: 'clamp(2.7rem, 5.4vw, 4.4rem)' }}
+                        >
+                            {/* Línea 1 — texto sólido */}
+                            <span
+                                ref={titleLine1Ref}
+                                className="block opacity-0"
+                            >
+                                Tu próxima
+                            </span>
+
+                            {/* Línea 2 — outline / stroke: comunica distinción sin frialdad */}
+                            <span
+                                ref={titleLine2Ref}
+                                className="block opacity-0 select-none"
+                                style={{
+                                    WebkitTextStroke: '1.8px rgba(255,255,255,0.88)',
+                                    color: 'transparent',
+                                    fontStyle: 'italic',
+                                    letterSpacing: '-0.03em',
+                                }}
+                            >
+                                propiedad
+                            </span>
+
+                            {/* Línea 3 — text fill normal */}
+                            <span
+                                ref={titleLine3Ref}
+                                className="block opacity-0"
+                            >
+                                empieza acá.
+                            </span>
+                        </h1>
+
+                        {/* Separador cyan */}
+                        <div
+                            className="w-12 h-[2px] mb-7 rounded-full"
+                            style={{
+                                background: 'linear-gradient(90deg, #00FBFA, rgba(0,251,250,0.15))',
+                            }}
+                        />
+
+                        {/* Descripción */}
+                        <p
+                            ref={bodyRef}
+                            className="text-[1rem] leading-[1.95] mb-10 max-w-[460px] opacity-0"
+                            style={{ color: 'rgba(255,255,255,0.76)' }}
+                        >
+                            Más de dos décadas acompañando cada etapa: compra,
+                            venta y alquiler en Mar del Plata con criterio,
+                            calidez y total transparencia.
+                        </p>
+
+                        {/* CTAs */}
+                        <div
+                            ref={ctaRef}
+                            className="flex flex-col sm:flex-row gap-3 sm:gap-4 opacity-0"
+                        >
+                            {/* CTA principal — adaptado al branding general */}
+                            <button
+                                onClick={() => navigate('/contacto')}
+                                className="group flex items-center justify-center gap-2.5 px-8 py-[1.05rem] rounded-full font-display font-bold text-[0.72rem] tracking-[0.18em] uppercase transition-all duration-300"
+                                style={{
+                                    background: '#12645F',
+                                    color: '#FFFFFF',
+                                    boxShadow: '0 8px 32px rgba(18, 100, 95, 0.26)',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.transform = 'translateY(-2px)'
+                                    e.currentTarget.style.boxShadow = '0 14px 40px rgba(18, 100, 95, 0.38)'
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.transform = 'translateY(0)'
+                                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(18, 100, 95, 0.26)'
+                                }}
+                            >
+                                Hablar con un asesor
+                                <ArrowRight
+                                    size={14}
+                                    className="group-hover:translate-x-1 transition-transform duration-200"
+                                />
+                            </button>
+
+                            {/* CTA secundario — glass */}
+                            <button
+                                onClick={() => navigate('/propiedades')}
+                                className="group flex items-center justify-center gap-2.5 px-8 py-[1.05rem] rounded-full font-display font-bold text-[0.72rem] tracking-[0.18em] uppercase text-white transition-all duration-300"
+                                style={{
+                                    background: 'rgba(255,255,255,0.08)',
+                                    border: '1px solid rgba(255,255,255,0.22)',
+                                    backdropFilter: 'blur(8px)',
+                                    WebkitBackdropFilter: 'blur(8px)',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.38)'
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.08)'
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.22)'
+                                }}
+                            >
+                                Ver propiedades
+                                <ArrowRight
+                                    size={14}
+                                    className="opacity-55 group-hover:translate-x-1 transition-transform duration-200"
+                                />
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+            {/* ── Indicador scroll (desktop) ────────────── */}
+            <div
+                ref={scrollRef}
+                className="absolute right-[8%] bottom-14 hidden lg:flex flex-col items-center gap-2 opacity-0"
+            >
+                <div
+                    className="w-[1px] h-14 relative overflow-hidden"
+                    style={{ background: 'rgba(255,255,255,0.10)' }}
+                >
+                    <div
+                        className="scroll-dot absolute top-0 left-0 w-full rounded-full"
+                        style={{
+                            height: '45%',
+                            background: 'linear-gradient(to bottom, #00FBFA, rgba(0,251,250,0))',
+                        }}
+                    />
+                </div>
+                <span
+                    className="font-display text-[0.5rem] tracking-[0.28em] uppercase"
+                    style={{
+                        color: 'rgba(255,255,255,0.3)',
+                        writingMode: 'vertical-rl',
+                        textOrientation: 'mixed',
+                        transform: 'rotate(180deg)',
+                    }}
+                >
+                    Scroll
+                </span>
+            </div>
+
+        </section>
+    )
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MAIN HOME
+══════════════════════════════════════════════════════════════ */
 export default function Home() {
     const navigate = useNavigate()
 
     const handleZoneClick = (filterValue) => {
-        // filterValue recibirá 'departamento', 'casa', etc., desde la constante CATEGORIES
         navigate(`/propiedades?tipo=${filterValue}`);
     };
 
@@ -469,149 +806,82 @@ export default function Home() {
         <div className="bg-white">
 
             {/* ════ HERO ════════════════════════════════════════════ */}
-            <section className="min-h-[calc(100vh-70px)] relative flex flex-col justify-center overflow-hidden">
-                <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: 'url(/hero.jpg)' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-textPrimary/90 via-textPrimary/60 to-transparent" />
-                
-                <div className="relative z-10 px-[8%] py-24 w-full max-w-4xl">
-                    <div className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-7 w-fit border border-primary/20">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                        <span className="font-display text-[0.6rem] font-bold tracking-[0.2em] uppercase text-white">
-                            Mar del Plata · Argentina
-                        </span>
-                    </div>
-                    <h1
-                        className="font-display font-black text-white leading-[1.08] mb-5 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]"
-                        style={{ fontSize: 'clamp(2.5rem, 4.5vw, 4rem)' }}
-                    >
-                        La llave para<br />
-                        la <span className="text-primary">felicidad</span><br />
-                        empieza acá.
-                    </h1>
-                    <p className="text-white/90 text-[1.05rem] leading-[1.8] mb-8 max-w-[500px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-                        Encontrá tu propiedad ideal con el respaldo de nuestra trayectoria desde 1998 en compra, venta y alquiler en Mar del Plata.
-                    </p>
-                    <div className="flex gap-4 flex-wrap mb-10">
-                        <button
-                            onClick={() => navigate('/propiedades')}
-                            className="btn-primary cursor-pointer"
-                        >
-                            Ver propiedades <ArrowRight size={14} />
-                        </button>
-                        <button
-                            onClick={() => navigate('/contacto')}
-                            className="btn-primary cursor-pointer"
-                        >
-                            Tasar mi propiedad <ArrowRight size={14} />
-                        </button>
-                    </div>
-                    <div className="border-t border-white/20 pt-8 mt-2 inline-block">
-                        <CountUpStats stats={STATS.slice(0, 3)} mobile={true} />
-                    </div>
-                </div>
-            </section>
+            <HeroSection navigate={navigate} />
 
             {/* ════ BIENVENIDO / ABOUT US SECTION ════════════════════════ */}
-            <section data-aos="fade-up" className="py-24 px-[8%] bg-white flex flex-col lg:flex-row gap-16 lg:gap-24 items-center overflow-hidden">
+            <section data-aos="fade-up" className="py-28 px-[8%] bg-white flex flex-col lg:flex-row gap-16 lg:gap-24 items-center overflow-hidden">
+
                 {/* Left Column (Images) */}
                 <div className="lg:w-[48%] relative w-full flex justify-center mt-8 lg:mt-0">
                     <div className="relative w-[90%] md:w-[85%] lg:w-full">
-                        {/* Main Background Image */}
-                        <div className="aspect-[4/3] rounded-[2rem] overflow-hidden relative shadow-[0_20px_50px_rgba(18,39,58,0.15)]">
-                            <img src="/about-main.png" className="w-full h-full object-cover" alt="Property view" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-textPrimary/40 to-transparent"></div>
+                        <div className="aspect-[4/3] rounded-[2rem] overflow-hidden relative shadow-[0_20px_50px_rgba(18,39,58,0.12)]">
+                            <img src="/about-main.png" className="w-full h-full object-cover" alt="Propiedad destacada" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                         </div>
-
-                        {/* Small Overlapping Image */}
-                        <div className="absolute -top-10 -right-4 lg:-right-10 w-[45%] aspect-square rounded-[1.5rem] overflow-hidden shadow-[0_24px_50px_rgba(18,39,58,0.2)] border-[8px] border-white">
-                            <img src="/about-sub.png" className="w-full h-full object-cover" alt="Detail view" />
-                        </div>
-
-                        {/* Satisfaction Bubble */}
-                        <div className="absolute -bottom-8 -left-4 lg:-left-10 bg-textPrimary text-white rounded-[2rem] px-7 py-4 flex items-center justify-center gap-5 shadow-[0_20px_40px_rgba(18,39,58,0.25)] border-[4px] border-white">
-                            <div className="flex -space-x-3">
-                                {[1, 2, 3, 4].map((i) => (
-                                    <div key={i} className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center border border-textPrimary/50 text-white/70 relative z-10">
-                                        <Users size={14} />
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="flex flex-col justify-center">
-                                <p className="font-display font-black text-[1.2rem] leading-none mb-0.5">+800</p>
-                                <p className="text-[0.6rem] text-white/50 uppercase tracking-widest font-bold">Clientes satisfechos</p>
-                            </div>
+                        <div className="absolute -top-10 -right-4 lg:-right-10 w-[45%] aspect-square rounded-[1.5rem] overflow-hidden shadow-[0_20px_40px_rgba(18,39,58,0.15)] border-[6px] border-white">
+                            <img src="/about-sub.png" className="w-full h-full object-cover" alt="Detalle propiedad" />
                         </div>
                     </div>
                 </div>
 
                 {/* Right Column (Content) */}
                 <div className="lg:w-[52%]">
-                    <h2 className="font-display font-black text-primary leading-tight mb-5" style={{ fontSize: 'clamp(2rem,3.2vw,2.8rem)' }}>
-                        Bienvenido a tu próxima<br />
-                        <span className="font-serif italic font-normal text-textSecondary" style={{ fontFamily: 'Georgia, serif' }}>inversión en Mar del Plata.</span>
-                    </h2>
-                    <p className="text-[0.92rem] text-textSecondary leading-[1.8] mb-12 max-w-[90%]">
-                        Nos especializamos en propiedades de alto valor con foco en inversión. Cada oportunidad que ofrecemos viene con análisis de rentabilidad, proyección de revalorización y acompañamiento integral.
+                    <p className="font-display text-[0.65rem] tracking-[0.3em] uppercase text-secondary mb-3">
+                        Trayectoria y confianza
                     </p>
-
-                    {/* Grid Features */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 mb-12">
-                        {/* Feature 1 */}
+                    <h2 className="font-display font-black text-primary leading-tight mb-6"
+                        style={{ fontSize: 'clamp(2rem,3.2vw,2.6rem)' }}>
+                        Acompañando decisiones
+                        <br />
+                        <span className="text-metallic">importantes en cada proceso</span>
+                    </h2>
+                    <p className="text-[0.95rem] text-textSecondary leading-[1.9] mb-14 max-w-[520px]">
+                        Entendemos que cada operación inmobiliaria implica mucho más que una propiedad.
+                        Por eso trabajamos con un enfoque cercano, profesional y transparente, acompañando
+                        cada etapa del proceso con criterio y experiencia real en el mercado.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10 mb-14">
                         <div>
-                            <div className="w-11 h-11 rounded-xl bg-secondaryLight flex items-center justify-center mb-4">
-                                <Search size={18} className="text-secondary" />
+                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
+                                <Search size={17} className="text-secondary" />
                             </div>
-                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Búsqueda a medida</h4>
-                            <p className="text-textSecondary text-[0.8rem] leading-[1.7]">
-                                Analizamos tu perfil y te acercamos opciones que se ajustan a lo que buscás.
-                            </p>
+                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Búsqueda precisa</h4>
+                            <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Selección cuidada de oportunidades según cada necesidad.</p>
                         </div>
-                        {/* Feature 2 */}
                         <div>
-                            <div className="w-11 h-11 rounded-xl bg-secondaryLight flex items-center justify-center mb-4">
-                                <BarChart2 size={18} className="text-secondary" />
+                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
+                                <BarChart2 size={17} className="text-secondary" />
                             </div>
-                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Tasación gratuita</h4>
-                            <p className="text-textSecondary text-[0.8rem] leading-[1.7]">
-                                Valuación profesional basada en datos reales del mercado local.
-                            </p>
+                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Tasación profesional</h4>
+                            <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Análisis basado en datos reales del mercado local.</p>
                         </div>
-                        {/* Feature 3 */}
                         <div>
-                            <div className="w-11 h-11 rounded-xl bg-secondaryLight flex items-center justify-center mb-4">
-                                <Shield size={18} className="text-secondary" />
+                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
+                                <Shield size={17} className="text-secondary" />
                             </div>
-                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Respaldo legal</h4>
-                            <p className="text-textSecondary text-[0.8rem] leading-[1.7]">
-                                Documentación verificada y acompañamiento jurídico en cada operación.
-                            </p>
+                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Seguridad jurídica</h4>
+                            <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Procesos claros y respaldo en cada operación.</p>
                         </div>
-                        {/* Feature 4 */}
                         <div>
-                            <div className="w-11 h-11 rounded-xl bg-secondaryLight flex items-center justify-center mb-4">
-                                <TrendingUp size={18} className="text-secondary" />
+                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
+                                <TrendingUp size={17} className="text-secondary" />
                             </div>
-                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Inversión inteligente</h4>
-                            <p className="text-textSecondary text-[0.8rem] leading-[1.7]">
-                                Te asesoramos sobre ROI, renta proyectada y revalorización.
-                            </p>
+                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Visión estratégica</h4>
+                            <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Enfoque en decisiones sostenibles y bien fundamentadas.</p>
                         </div>
                     </div>
-
-                    {/* Action Row */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 pt-2">
-                        <button onClick={() => navigate('/propiedades')} className="bg-textPrimary text-white px-8 py-4 rounded-full font-display font-bold text-[0.75rem] uppercase tracking-widest flex items-center gap-2 hover:bg-primary hover:-translate-y-0.5 transition-all duration-300 shadow-lg shadow-textPrimary/20">
-                            Explorar Propiedades <ArrowUpRight size={15} />
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8">
+                        <button
+                            onClick={() => navigate('/contacto')}
+                            className="bg-textPrimary text-white px-8 py-4 rounded-full font-display font-bold text-[0.75rem] uppercase tracking-widest flex items-center gap-2 hover:bg-primary hover:-translate-y-0.5 transition-all duration-300 shadow-lg shadow-textPrimary/20">
+                            Hablar con un asesor <ArrowUpRight size={15} />
                         </button>
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full border border-secondaryLight flex items-center justify-center">
-                                <Phone size={18} className="text-secondary" />
+                            <div className="w-11 h-11 rounded-full border border-secondaryLight flex items-center justify-center">
+                                <Phone size={17} className="text-secondary" />
                             </div>
                             <div>
-                                <p className="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-1">Llamanos</p>
+                                <p className="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-1">Contacto directo</p>
                                 <p className="font-display font-bold text-[0.95rem] text-primary">+54 9 223 448-7206</p>
                             </div>
                         </div>
@@ -619,13 +889,11 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* ════ SECCIÓN CATEGORÍAS CORREGIDA ════════════════════════ */}
+            {/* ════ SECCIÓN CATEGORÍAS ════════════════════════ */}
             <section data-aos="fade-up" className="py-20 px-[8%] bg-white">
                 <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
                     <div>
-                        <p className="font-display text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary mb-2">
-                            ¿Qué estás buscando?
-                        </p>
+                        <p className="font-display text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary mb-2">¿Qué estás buscando?</p>
                         <h2 className="font-display font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
                             Encontrá el espacio <span className="text-metallic">ideal.</span>
                         </h2>
@@ -633,39 +901,22 @@ export default function Home() {
                             Desde el hogar de tus sueños hasta el próximo paso para tu negocio.
                         </p>
                     </div>
-                    <button
-                        onClick={() => navigate('/propiedades')}
-                        className="btn-secondary"
-                    >
+                    <button onClick={() => navigate('/propiedades')} className="btn-secondary">
                         Ver todo el catálogo <ArrowRight size={13} />
                     </button>
                 </div>
-
-                {/* Desktop grid — Usamos ZoneCard que es el que ya tenés definido */}
                 <div className="hidden lg:grid grid-cols-4 gap-4">
                     {CATEGORIES.map(item => (
-                        <ZoneCard
-                            key={item.id}
-                            zone={item}
-                            onClick={() => handleZoneClick(item.filter)}
-                        />
+                        <ZoneCard key={item.id} zone={item} onClick={() => handleZoneClick(item.filter)} />
                     ))}
                 </div>
-
-                {/* Mobile swiper — Usamos ZoneSwiperCard */}
                 <div className="lg:hidden">
                     <HorizontalSwiper>
                         {CATEGORIES.map(item => (
-                            <ZoneSwiperCard
-                                key={item.id}
-                                zone={item}
-                                onClick={() => handleZoneClick(item.filter)}
-                            />
+                            <ZoneSwiperCard key={item.id} zone={item} onClick={() => handleZoneClick(item.filter)} />
                         ))}
                     </HorizontalSwiper>
-                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-display tracking-wide">
-                        Deslizá para explorar categorías →
-                    </p>
+                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-display tracking-wide">Deslizá para explorar categorías →</p>
                 </div>
             </section>
 
@@ -678,85 +929,63 @@ export default function Home() {
                             Propiedades <span className="text-metallic">seleccionadas</span>
                         </h2>
                     </div>
-                    <button
-                        onClick={() => navigate('/propiedades')}
-                        className="btn-secondary"
-                    >
-                        Ver todas <ArrowRight size={13} />
-                    </button>
+                    <button onClick={() => navigate('/propiedades')} className="btn-secondary">Ver todas <ArrowRight size={13} /></button>
                 </div>
-
-                {/* Desktop grid */}
                 <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {PROPERTIES.map(p => <PropertyCard key={p.id} prop={p} />)}
                 </div>
-
-                {/* Mobile swiper */}
                 <div className="md:hidden">
                     <HorizontalSwiper>
-                        {PROPERTIES.map(p => (
-                            <PropertyCard key={p.id} prop={p} />
-                        ))}
+                        {PROPERTIES.map(p => <PropertyCard key={p.id} prop={p} />)}
                     </HorizontalSwiper>
-                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-display tracking-wide">
-                        Deslizá para ver más →
-                    </p>
+                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-display tracking-wide">Deslizá para ver más →</p>
                 </div>
             </section>
 
-            {/* ════ SERVICIOS — PREMIUM ════════════════════════════ */}
-            <section data-aos="fade-up" className="py-24 px-[8%] bg-white relative overflow-hidden">
-                {/* Background decorative element */}
-                <div
-                    className="absolute right-0 top-0 w-[600px] h-[600px] pointer-events-none opacity-30"
-                    style={{ background: 'radial-gradient(circle at 80% 20%, rgba(0,251,250,0.12), transparent 60%)' }}
+            {/* ════ EXPERIENCIA & PROFESIONALISMO ═══════════════════════════ */}
+            <section className="py-28 px-[8%] bg-white relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none opacity-[0.06]"
+                    style={{ background: 'radial-gradient(circle at 70% 30%, #1460AA, transparent 60%)' }}
                 />
-                <div
-                    className="absolute left-0 bottom-0 w-[500px] h-[500px] pointer-events-none opacity-20"
-                    style={{ background: 'radial-gradient(circle at 20% 80%, rgba(20,96,170,0.12), transparent 60%)' }}
-                />
-
-                <div className="relative z-10">
-                    {/* Header */}
-                    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
-                        <div>
-                            <p className="font-display text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary mb-2">Lo que hacemos</p>
-                            <h2 className="font-display font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
-                                Un equipo completo<br />para <span className="text-metallic">cada operación</span>
-                            </h2>
-                        </div>
-                        <p className="text-[0.93rem] text-textSecondary leading-[1.8] max-w-[340px] lg:text-right">
-                            Desde la tasación hasta la escritura, te acompañamos en cada paso con profesionalismo y transparencia.
+                <div className="relative z-10 max-w-[1200px] mx-auto">
+                    <div className="max-w-[720px] mb-16" data-aos="fade-up">
+                        <p className="font-display text-[0.65rem] tracking-[0.3em] uppercase text-secondary mb-3">Desde 1998</p>
+                        <h2 className="font-display font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.8rem,3vw,2.6rem)' }}>
+                            Más de dos décadas construyendo<span className="text-metallic"> confianza</span>
+                        </h2>
+                        <p className="mt-5 text-textSecondary text-[0.95rem] leading-[1.9] max-w-[520px]">
+                            Cada operación es única. Por eso, acompañamos de manera personalizada, con criterio profesional, experiencia en el mercado y un enfoque humano que prioriza decisiones seguras.
                         </p>
                     </div>
-
-                    {/* Stats banner */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
-                        {STATS.map(({ value, label }) => (
-                            <div
-                                key={label}
-                                className="bg-secondaryLight rounded-2xl px-6 py-5 border border-secondaryLight"
-                            >
-                                <div className="font-display font-black text-textPrimary text-[1.8rem] leading-none mb-1">{value}</div>
-                                <div className="text-[0.78rem] text-textSecondary font-display">{label}</div>
+                    <div className="grid lg:grid-cols-2 gap-14 items-center">
+                        <div className="flex flex-col gap-6">
+                            <div data-aos="fade-up" data-aos-delay="100" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
+                                <h3 className="font-display text-[1rem] text-primary font-bold mb-2">Trayectoria comprobada</h3>
+                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Desde 1998 operando en el mercado inmobiliario, con un conocimiento profundo de cada zona y sus oportunidades reales.</p>
                             </div>
-                        ))}
+                            <div data-aos="fade-up" data-aos-delay="200" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
+                                <h3 className="font-display text-[1rem] text-primary font-bold mb-2">Asesoramiento personalizado</h3>
+                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">No trabajamos con soluciones genéricas. Cada cliente recibe una estrategia pensada según su situación y objetivos.</p>
+                            </div>
+                            <div data-aos="fade-up" data-aos-delay="300" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
+                                <h3 className="font-display text-[1rem] text-primary font-bold mb-2">Transparencia en cada paso</h3>
+                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Información clara, procesos ordenados y acompañamiento constante para tomar decisiones con seguridad.</p>
+                            </div>
+                        </div>
+                        <div data-aos="fade-left" data-aos-delay="200" className="relative">
+                            <div className="rounded-[28px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
+                                <img src="https://imgur.com/A2QclK2.jpg" alt="Profesional inmobiliaria" className="w-full h-[420px] object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+                            </div>
+                            <div className="absolute -bottom-6 -left-6 bg-white px-6 py-4 rounded-xl shadow-xl border border-neutral-200" data-aos="fade-up" data-aos-delay="400">
+                                <p className="font-display text-[1.4rem] font-black text-primary leading-none">+25 años</p>
+                                <p className="text-[0.75rem] text-textSecondary">de experiencia en el mercado</p>
+                            </div>
+                        </div>
                     </div>
-
-                    {/* Service grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {SERVICES.map(s => (
-                            <ServiceCard key={s.title} {...s} />
-                        ))}
-                    </div>
-
-                    {/* Bottom CTA */}
-                    <div className="mt-12 flex justify-center">
-                        <button
-                            onClick={() => navigate('/contacto')}
-                            className="btn-primary"
-                        >
-                            Consultar con un asesor <ArrowRight size={14} />
+                    <div className="mt-20 flex justify-center" data-aos="fade-up" data-aos-delay="200">
+                        <button onClick={() => navigate('/contacto')} className="btn-primary">
+                            Hablar con un profesional <ArrowRight size={14} />
                         </button>
                     </div>
                 </div>
@@ -766,12 +995,8 @@ export default function Home() {
             <section data-aos="fade-up" className="py-20 px-[8%] bg-secondaryLight">
                 <div className="text-center mb-12">
                     <div className="inline-flex items-center gap-2 mb-4">
-                        <div
-                            className="w-8 h-8 rounded-xl flex items-center justify-center"
-                            style={{
-                                background: 'linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
-                            }}
-                        >
+                        <div className="w-8 h-8 rounded-xl flex items-center justify-center"
+                            style={{ background: 'linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
                             <Instagram size={16} className="text-white" />
                         </div>
                         <span className="font-display text-[0.63rem] font-bold tracking-[0.25em] uppercase text-textSecondary">@Caramellopropiedades3288</span>
@@ -783,15 +1008,9 @@ export default function Home() {
                         Novedades, propiedades exclusivas y tips del mercado inmobiliario directo en tu feed.
                     </p>
                 </div>
-
-                {/* Post grid */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
-                    {INSTAGRAM_POSTS.map((post, i) => (
-                        <InstagramCard key={i} post={post} />
-                    ))}
+                    {INSTAGRAM_POSTS.map((post, i) => <InstagramCard key={i} post={post} />)}
                 </div>
-
-                {/* Follow button */}
                 <div className="flex justify-center">
                     <a
                         href="https://instagram.com/Caramellopropiedades3288"
@@ -811,53 +1030,22 @@ export default function Home() {
 
             {/* ════ CTA BANNER ══════════════════════════════════════ */}
             <section data-aos="zoom-in" className="mx-[4%] my-16 rounded-3xl px-[6%] py-16 flex items-center justify-between gap-8 flex-wrap relative overflow-hidden">
-
-                {/* Background Image */}
-                <div
-                    className="absolute inset-0"
-                    style={{
-                        backgroundImage: "url('https://i.imgur.com/ZJd2QMZ.jpg')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center"
-                    }}
-                />
-
-                {/* Dark Overlay (clave para look premium) */}
+                <div className="absolute inset-0" style={{ backgroundImage: "url('https://i.imgur.com/ZJd2QMZ.jpg')", backgroundSize: "cover", backgroundPosition: "center" }} />
                 <div className="absolute inset-0 bg-textPrimary/85" />
-
-                {/* Glow Effect */}
-                <div
-                    className="absolute right-0 top-0 w-[400px] h-full opacity-20 pointer-events-none"
-                    style={{ background: 'radial-gradient(circle at 80% 50%, #00FBFA, transparent 60%)' }}
-                />
-
-                {/* Content */}
+                <div className="absolute right-0 top-0 w-[400px] h-full opacity-20 pointer-events-none"
+                    style={{ background: 'radial-gradient(circle at 80% 50%, #00FBFA, transparent 60%)' }} />
                 <div className="relative z-10">
-                    <p className="font-display text-[0.62rem] font-bold tracking-[0.2em] uppercase text-secondary mb-3">
-                        Tasaciones gratuitas
-                    </p>
-
-                    <h2
-                        className="font-display font-black text-white leading-tight mb-2"
-                        style={{ fontSize: 'clamp(1.5rem,2.5vw,2.1rem)' }}
-                    >
-                        ¿Querés saber cuánto vale<br />
-                        tu <span className="text-primary">propiedad</span>?
+                    <p className="font-display text-[0.62rem] font-bold tracking-[0.2em] uppercase text-secondary mb-3">Tasaciones gratuitas</p>
+                    <h2 className="font-display font-black text-white leading-tight mb-2" style={{ fontSize: 'clamp(1.5rem,2.5vw,2.1rem)' }}>
+                        ¿Querés saber cuánto vale<br />tu <span className="text-primary">propiedad</span>?
                     </h2>
-
-                    <p className="text-white/70 text-[0.93rem]">
-                        Sin compromiso. Resultados en 48 horas hábiles.
-                    </p>
+                    <p className="text-white/70 text-[0.93rem]">Sin compromiso. Resultados en 48 horas hábiles.</p>
                 </div>
-
-                {/* Button */}
-                <button
-                    onClick={() => navigate('/contacto')}
-                    className="relative z-10 btn-primary cursor-pointer"
-                >
+                <button onClick={() => navigate('/contacto')} className="relative z-10 btn-primary cursor-pointer">
                     Solicitar tasación gratuita <ArrowRight size={14} />
                 </button>
             </section>
+
         </div>
     )
 }
