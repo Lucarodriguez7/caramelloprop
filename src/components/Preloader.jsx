@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import LogoIcon from './LogoIcon';
+
 
 export default function Preloader() {
     const [loading, setLoading] = useState(true);
@@ -23,23 +23,7 @@ export default function Preloader() {
             <div className="flex flex-col items-center gap-6">
                 {/* Logo with entrance animation */}
                 <div className="animate-[logoEntrance_0.8s_ease-out_forwards]">
-                    <LogoIcon size={90} />
-                </div>
-
-                {/* Brand text */}
-                <div className="flex flex-col items-center gap-1 animate-[fadeUp_0.8s_ease-out_0.3s_both]">
-                    <span className="font-display font-bold text-[1.1rem] tracking-[0.02em] text-textPrimary">
-                        Caramello
-                    </span>
-                    <span className="font-display font-medium text-[0.62rem] tracking-[0.28em] uppercase"
-                        style={{
-                            background: 'linear-gradient(135deg, #9A9A9A 0%, #C0C0C0 40%, #7B7B7B 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                        }}
-                    >
-                        Propiedades
-                    </span>
+                    <img src="/logo.png" alt="Caramello Propiedades" className="h-28 w-auto object-contain" />
                 </div>
 
                 {/* Premium progress bar */}

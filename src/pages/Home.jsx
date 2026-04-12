@@ -3,7 +3,7 @@ import CountUpStats from '../components/CountUpStats'
 import { ArrowRight, Star, Home as HomeIcon, Key, BarChart2, Building2, Trees, FileText, MapPin, ChevronRight, Search, Shield, TrendingUp, Phone, Users, ArrowUpRight } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react'
 import gsap from "gsap";
-
+import { supabase } from '../lib/supabaseClient'
 
 const Instagram = ({ size = 24, className = "" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-instagram ${className}`}>
@@ -20,11 +20,6 @@ const STATS = [
     { value: '350+', label: 'Propiedades activas' },
 ]
 
-const PROPERTIES = [
-    { id: 1, type: 'Casa', zone: 'Playa Grande', title: 'Residencia frente al mar con vista panorámica', address: 'Av. Constitución 2450', beds: 4, baths: 3, sqm: 420, price: 'USD 580.000', tag: 'Venta', featured: true, img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80' },
-    { id: 2, type: 'Departamento', zone: 'Centro', title: 'Moderno departamento a metros del mar', address: 'Bvd. Marítimo 1180, 8°', beds: 2, baths: 1, sqm: 68, price: 'USD 145.000', tag: 'Venta', featured: false, img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=700&q=80' },
-    { id: 3, type: 'Local', zone: 'Güemes', title: 'Local en esquina en zona comercial premium', address: 'Güemes 3450 esq. Castelli', beds: null, baths: null, sqm: 180, price: '$980.000/mes', tag: 'Alquiler', featured: true, img: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=80' },
-]
 const CATEGORIES = [
     {
         id: 'departamentos',
@@ -173,6 +168,11 @@ function PropertyCard({ prop }) {
                 {prop.featured && (
                     <span className="absolute top-3 right-3 bg-white/95 text-textPrimary text-[0.6rem] font-display font-bold uppercase px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
                         <Star size={9} fill="#00FBFA" stroke="#00FBFA" /> Destacado
+                    </span>
+                )}
+                {prop.new && (
+                    <span className="absolute bottom-3 left-3 bg-amber-100 text-amber-700 text-[0.6rem] font-display font-bold uppercase px-2.5 py-1 rounded-full border border-amber-200">
+                        Nuevo ingreso
                     </span>
                 )}
             </div>
@@ -797,6 +797,37 @@ function HeroSection({ navigate }) {
 ══════════════════════════════════════════════════════════════ */
 export default function Home() {
     const navigate = useNavigate()
+    const [PROPERTIES, setProperties] = useState([])
+
+    useEffect(() => {
+        const load = async () => {
+            const { data } = await supabase
+                .from('properties')
+                .select('*')
+                .eq('publicado', true)
+                .eq('destacado', true)
+                .order('created_at', { ascending: false })
+                .limit(6)
+            setProperties((data || []).map(p => ({
+                id: p.id,
+                type: p.tipo,
+                zone: p.zona || '',
+                title: p.titulo,
+                address: p.direccion || '',
+                beds: p.dormitorios || null,
+                baths: p.banos || null,
+                sqm: p.m2_cubiertos || 0,
+                price: p.moneda === 'USD' 
+                    ? `USD ${Number(p.precio).toLocaleString('es-AR')}` 
+                    : `$${Number(p.precio).toLocaleString('es-AR')}/mes`,
+                tag: p.operacion,
+                featured: p.destacado,
+                new: p.nuevo_ingreso,
+                img: p.imagenes?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80',
+            })))
+        }
+        load()
+    }, [])
 
     const handleZoneClick = (filterValue) => {
         navigate(`/propiedades?tipo=${filterValue}`);
@@ -1041,7 +1072,7 @@ export default function Home() {
                     </h2>
                     <p className="text-white/70 text-[0.93rem]">Sin compromiso. Resultados en 48 horas hábiles.</p>
                 </div>
-                <button onClick={() => navigate('/contacto')} className="relative z-10 btn-primary cursor-pointer">
+                <button onClick={() => navigate('/tasacion')} className="relative z-10 btn-primary cursor-pointer">
                     Solicitar tasación gratuita <ArrowRight size={14} />
                 </button>
             </section>

@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { supabase } from '../lib/supabaseClient'
 import {
     Search, SlidersHorizontal, X, MapPin, Star, ArrowRight,
     Bed, Bath, Maximize2, ChevronDown, Grid3X3, List,
@@ -8,7 +9,9 @@ import {
 } from 'lucide-react'
 
 /* ─── DATA ──────────────────────────────────────────────────── */
-const ALL_PROPERTIES = [
+const ALL_PROPERTIES = [] // se carga dinámicamente desde Supabase
+
+const _UNUSED = [
     {
         id: 1, type: 'Casa', operation: 'Venta', zone: 'Playa Grande', zona: 'playa-grande',
         title: 'Residencia frente al mar con vista panorámica', address: 'Av. Constitución 2450',
@@ -132,9 +135,9 @@ const ALL_PROPERTIES = [
     },
 ]
 
-const TYPES = ['Casa', 'Departamento', 'Local', 'Oficina']
-const OPERATIONS = ['Venta', 'Alquiler']
-const ZONES = ['Playa Grande', 'Centro', 'Güemes', 'Los Troncos']
+const TYPES = ['Casa', 'Departamento', 'PH', 'Local', 'Oficina', 'Terreno', 'Cochera', 'Depósito']
+const OPERATIONS = ['Venta', 'Alquiler', 'Alquiler Temporal']
+const ZONES = ['Güemes', 'Aldrey', 'Plaza Mitre', 'Stella Maris', 'Playa Grande', 'Chauvin', 'Macro centro', 'Varese', 'Playa chica', 'Alem', 'Divino Rostro', 'La perla', 'Rumenco', 'Rumenco Joven']
 const SORT_OPTIONS = [
     { value: 'relevance', label: 'Relevancia' },
     { value: 'price-asc', label: 'Menor precio' },
@@ -143,7 +146,7 @@ const SORT_OPTIONS = [
     { value: 'newest', label: 'Más nuevas' },
 ]
 
-const TYPE_ICONS = { Casa: Home, Departamento: Building2, Local: Store, Oficina: Building2 }
+const TYPE_ICONS = { Casa: Home, Departamento: Building2, PH: Building2, Local: Store, Oficina: Building2, Terreno: Trees, Cochera: Home, 'Depósito': Store }
 
 function formatPrice(price, currency) {
     if (currency === 'USD') return `USD ${price.toLocaleString('es-AR')}`
@@ -406,6 +409,44 @@ export default function Properties() {
     /* View */
     const [viewMode, setViewMode] = useState('grid')
 
+    /* Properties from Supabase */
+    const [allProps, setAllProps] = useState([])
+
+    useEffect(() => {
+        const load = async () => {
+            const { data } = await supabase
+                .from('properties')
+                .select('*')
+                .eq('publicado', true)
+                .order('created_at', { ascending: false })
+            setAllProps((data || []).map(p => ({
+                id: p.id,
+                type: p.tipo,
+                operation: p.operacion,
+                zone: p.zona || '',
+                title: p.titulo,
+                address: p.direccion || '',
+                beds: p.dormitorios || null,
+                baths: p.banos || 0,
+                sqm: p.m2_cubiertos || 0,
+                sqmLote: p.m2_lote || 0,
+                garages: p.cochera ? 1 : 0,
+                price: Number(p.precio),
+                currency: p.moneda,
+                tag: p.operacion,
+                featured: p.destacado,
+                new: p.nuevo_ingreso,
+                reduced: false,
+                img: p.imagenes?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
+                imgs: p.imagenes || [],
+                desc: p.descripcion || '',
+                amenities: [],
+                age: 0,
+            })))
+        }
+        load()
+    }, [])
+
     /* Search */
     const [search, setSearch] = useState('')
 
@@ -451,7 +492,7 @@ export default function Properties() {
 
     /* Filtered + sorted */
     const filtered = useMemo(() => {
-        let list = ALL_PROPERTIES.filter(p => {
+        let list = allProps.filter(p => {
             if (search && !p.title.toLowerCase().includes(search.toLowerCase()) &&
                 !p.address.toLowerCase().includes(search.toLowerCase()) &&
                 !p.zone.toLowerCase().includes(search.toLowerCase())) return false
@@ -474,7 +515,7 @@ export default function Properties() {
             case 'newest': return [...list].sort((a, b) => a.age - b.age)
             default: return [...list].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
         }
-    }, [search, selectedOps, selectedTypes, selectedZones, maxPriceUSD, maxPriceARS, minBeds, minSqm, onlyFeatured, onlyNew, sortBy])
+    }, [search, selectedOps, selectedTypes, selectedZones, maxPriceUSD, maxPriceARS, minBeds, minSqm, onlyFeatured, onlyNew, sortBy, allProps])
 
     const activeFiltersCount = selectedOps.length + selectedTypes.length + selectedZones.length +
         (onlyFeatured ? 1 : 0) + (onlyNew ? 1 : 0) +
@@ -643,19 +684,7 @@ export default function Properties() {
     return (
         <div className="bg-secondaryLight min-h-screen">
 
-            {/* ── PAGE HEADER ── */}
-            <div className="bg-textPrimary relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10" style={{ background: 'radial-gradient(circle at 80% 50%, #12645F, transparent 55%)' }} />
-                <div className="relative z-10 px-[4%] lg:px-[6%] py-12">
-                    <p className="font-display text-[0.62rem] font-bold tracking-[0.22em] uppercase text-secondary mb-2">Catálogo completo</p>
-                    <h1 className="font-display font-black text-white leading-tight mb-1" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
-                        Propiedades en Mar del Plata
-                    </h1>
-                    <p className="text-white/50 text-[0.9rem] font-display">
-                        {ALL_PROPERTIES.length} propiedades disponibles · Encontrá la tuya
-                    </p>
-                </div>
-            </div>
+
 
             {/* ── SEARCH BAR ── */}
             <div className="bg-white border-b border-secondaryLight sticky top-[70px] z-30 shadow-[0_4px_20px_rgba(18,39,58,0.06)]">

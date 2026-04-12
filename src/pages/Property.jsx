@@ -8,159 +8,7 @@ import {
     Shield, Wifi, Dumbbell, Trees, Flame, Camera,
     ArrowRight, Copy, Check, ExternalLink
 } from 'lucide-react'
-
-/* ─── SAME DATA as Properties.jsx ───────────────────────────── */
-const ALL_PROPERTIES = [
-    {
-        id: 1, type: 'Casa', operation: 'Venta', zone: 'Playa Grande', zona: 'playa-grande',
-        title: 'Residencia frente al mar con vista panorámica',
-        address: 'Av. Constitución 2450, Playa Grande, Mar del Plata',
-        beds: 4, baths: 3, sqm: 420, garages: 2, price: 580000, currency: 'USD',
-        tag: 'Venta', featured: true, new: false, reduced: false,
-        imgs: [
-            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=90',
-            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=90',
-            'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200&q=90',
-            'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=90',
-            'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=1200&q=90',
-        ],
-        desc: 'Excepcional residencia de categoría ubicada en el corazón de Playa Grande. Amplios ambientes con terminaciones de primera calidad, vista al mar desde todos los niveles y acceso directo a la playa privada.\n\nLa planta baja cuenta con living-comedor de doble altura, cocina gourmet equipada, estudio independiente y galería cubierta con quincho. En planta alta, suite principal con vestidor y baño en suite con bañera hidromasaje, más tres dormitorios con baño compartido.\n\nJardín profesionalmente diseñado, pileta de natación climatizada y garage para dos vehículos. Sistema de domótica integral y seguridad 24 horas.',
-        amenities: ['Pileta climatizada', 'Jardín profesional', 'Quincho', 'Seguridad 24h', 'Domótica', 'Doble altura'],
-        features: {
-            'Antigüedad': '5 años',
-            'Estado': 'Excelente',
-            'Expensas': 'Sin expensas',
-            'Orientación': 'Norte / Este',
-            'Frente': '18 metros',
-            'Lote total': '720 m²',
-        },
-        age: 5, sqmBuilt: 420, sqmTotal: 720,
-        lat: -38.0054, lng: -57.5426,
-    },
-    {
-        id: 2, type: 'Departamento', operation: 'Venta', zone: 'Centro', zona: 'centro',
-        title: 'Moderno departamento a metros del mar',
-        address: 'Bvd. Marítimo 1180, 8°B, Centro, Mar del Plata',
-        beds: 2, baths: 1, sqm: 68, garages: 1, price: 145000, currency: 'USD',
-        tag: 'Venta', featured: false, new: true, reduced: false,
-        imgs: [
-            'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=90',
-            'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&q=90',
-            'https://images.unsplash.com/photo-1560185008-b033106af5c3?w=1200&q=90',
-            'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=90',
-        ],
-        desc: 'Departamento a estrenar en edificio premium frente al mar. Cocina integrada al living con isla central, balcón con vista al océano y terminaciones de alta gama en cada detalle.\n\nDos dormitorios amplios, baño completo con ducha de lluvia y toilette separado. El edificio cuenta con gimnasio equipado, SUM, cochera en subsuelo y baulera individual.\n\nUbicación inmejorable: a metros del mar, centros comerciales y gastronomía de primer nivel.',
-        amenities: ['Balcón vista al mar', 'Cochera', 'Baulera', 'Gimnasio', 'SUM', 'Portería'],
-        features: {
-            'Antigüedad': 'A estrenar',
-            'Estado': 'Nuevo',
-            'Expensas': '$85.000/mes',
-            'Orientación': 'Sur / Oeste',
-            'Piso': '8°',
-            'Unidades totales': '48',
-        },
-        age: 0, sqmBuilt: 68, sqmTotal: 68,
-        lat: -37.9966, lng: -57.5509,
-    },
-    {
-        id: 3, type: 'Local', operation: 'Alquiler', zone: 'Güemes', zona: 'guemes',
-        title: 'Local en esquina en zona comercial premium',
-        address: 'Güemes 3450 esq. Castelli, Güemes, Mar del Plata',
-        beds: null, baths: 1, sqm: 180, garages: 0, price: 980000, currency: 'ARS',
-        tag: 'Alquiler', featured: true, new: false, reduced: true,
-        imgs: [
-            'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=90',
-            'https://images.unsplash.com/photo-1555992336-03a23c7b20ee?w=1200&q=90',
-            'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=90',
-        ],
-        desc: 'Local estratégico en la esquina más transitada del barrio Güemes, el polo gastronómico y cultural de Mar del Plata en plena expansión.\n\nPlanta libre de 180 m² con vidrieras en ambas calles, depósito trasero de 40 m², baño y oficina. Altura de 4,5 metros. Ideal para gastronomía, indumentaria, servicios o showroom.\n\nEdificio de categoría con fachada de vidrio. Contrato mínimo 3 años. Precio reducido por firma inmediata.',
-        amenities: ['Vidrieras dobles', 'Depósito 40m²', 'Oficina privada', 'Baño', 'Planta libre', 'Alta circulación'],
-        features: {
-            'Antigüedad': '15 años',
-            'Estado': 'Muy bueno',
-            'Contrato mínimo': '3 años',
-            'Altura interna': '4,5 metros',
-            'Frente': '12 metros',
-            'Esquina': 'Sí',
-        },
-        age: 15, sqmBuilt: 180, sqmTotal: 220,
-        lat: -37.9998, lng: -57.5533,
-    },
-    {
-        id: 4, type: 'Casa', operation: 'Venta', zone: 'Los Troncos', zona: 'los-troncos',
-        title: 'Casa familiar en barrio arbolado con jardín',
-        address: 'Jujuy 2890, Los Troncos, Mar del Plata',
-        beds: 3, baths: 2, sqm: 220, garages: 1, price: 185000, currency: 'USD',
-        tag: 'Venta', featured: false, new: false, reduced: false,
-        imgs: [
-            'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1200&q=90',
-            'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=1200&q=90',
-            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=90',
-        ],
-        desc: 'Hermosa casa familiar en el mejor sector de Los Troncos, barrio residencial con calles arboladas y ambiente tranquilo.\n\nAmplio jardín con árboles maduros, living-comedor con chimenea a leña, cocina equipada con granito. Tres dormitorios en planta alta, dos baños completos y escritorio. Garage para un vehículo y quincho con parrilla.\n\nBarrio con vigilancia privada y excelente vecindario. A 10 minutos del centro.',
-        amenities: ['Jardín amplio', 'Quincho con parrilla', 'Chimenea', 'Garage', 'Vigilancia', 'Barrio tranquilo'],
-        features: {
-            'Antigüedad': '12 años',
-            'Estado': 'Muy bueno',
-            'Expensas': 'Sin expensas',
-            'Orientación': 'Norte',
-            'Frente': '14 metros',
-            'Lote total': '500 m²',
-        },
-        age: 12, sqmBuilt: 220, sqmTotal: 500,
-        lat: -38.0102, lng: -57.5388,
-    },
-    {
-        id: 6, type: 'Casa', operation: 'Venta', zone: 'Playa Grande', zona: 'playa-grande',
-        title: 'Villa moderna con pileta climatizada',
-        address: 'H. Yrigoyen 4500, Playa Grande, Mar del Plata',
-        beds: 5, baths: 4, sqm: 580, garages: 3, price: 980000, currency: 'USD',
-        tag: 'Venta', featured: true, new: false, reduced: false,
-        imgs: [
-            'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=90',
-            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=90',
-            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=90',
-            'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=1200&q=90',
-        ],
-        desc: 'Villa de lujo en el sector más exclusivo de Playa Grande. Diseño arquitectónico único de estudio reconocido, pileta climatizada con deck de madera, jardín paisajístico profesional.\n\nHome cinema, sala de juegos, gym privado y domótica integral Lutron. Suite principal con terraza privada y jacuzzi exterior. Cuatro suites adicionales. Garage triple con cargador eléctrico.\n\nLa propiedad más exclusiva disponible en el mercado de Mar del Plata.',
-        amenities: ['Pileta climatizada', 'Home cinema', 'Gym privado', 'Domótica Lutron', 'Jardín paisajístico', 'Jacuzzi exterior'],
-        features: {
-            'Antigüedad': '3 años',
-            'Estado': 'Impecable',
-            'Expensas': 'Sin expensas',
-            'Lote total': '1.200 m²',
-            'Frente': '24 metros',
-            'Garage': 'Triple + eléctrico',
-        },
-        age: 3, sqmBuilt: 580, sqmTotal: 1200,
-        lat: -38.0071, lng: -57.5401,
-    },
-    {
-        id: 7, type: 'Departamento', operation: 'Venta', zone: 'Güemes', zona: 'guemes',
-        title: 'Duplex con terraza y parrilla propia',
-        address: 'San Luis 1780, PB, Güemes, Mar del Plata',
-        beds: 3, baths: 2, sqm: 130, garages: 1, price: 245000, currency: 'USD',
-        tag: 'Venta', featured: false, new: true, reduced: false,
-        imgs: [
-            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=90',
-            'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=90',
-            'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&q=90',
-        ],
-        desc: 'Duplex a estrenar en Güemes con terraza privada exclusiva de 60 m² y parrilla propia. Living de doble altura con ventanales de piso a techo, cocina abierta con isla de diseño.\n\nSuite principal con vestidor y baño en suite, dos dormitorios adicionales con placard y baño compartido. Cochera cubierta incluida.\n\nEl barrio de moda de Mar del Plata: rodeado de los mejores restoranes, bares y espacios culturales.',
-        amenities: ['Terraza 60m²', 'Parrilla propia', 'Doble altura', 'Vestidor', 'Cochera', 'Barrio gastronómico'],
-        features: {
-            'Antigüedad': 'A estrenar',
-            'Estado': 'Nuevo',
-            'Expensas': '$62.000/mes',
-            'Terraza': '60 m²',
-            'Orientación': 'Norte',
-            'Piso': 'PB + 1°',
-        },
-        age: 0, sqmBuilt: 130, sqmTotal: 190,
-        lat: -37.9988, lng: -57.5521,
-    },
-]
-
+import { supabase } from '../lib/supabaseClient'
 const AMENITY_ICONS = {
     'Pileta climatizada': Layers,
     'Pileta': Layers,
@@ -448,7 +296,9 @@ function GalleryModal({ imgs, startIndex, onClose }) {
 export default function Property() {
     const { id } = useParams()
     const navigate = useNavigate()
-    const property = ALL_PROPERTIES.find(p => p.id === Number(id))
+    const [property, setProperty] = useState(null)
+    const [similar, setSimilar] = useState([])
+    const [loading, setLoading] = useState(true)
     const [activeImg, setActiveImg] = useState(0)
     const [modalOpen, setModalOpen] = useState(false)
     const [modalStart, setModalStart] = useState(0)
@@ -457,16 +307,88 @@ export default function Property() {
 
     useEffect(() => { window.scrollTo(0, 0) }, [id])
 
-    if (!property) return (
-        <div className="min-h-screen bg-secondaryLight flex flex-col items-center justify-center gap-4">
-            <p className="font-display font-bold text-secondary text-xl">Propiedad no encontrada</p>
-            <button onClick={() => navigate('/propiedades')} className="inline-flex items-center gap-2 font-display font-bold text-[0.78rem] uppercase bg-primary text-white rounded-full px-6 py-3">
-                <ArrowLeft size={14} /> Volver al catálogo
-            </button>
-        </div>
-    )
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('properties')
+                    .select('*')
+                    .eq('id', id)
+                    .single()
+                
+                if (error) throw error;
+                
+                if (data) {
+                    const p = {
+                        id: data.id,
+                        type: data.tipo,
+                        operation: data.operacion,
+                        zone: data.zona || '',
+                        title: data.titulo,
+                        address: data.direccion || '',
+                        beds: data.dormitorios || null,
+                        baths: data.banos || 0,
+                        sqm: data.m2_cubiertos || 0,
+                        sqmBuilt: data.m2_cubiertos || 0,
+                        sqmTotal: data.m2_lote || 0,
+                        garages: data.cochera ? 1 : 0,
+                        price: Number(data.precio),
+                        currency: data.moneda,
+                        tag: data.operacion,
+                        featured: data.destacado,
+                        new: data.nuevo_ingreso,
+                        reduced: false,
+                        imgs: data.imagenes?.length ? data.imagenes : ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=90'],
+                        desc: data.descripcion || '',
+                        amenities: data.amenities || [],
+                        features: {},
+                        age: 0,
+                        lat: data.lat,
+                        lng: data.lng,
+                    }
+                    if (data.antiguedad) p.features['Antigüedad'] = data.antiguedad
+                    if (data.estado) p.features['Estado'] = data.estado
+                    if (data.orientacion) p.features['Orientación'] = data.orientacion
+                    if (data.m2_lote > 0) p.features['Lote total'] = `${data.m2_lote} m²`
+                    if (data.m2_cubiertos > 0) p.features['Sup. cubierta'] = `${data.m2_cubiertos} m²`
+                    if (data.pisos > 0) p.features['Pisos'] = String(data.pisos)
+                    if (data.cochera) p.features['Cochera'] = 'Sí'
+                    
+                    setProperty(p)
+                    
+                    try {
+                        await supabase.rpc('increment_views', { prop_id: data.id })
+                    } catch (e) { }
+                    
+                    let simQuery = supabase.from('properties').select('*').eq('publicado', true).neq('id', data.id).limit(3);
+                    const conditions = [];
+                    if (data.tipo) conditions.push(`tipo.eq."${data.tipo}"`);
+                    if (data.zona) conditions.push(`zona.eq."${data.zona}"`);
+                    if (conditions.length > 0) {
+                        simQuery = simQuery.or(conditions.join(','));
+                    }
+                    const { data: sim } = await simQuery;
+                    
+                    setSimilar((sim || []).map(s => ({
+                        id: s.id, type: s.tipo, operation: s.operacion, zone: s.zona || '',
+                        title: s.titulo, address: s.direccion || '',
+                        beds: s.dormitorios, baths: s.banos, sqm: s.m2_cubiertos,
+                        price: Number(s.precio), currency: s.moneda,
+                        imgs: s.imagenes?.length ? s.imagenes : ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80'],
+                        featured: s.destacado, new: s.nuevo_ingreso,
+                    })))
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false)
+            }
+        }
+        load()
+    }, [id])
 
-    const similar = ALL_PROPERTIES.filter(p => p.id !== property.id && (p.zone === property.zone || p.type === property.type)).slice(0, 3)
+    // Sin pantalla de carga, si no hay property renderiza fondo instantáneo y cuando carga muestra la data
+    if (loading || !property) return <div className="min-h-screen bg-secondaryLight" />
 
     const openModal = (i) => { setModalStart(i); setModalOpen(true) }
 
@@ -638,25 +560,27 @@ export default function Property() {
                         </div>
 
                         {/* ── AMENITIES ── */}
-                        <div className="bg-white rounded-2xl p-6 border border-secondaryLight mb-6" style={{ boxShadow: '0 2px 16px rgba(18,39,58,0.05)' }}>
-                            <h2 className="font-display font-black text-primary text-[1rem] mb-5 flex items-center gap-2">
-                                <span className="w-1 h-5 bg-primary rounded-full inline-block" />
-                                Comodidades y extras
-                            </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                {property.amenities.map((a) => {
-                                    const Icon = AMENITY_ICONS[a] || CheckCircle2
-                                    return (
-                                        <div key={a} className="flex items-center gap-3 p-3 bg-secondaryLight rounded-xl border border-secondaryLight">
-                                            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                                                <Icon size={14} className="text-secondary" />
+                        {property.amenities && property.amenities.length > 0 && (
+                            <div className="bg-white rounded-2xl p-6 border border-secondaryLight mb-6" style={{ boxShadow: '0 2px 16px rgba(18,39,58,0.05)' }}>
+                                <h2 className="font-display font-black text-primary text-[1rem] mb-5 flex items-center gap-2">
+                                    <span className="w-1 h-5 bg-primary rounded-full inline-block" />
+                                    Comodidades y extras
+                                </h2>
+                                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                                    {property.amenities.map((a) => {
+                                        const Icon = AMENITY_ICONS[a] || CheckCircle2
+                                        return (
+                                            <div key={a} className="flex items-center gap-2.5 p-2 sm:p-3 bg-secondaryLight rounded-xl border border-secondaryLight">
+                                                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                                                    <Icon size={13} className="text-secondary sm:w-3.5 sm:h-3.5" />
+                                                </div>
+                                                <span className="font-display font-medium text-textPrimary text-[0.72rem] sm:text-[0.84rem] leading-tight">{a}</span>
                                             </div>
-                                            <span className="font-display font-medium text-textPrimary text-[0.84rem]">{a}</span>
-                                        </div>
-                                    )
-                                })}
+                                        )
+                                    })}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* ── FEATURES TABLE ── */}
                         <div className="bg-white rounded-2xl p-6 border border-secondaryLight mb-6" style={{ boxShadow: '0 2px 16px rgba(18,39,58,0.05)' }}>
@@ -707,7 +631,10 @@ export default function Property() {
                                     height="100%"
                                     frameBorder="0"
                                     style={{ border: 0, filter: 'grayscale(30%) contrast(1.05)' }}
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&z=15&output=embed`}
+                                    src={property.lat && property.lng 
+                                        ? `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000!2d${property.lng}!3d${property.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2sar!4v1`
+                                        : `https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&z=15&output=embed`
+                                    }
                                     allowFullScreen
                                 />
                             </div>
@@ -750,7 +677,7 @@ export default function Property() {
                                 </p>
                             </div>
                             <button
-                                onClick={() => navigate('/contacto')}
+                                onClick={() => navigate('/tasacion')}
                                 className="relative z-10 inline-flex items-center gap-2 font-display font-bold text-[0.78rem] tracking-wider uppercase bg-primary text-white rounded-full px-7 py-3.5 hover:bg-primaryDark hover:shadow-[0_6px_20px_rgba(18,100,95,0.3)] hover:-translate-y-0.5 transition-all duration-300"
                             >
                                 Solicitar tasación <ArrowRight size={13} />

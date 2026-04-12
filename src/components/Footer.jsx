@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Clock, MessageCircle, ExternalLink } from 'lucide-react'
-import LogoIcon from './LogoIcon'
+
 
 // Íconos sociales
 const IconIG = () => (
@@ -36,12 +36,8 @@ export default function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-9 mb-11">
                 {/* Brand column */}
                 <div>
-                    <div className="flex items-center gap-3 mb-4">
-                        <LogoIcon size={34} />
-                        <div className="flex flex-col leading-none">
-                            <span className="font-display font-bold text-[0.9rem] text-white">Caramello</span>
-                            <span className="font-display font-normal text-[0.58rem] text-primary tracking-[0.22em] uppercase mt-0.5">Propiedades</span>
-                        </div>
+                    <div className="flex items-center mb-6">
+                        <img src="/logo.png" alt="Caramello Propiedades" className="h-[50px] w-auto object-contain" />
                     </div>
                     {/* MEJORA: Subimos opacidad de white/45 a white/70 para legibilidad */}
                     <p className="text-white/70 text-[0.83rem] leading-[1.72] mb-5 max-w-[250px]">
@@ -118,7 +114,7 @@ export default function Footer() {
                     <p className="text-[0.76rem] text-white/50">
                         © 2025 <span className="text-white font-medium">Caramello Propiedades</span>. Todos los derechos reservados.
                     </p>
-                    <p className="text-[0.72rem] text-white/40 tracking-wider">Matrícula CUCICBA N° XXXXX</p>
+                    <p className="text-[0.72rem] text-white/40 tracking-wider">Matrícula CUCICBA Reg 3288</p>
                 </div>
 
                 {/* Powered by EnterCompany - Estilo Tech Green */}
