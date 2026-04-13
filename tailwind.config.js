@@ -12,8 +12,8 @@ export default {
                 textSecondary: '#6B7280', // Slate medio para párrafos
             },
             fontFamily: {
-                display: ['Montserrat', 'sans-serif'],
-                body: ['Lato', 'sans-serif'],
+                display: ['"Julius Sans One"', 'sans-serif'],  // SOLO para H1 principales
+                body: ['Inter', 'sans-serif'],                  // Todo el resto del contenido
             },
             clipPath: {
                 notch: 'polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))',

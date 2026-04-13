@@ -1,5 +1,5 @@
 /* src/index.css */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,7 +11,7 @@
   }
 
   body {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Inter', sans-serif;
     background: #ffffff;
     color: #1f2937;
     overflow-x: hidden;
@@ -25,7 +25,7 @@
   /* ==================================================== */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
-           font-display font-bold tracking-wider text-[0.78rem] uppercase
+           font-body font-bold tracking-wider text-[0.78rem] uppercase
            bg-primary text-white
            rounded-full px-9 py-4
            transition-all duration-300
@@ -54,7 +54,7 @@
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2
-           font-display font-bold tracking-wider text-[0.78rem] uppercase
+           font-body font-bold tracking-wider text-[0.78rem] uppercase
            border-2 border-primary text-primary bg-transparent
            rounded-full px-9 py-4
            transition-all duration-300
@@ -83,7 +83,7 @@
   /* Instagram follow button */
   .btn-gradient {
     @apply inline-flex items-center justify-center gap-2
-           font-display font-bold tracking-wider text-[0.78rem] uppercase
+           font-body font-bold tracking-wider text-[0.78rem] uppercase
            text-white rounded-full px-9 py-4
            transition-all duration-300
            hover:-translate-y-0.5;
@@ -114,5 +114,112 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PRICE RANGE SLIDER — Dual Thumb Premium Styles
+   Dos inputs range superpuestos con thumbs personalizados.
+═══════════════════════════════════════════════════════════════════ */
+
+.price-slider-container {
+  position: relative;
+  touch-action: none;
+}
+
+.price-slider-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  z-index: 3;
+}
+
+/* ── WebKit (Chrome, Safari, Edge) ── */
+.price-slider-thumb::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  height: 5px;
+  background: transparent;
+  border: none;
+}
+
+.price-slider-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: all;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #12645F;
+  box-shadow: 0 2px 8px rgba(18, 100, 95, 0.20), 0 0 0 0 rgba(18, 100, 95, 0);
+  cursor: pointer;
+  margin-top: -8.5px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  z-index: 4;
+}
+
+.price-slider-thumb::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 12px rgba(18, 100, 95, 0.30), 0 0 0 6px rgba(18, 100, 95, 0.08);
+  border-color: #0A4441;
+}
+
+.price-slider-thumb::-webkit-slider-thumb:active {
+  transform: scale(1.2);
+  box-shadow: 0 3px 16px rgba(18, 100, 95, 0.35), 0 0 0 8px rgba(18, 100, 95, 0.10);
+  border-color: #0A4441;
+}
+
+/* ── Firefox ── */
+.price-slider-thumb::-moz-range-track {
+  height: 5px;
+  background: transparent;
+  border: none;
+}
+
+.price-slider-thumb::-moz-range-thumb {
+  pointer-events: all;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #12645F;
+  box-shadow: 0 2px 8px rgba(18, 100, 95, 0.20);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.price-slider-thumb::-moz-range-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 12px rgba(18, 100, 95, 0.30), 0 0 0 6px rgba(18, 100, 95, 0.08);
+}
+
+/* ── Focus visible para accesibilidad ── */
+.price-slider-thumb:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(18, 100, 95, 0.25), 0 2px 8px rgba(18, 100, 95, 0.20);
+}
+
+/* ── Touch: thumbs más grandes en mobile ── */
+@media (pointer: coarse) {
+  .price-slider-thumb::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+    margin-top: -11.5px;
+  }
+  .price-slider-thumb::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+  }
+  .price-slider-container {
+    height: 2rem;
   }
 }

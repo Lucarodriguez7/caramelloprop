@@ -78,7 +78,7 @@ export default function Navbar() {
                                         to={to} 
                                         end={to === '/'} 
                                         className={({ isActive }) => `
-                                            relative font-display font-bold text-[0.72rem] uppercase tracking-widest px-5 py-2.5 rounded-full transition-colors duration-300 overflow-hidden group flex items-center justify-center
+                                            relative font-body font-bold text-[0.72rem] uppercase tracking-widest px-5 py-2.5 rounded-full transition-colors duration-300 overflow-hidden group flex items-center justify-center
                                             ${isActive ? 'text-white' : 'text-textPrimary/70 hover:text-textPrimary'}
                                         `}
                                     >
@@ -103,7 +103,7 @@ export default function Navbar() {
                     <div className="hidden lg:flex items-center gap-4">
                         <button
                             onClick={() => navigate('/contacto')}
-                            className="group relative font-display font-bold text-[0.7rem] tracking-widest uppercase px-6 py-[13px] rounded-full overflow-hidden flex items-center gap-2 bg-textPrimary text-white shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_8px_25px_rgba(18,100,95,0.25)] hover:-translate-y-0.5"
+                            className="group relative font-body font-bold text-[0.7rem] tracking-widest uppercase px-6 py-[13px] rounded-full overflow-hidden flex items-center gap-2 bg-textPrimary text-white shadow-[0_4px_20px_rgb(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_8px_25px_rgba(18,100,95,0.25)] hover:-translate-y-0.5"
                         >
                             <span className="absolute inset-0 w-full h-full bg-primary origin-bottom translate-y-[100%] group-hover:translate-y-0 transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] z-0" />
                             <span className="relative z-10 flex items-center gap-2">Consultar <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" /></span>
@@ -139,7 +139,7 @@ export default function Navbar() {
                                     to={to}
                                     end={to === '/'}
                                     className={({ isActive }) => `
-                                        flex items-center justify-between py-4 border-b border-black/[0.04] text-[2rem] font-display font-black tracking-tight transition-colors
+                                        flex items-center justify-between py-4 border-b border-black/[0.04] text-[2rem] font-body font-black tracking-tight transition-colors
                                         ${isActive ? 'text-primary' : 'text-textPrimary hover:text-primary'}
                                     `}
                                 >
@@ -169,7 +169,7 @@ export default function Navbar() {
                         </div>
                         <button
                             onClick={() => navigate('/contacto')}
-                            className="w-full h-14 rounded-2xl bg-textPrimary text-white font-display font-bold uppercase tracking-widest text-[0.8rem] flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(0,0,0,0.12)] active:scale-95 transition-transform"
+                            className="w-full h-14 rounded-2xl bg-textPrimary text-white font-body font-bold uppercase tracking-widest text-[0.8rem] flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(0,0,0,0.12)] active:scale-95 transition-transform"
                         >
                             Comenzar consulta <ArrowRight size={16} />
                         </button>

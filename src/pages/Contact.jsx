@@ -25,12 +25,12 @@ export default function Contact() {
 
                 {/* Header text */}
                 <div className="text-center mb-12">
-                    <p className="font-display text-[0.65rem] font-bold tracking-[0.25em] uppercase text-secondary mb-3">Atención personalizada</p>
-                    <h1 className="font-display font-black text-primary leading-tight mb-4" style={{ fontSize: 'clamp(2rem,4vw,3.5rem)' }}>
+                    <p className="font-body text-[0.65rem] font-bold tracking-[0.25em] uppercase text-secondary mb-3">Atención personalizada</p>
+                    <h1 className="font-body font-black text-primary leading-tight mb-4" style={{ fontSize: 'clamp(2rem,4vw,3.5rem)' }}>
                         Hablemos sobre tu<br />
                         <span className="text-secondary">próximo paso</span>
                     </h1>
-                    <p className="text-[0.95rem] text-textSecondary font-display max-w-[500px] mx-auto">
+                    <p className="text-[0.95rem] text-textSecondary font-body max-w-[500px] mx-auto">
                         Ya sea para tasar, vender o encontrar el lugar de tus sueños, nuestro equipo de asesores está listo para acompañarte.
                     </p>
                 </div>
@@ -44,7 +44,7 @@ export default function Contact() {
                         <div className="absolute bottom-0 left-[-100px] w-[300px] h-[300px] opacity-30 pointer-events-none" style={{ background: 'radial-gradient(circle at 20% 80%, #1C4066, transparent 60%)' }} />
 
                         <div className="relative z-10">
-                            <h3 className="font-display font-black text-[1.5rem] mb-10">Información de<br /><span className="text-primary">contacto</span></h3>
+                            <h3 className="font-body font-black text-[1.5rem] mb-10">Información de<br /><span className="text-primary">contacto</span></h3>
 
                             <div className="space-y-7">
                                 <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 group">
@@ -52,8 +52,8 @@ export default function Contact() {
                                         <MapPin size={18} className="text-primary group-hover:text-textPrimary transition-colors" />
                                     </div>
                                     <div>
-                                        <p className="font-display font-bold text-[0.88rem] mb-1">Nuestra Oficina</p>
-                                        <p className="text-white/60 text-[0.8rem] font-display leading-relaxed">Sarmiento 2888 2A, Mar del Plata<br />Buenos Aires, Argentina</p>
+                                        <p className="font-body font-bold text-[0.88rem] mb-1">Nuestra Oficina</p>
+                                        <p className="text-white/60 text-[0.8rem] font-body leading-relaxed">Sarmiento 2888 2A, Mar del Plata<br />Buenos Aires, Argentina</p>
                                     </div>
                                 </a>
 
@@ -62,8 +62,8 @@ export default function Contact() {
                                         <Phone size={18} className="text-primary group-hover:text-textPrimary transition-colors" />
                                     </div>
                                     <div>
-                                        <p className="font-display font-bold text-[0.88rem] mb-1">WhatsApp / Llamadas</p>
-                                        <p className="text-white/60 text-[0.8rem] font-display leading-relaxed">+54 9 223 448-7206</p>
+                                        <p className="font-body font-bold text-[0.88rem] mb-1">WhatsApp / Llamadas</p>
+                                        <p className="text-white/60 text-[0.8rem] font-body leading-relaxed">+54 9 223 448-7206</p>
                                     </div>
                                 </a>
 
@@ -72,8 +72,8 @@ export default function Contact() {
                                         <Mail size={18} className="text-primary group-hover:text-textPrimary transition-colors" />
                                     </div>
                                     <div>
-                                        <p className="font-display font-bold text-[0.88rem] mb-1">Email</p>
-                                        <p className="text-white/60 text-[0.8rem] font-display leading-relaxed">caramellopropiedades@gmail.com</p>
+                                        <p className="font-body font-bold text-[0.88rem] mb-1">Email</p>
+                                        <p className="text-white/60 text-[0.8rem] font-body leading-relaxed">caramellopropiedades@gmail.com</p>
                                     </div>
                                 </a>
 
@@ -82,8 +82,8 @@ export default function Contact() {
                                         <Clock size={18} className="text-primary" />
                                     </div>
                                     <div>
-                                        <p className="font-display font-bold text-[0.88rem] mb-1">Horarios</p>
-                                        <p className="text-white/60 text-[0.8rem] font-display leading-relaxed">Lunes a Viernes de 10:00 a 16:00 hs</p>
+                                        <p className="font-body font-bold text-[0.88rem] mb-1">Horarios</p>
+                                        <p className="text-white/60 text-[0.8rem] font-body leading-relaxed">Lunes a Viernes de 10:00 a 16:00 hs</p>
                                     </div>
                                 </div>
                             </div>
@@ -99,8 +99,8 @@ export default function Contact() {
                                 <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-6">
                                     <CheckCircle2 size={40} className="text-emerald-500" />
                                 </div>
-                                <h3 className="font-display font-black text-primary text-[1.8rem] mb-2">¡Consulta enviada!</h3>
-                                <p className="text-textSecondary text-[0.95rem] font-display leading-relaxed">
+                                <h3 className="font-body font-black text-primary text-[1.8rem] mb-2">¡Consulta enviada!</h3>
+                                <p className="text-textSecondary text-[0.95rem] font-body leading-relaxed">
                                     Recibimos tus datos correctamente.<br />Un asesor se pondrá en contacto contigo en breve.
                                 </p>
                             </div>
@@ -108,24 +108,24 @@ export default function Contact() {
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-[0.7rem] font-display font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Nombre completo</label>
-                                        <input required type="text" className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-display outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all" placeholder="Ingresa tu nombre" />
+                                        <label className="block text-[0.7rem] font-body font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Nombre completo</label>
+                                        <input required type="text" className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-body outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all" placeholder="Ingresa tu nombre" />
                                     </div>
                                     <div>
-                                        <label className="block text-[0.7rem] font-display font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Teléfono / Celular</label>
-                                        <input required type="tel" className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-display outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all" placeholder="Ej: 223 123 4567" />
+                                        <label className="block text-[0.7rem] font-body font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Teléfono / Celular</label>
+                                        <input required type="tel" className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-body outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all" placeholder="Ej: 223 123 4567" />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block text-[0.7rem] font-display font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Correo Electrónico</label>
-                                    <input required type="email" className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-display outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all" placeholder="tu@correo.com" />
+                                    <label className="block text-[0.7rem] font-body font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Correo Electrónico</label>
+                                    <input required type="email" className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-body outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all" placeholder="tu@correo.com" />
                                 </div>
 
                                 <div>
-                                    <label className="block text-[0.7rem] font-display font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Asunto de consulta</label>
+                                    <label className="block text-[0.7rem] font-body font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Asunto de consulta</label>
                                     <div className="relative">
-                                        <select className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-display outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all appearance-none cursor-pointer">
+                                        <select className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-body outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all appearance-none cursor-pointer">
                                             <option value="">Selecciona una opción...</option>
                                             <option value="comprar">Quiero comprar una propiedad</option>
                                             <option value="vender">Quiero tasar/vender mi propiedad</option>
@@ -139,11 +139,11 @@ export default function Contact() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-[0.7rem] font-display font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Mensaje</label>
-                                    <textarea required rows={4} className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-display outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all resize-none leading-relaxed" placeholder="Contanos qué estás buscando..."></textarea>
+                                    <label className="block text-[0.7rem] font-body font-bold tracking-[0.1em] uppercase text-textPrimary/70 mb-2">Mensaje</label>
+                                    <textarea required rows={4} className="w-full px-5 py-3.5 bg-secondaryLight rounded-xl text-[0.85rem] font-body outline-none border border-gray-200 focus:border-primary focus:bg-white transition-all resize-none leading-relaxed" placeholder="Contanos qué estás buscando..."></textarea>
                                 </div>
 
-                                <button type="submit" className="w-full flex items-center justify-center gap-2 py-4 bg-textPrimary text-white rounded-xl font-display font-bold text-[0.8rem] tracking-widest uppercase transition-all duration-300 hover:bg-secondary hover:-translate-y-px hover:shadow-[0_8px_20px_rgba(18,39,58,0.2)]">
+                                <button type="submit" className="w-full flex items-center justify-center gap-2 py-4 bg-textPrimary text-white rounded-xl font-body font-bold text-[0.8rem] tracking-widest uppercase transition-all duration-300 hover:bg-secondary hover:-translate-y-px hover:shadow-[0_8px_20px_rgba(18,39,58,0.2)]">
                                     <Send size={15} /> Enviar Mensaje
                                 </button>
                             </form>

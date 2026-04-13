@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import PriceRangeFilter from '../components/PriceRangeFilter'
 import {
     Search, SlidersHorizontal, X, MapPin, Star, ArrowRight,
     Bed, Bath, Maximize2, ChevronDown, Grid3X3, List,
@@ -150,7 +151,7 @@ const TYPE_ICONS = { Casa: Home, Departamento: Building2, PH: Building2, Local: 
 
 function formatPrice(price, currency) {
     if (currency === 'USD') return `USD ${price.toLocaleString('es-AR')}`
-    return `$${(price / 1000).toFixed(0)}K/mes`
+    return `$${price.toLocaleString('es-AR')}/mes`
 }
 
 /* ─── BADGE ─────────────────────────────────────────────────── */
@@ -163,7 +164,7 @@ function Badge({ children, variant = 'primary' }) {
         outline: 'border border-textPrimary/20 text-textPrimary/60',
     }
     return (
-        <span className={`text-[0.54rem] font-display font-black tracking-[0.16em] uppercase px-2.5 py-1.5 rounded-full ${styles[variant]}`}>
+        <span className={`text-[0.54rem] font-body font-black tracking-[0.16em] uppercase px-2.5 py-1.5 rounded-full ${styles[variant]}`}>
             {children}
         </span>
     )
@@ -228,7 +229,7 @@ function PropertyCardGrid({ prop, onFavorite, isFavorite }) {
                 {/* Featured badge bottom-left */}
                 {prop.featured && (
                     <div className="absolute bottom-3 left-3">
-                        <span className="flex items-center gap-1 bg-white/95 text-textPrimary text-[0.58rem] font-display font-bold uppercase px-2.5 py-1.5 rounded-full shadow-sm">
+                        <span className="flex items-center gap-1 bg-white/95 text-textPrimary text-[0.58rem] font-body font-bold uppercase px-2.5 py-1.5 rounded-full shadow-sm">
                             <Star size={9} fill="#12645F" stroke="none" /> Destacada
                         </span>
                     </div>
@@ -239,13 +240,13 @@ function PropertyCardGrid({ prop, onFavorite, isFavorite }) {
             <div className="p-5 flex flex-col flex-1">
                 {/* Type + Zone */}
                 <div className="flex items-center gap-2 mb-2.5">
-                    <span className="text-[0.62rem] font-display font-bold tracking-widest uppercase text-primary">{prop.type}</span>
+                    <span className="text-[0.62rem] font-body font-bold tracking-widest uppercase text-primary">{prop.type}</span>
                     <span className="w-1 h-1 rounded-full bg-gray-200" />
-                    <span className="text-[0.62rem] font-display font-medium tracking-wide text-textSecondary">{prop.zone}</span>
+                    <span className="text-[0.62rem] font-body font-medium tracking-wide text-textSecondary">{prop.zone}</span>
                 </div>
 
                 {/* Title */}
-                <h3 className="font-display font-bold text-primary text-[0.92rem] leading-snug mb-2 group-hover:text-secondary transition-colors duration-200 line-clamp-2 flex-1">
+                <h3 className="font-body font-bold text-primary text-[0.92rem] leading-snug mb-2 group-hover:text-secondary transition-colors duration-200 line-clamp-2 flex-1">
                     {prop.title}
                 </h3>
 
@@ -260,18 +261,18 @@ function PropertyCardGrid({ prop, onFavorite, isFavorite }) {
                     {prop.beds !== null && (
                         <div className="flex flex-col items-center gap-1">
                             <Bed size={14} className="text-textSecondary" />
-                            <span className="text-[0.72rem] font-display font-bold text-textPrimary">{prop.beds}</span>
+                            <span className="text-[0.72rem] font-body font-bold text-textPrimary">{prop.beds}</span>
                             <span className="text-[0.62rem] text-textSecondary">dorm.</span>
                         </div>
                     )}
                     <div className="flex flex-col items-center gap-1">
                         <Bath size={14} className="text-textSecondary" />
-                        <span className="text-[0.72rem] font-display font-bold text-textPrimary">{prop.baths}</span>
+                        <span className="text-[0.72rem] font-body font-bold text-textPrimary">{prop.baths}</span>
                         <span className="text-[0.62rem] text-textSecondary">baños</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                         <Maximize2 size={14} className="text-textSecondary" />
-                        <span className="text-[0.72rem] font-display font-bold text-textPrimary">{prop.sqm}</span>
+                        <span className="text-[0.72rem] font-body font-bold text-textPrimary">{prop.sqm}</span>
                         <span className="text-[0.62rem] text-textSecondary">m²</span>
                     </div>
                 </div>
@@ -279,14 +280,14 @@ function PropertyCardGrid({ prop, onFavorite, isFavorite }) {
                 {/* Price + CTA */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <div className="font-display font-black text-textPrimary text-[1.15rem]">{formatPrice(prop.price, prop.currency)}</div>
+                        <div className="font-body font-black text-textPrimary text-[1.15rem]">{formatPrice(prop.price, prop.currency)}</div>
                         {prop.sqm && prop.currency === 'USD' && (
-                            <div className="text-[0.65rem] text-textSecondary font-display">
+                            <div className="text-[0.65rem] text-textSecondary font-body">
                                 USD {Math.round(prop.price / prop.sqm).toLocaleString()}/m²
                             </div>
                         )}
                     </div>
-                    <span className="flex items-center gap-1 text-primary font-display font-bold text-[0.65rem] tracking-widest uppercase group-hover:gap-2 transition-all duration-200">
+                    <span className="flex items-center gap-1 text-primary font-body font-bold text-[0.65rem] tracking-widest uppercase group-hover:gap-2 transition-all duration-200">
                         Ver más <ArrowRight size={11} />
                     </span>
                 </div>
@@ -326,16 +327,16 @@ function PropertyCardList({ prop, onFavorite, isFavorite }) {
                 <div>
                     <div className="flex items-center justify-between gap-2 mb-1.5">
                         <div className="flex items-center gap-2">
-                            <span className="text-[0.6rem] font-display font-bold tracking-widest uppercase text-primary">{prop.type}</span>
+                            <span className="text-[0.6rem] font-body font-bold tracking-widest uppercase text-primary">{prop.type}</span>
                             <span className="w-1 h-1 rounded-full bg-gray-200" />
-                            <span className="text-[0.6rem] font-display font-medium text-textSecondary">{prop.zone}</span>
+                            <span className="text-[0.6rem] font-body font-medium text-textSecondary">{prop.zone}</span>
                         </div>
                         <div className="flex gap-1.5" onClick={e => e.stopPropagation()}>
                             {prop.new && <Badge variant="green">Nuevo</Badge>}
                             {prop.featured && <Badge variant="outline">Destacada</Badge>}
                         </div>
                     </div>
-                    <h3 className="font-display font-bold text-primary text-[0.95rem] leading-snug mb-1.5 group-hover:text-secondary transition-colors line-clamp-2">{prop.title}</h3>
+                    <h3 className="font-body font-bold text-primary text-[0.95rem] leading-snug mb-1.5 group-hover:text-secondary transition-colors line-clamp-2">{prop.title}</h3>
                     <div className="flex items-center gap-1.5 text-[0.75rem] text-textSecondary mb-3">
                         <MapPin size={10} className="shrink-0 text-primary" />{prop.address}
                     </div>
@@ -350,7 +351,7 @@ function PropertyCardList({ prop, onFavorite, isFavorite }) {
                         <span className="flex items-center gap-1.5"><Bath size={13} className="text-primary" />{prop.baths} baños</span>
                         <span className="flex items-center gap-1.5"><Maximize2 size={13} className="text-primary" />{prop.sqm} m²</span>
                     </div>
-                    <div className="font-display font-black text-textPrimary text-[1.1rem]">{formatPrice(prop.price, prop.currency)}</div>
+                    <div className="font-body font-black text-textPrimary text-[1.1rem]">{formatPrice(prop.price, prop.currency)}</div>
                 </div>
             </div>
         </div>
@@ -362,7 +363,7 @@ function FilterChip({ label, active, onClick, icon: Icon }) {
     return (
         <button
             onClick={onClick}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[0.72rem] font-display font-bold tracking-wide transition-all duration-200 border whitespace-nowrap ${active
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[0.72rem] font-body font-bold tracking-wide transition-all duration-200 border whitespace-nowrap ${active
                 ? 'bg-textPrimary text-white border-textPrimary shadow-[0_4px_12px_rgba(18,39,58,0.25)]'
                 : 'bg-white text-textPrimary border-gray-200 hover:border-textPrimary/40 hover:bg-gray-50'
                 }`}
@@ -373,13 +374,13 @@ function FilterChip({ label, active, onClick, icon: Icon }) {
     )
 }
 
-/* ─── RANGE SLIDER ───────────────────────────────────────────── */
+/* ─── RANGE SLIDER (legacy — kept for non-price uses) ────────── */
 function RangeInput({ label, min, max, value, onChange, format }) {
     return (
         <div>
             <div className="flex items-center justify-between mb-2">
-                <label className="text-[0.72rem] font-display font-bold text-textPrimary uppercase tracking-wide">{label}</label>
-                <span className="text-[0.72rem] text-primary font-display font-bold">{format(value)}</span>
+                <label className="text-[0.72rem] font-body font-bold text-textPrimary uppercase tracking-wide">{label}</label>
+                <span className="text-[0.72rem] text-primary font-body font-bold">{format(value)}</span>
             </div>
             <input
                 type="range"
@@ -394,8 +395,8 @@ function RangeInput({ label, min, max, value, onChange, format }) {
                 }}
             />
             <div className="flex justify-between mt-1">
-                <span className="text-[0.64rem] text-textSecondary font-display">{format(min)}</span>
-                <span className="text-[0.64rem] text-textSecondary font-display">{format(max)}</span>
+                <span className="text-[0.64rem] text-textSecondary font-body">{format(min)}</span>
+                <span className="text-[0.64rem] text-textSecondary font-body">{format(max)}</span>
             </div>
         </div>
     )
@@ -460,7 +461,9 @@ export default function Properties() {
     const [selectedZones, setSelectedZones] = useState(
         searchParams.get('zona') ? [searchParams.get('zona').replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())] : []
     )
+    const [minPriceUSD, setMinPriceUSD] = useState(50000)
     const [maxPriceUSD, setMaxPriceUSD] = useState(1000000)
+    const [minPriceARS, setMinPriceARS] = useState(200000)
     const [maxPriceARS, setMaxPriceARS] = useState(2000000)
     const [minBeds, setMinBeds] = useState(0)
     const [minSqm, setMinSqm] = useState(0)
@@ -499,8 +502,8 @@ export default function Properties() {
             if (selectedOps.length && !selectedOps.includes(p.operation)) return false
             if (selectedTypes.length && !selectedTypes.includes(p.type)) return false
             if (selectedZones.length && !selectedZones.includes(p.zone)) return false
-            if (p.currency === 'USD' && p.price > maxPriceUSD) return false
-            if (p.currency === 'ARS' && p.price > maxPriceARS) return false
+            if (p.currency === 'USD' && (p.price < minPriceUSD || p.price > maxPriceUSD)) return false
+            if (p.currency === 'ARS' && (p.price < minPriceARS || p.price > maxPriceARS)) return false
             if (minBeds > 0 && (p.beds === null || p.beds < minBeds)) return false
             if (minSqm > 0 && p.sqm < minSqm) return false
             if (onlyFeatured && !p.featured) return false
@@ -515,16 +518,18 @@ export default function Properties() {
             case 'newest': return [...list].sort((a, b) => a.age - b.age)
             default: return [...list].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
         }
-    }, [search, selectedOps, selectedTypes, selectedZones, maxPriceUSD, maxPriceARS, minBeds, minSqm, onlyFeatured, onlyNew, sortBy, allProps])
+    }, [search, selectedOps, selectedTypes, selectedZones, minPriceUSD, maxPriceUSD, minPriceARS, maxPriceARS, minBeds, minSqm, onlyFeatured, onlyNew, sortBy, allProps])
 
     const activeFiltersCount = selectedOps.length + selectedTypes.length + selectedZones.length +
         (onlyFeatured ? 1 : 0) + (onlyNew ? 1 : 0) +
-        (maxPriceUSD < 1000000 ? 1 : 0) + (maxPriceARS < 2000000 ? 1 : 0) +
+        (minPriceUSD > 50000 || maxPriceUSD < 1000000 ? 1 : 0) +
+        (minPriceARS > 200000 || maxPriceARS < 2000000 ? 1 : 0) +
         (minBeds > 0 ? 1 : 0) + (minSqm > 0 ? 1 : 0)
 
     const clearAllFilters = () => {
         setSelectedOps([]); setSelectedTypes([]); setSelectedZones([])
-        setMaxPriceUSD(1000000); setMaxPriceARS(2000000)
+        setMinPriceUSD(50000); setMaxPriceUSD(1000000)
+        setMinPriceARS(200000); setMaxPriceARS(2000000)
         setMinBeds(0); setMinSqm(0)
         setOnlyFeatured(false); setOnlyNew(false); setSearch('')
     }
@@ -534,7 +539,7 @@ export default function Properties() {
         <div className="space-y-7">
             {/* Operation */}
             <div>
-                <p className="text-[0.65rem] font-display font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Operación</p>
+                <p className="text-[0.65rem] font-body font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Operación</p>
                 <div className="flex flex-col gap-2">
                     {OPERATIONS.map(op => (
                         <label key={op} className="flex items-center gap-3 cursor-pointer group">
@@ -545,7 +550,7 @@ export default function Properties() {
                             >
                                 {selectedOps.includes(op) && <CheckCircle2 size={12} className="text-textPrimary" />}
                             </div>
-                            <span className="text-[0.84rem] font-display font-medium text-textPrimary">{op}</span>
+                            <span className="text-[0.84rem] font-body font-medium text-textPrimary">{op}</span>
                         </label>
                     ))}
                 </div>
@@ -555,7 +560,7 @@ export default function Properties() {
 
             {/* Type */}
             <div>
-                <p className="text-[0.65rem] font-display font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Tipo de propiedad</p>
+                <p className="text-[0.65rem] font-body font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Tipo de propiedad</p>
                 <div className="flex flex-col gap-2">
                     {TYPES.map(t => {
                         const Icon = TYPE_ICONS[t]
@@ -569,7 +574,7 @@ export default function Properties() {
                                     {selectedTypes.includes(t) && <CheckCircle2 size={12} className="text-textPrimary" />}
                                 </div>
                                 <Icon size={14} className="text-textSecondary" />
-                                <span className="text-[0.84rem] font-display font-medium text-textPrimary">{t}</span>
+                                <span className="text-[0.84rem] font-body font-medium text-textPrimary">{t}</span>
                             </label>
                         )
                     })}
@@ -580,7 +585,7 @@ export default function Properties() {
 
             {/* Zone */}
             <div>
-                <p className="text-[0.65rem] font-display font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Zona</p>
+                <p className="text-[0.65rem] font-body font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Zona</p>
                 <div className="flex flex-col gap-2">
                     {ZONES.map(z => (
                         <label key={z} className="flex items-center gap-3 cursor-pointer group">
@@ -591,7 +596,7 @@ export default function Properties() {
                             >
                                 {selectedZones.includes(z) && <CheckCircle2 size={12} className="text-textPrimary" />}
                             </div>
-                            <span className="text-[0.84rem] font-display font-medium text-textPrimary">{z}</span>
+                            <span className="text-[0.84rem] font-body font-medium text-textPrimary">{z}</span>
                         </label>
                     ))}
                 </div>
@@ -599,35 +604,43 @@ export default function Properties() {
 
             <div className="border-t border-secondaryLight" />
 
-            {/* Price USD */}
-            <RangeInput
-                label="Precio máx. (USD)"
-                min={50000} max={1000000}
-                value={maxPriceUSD}
-                onChange={setMaxPriceUSD}
-                format={v => `USD ${(v / 1000).toFixed(0)}K`}
+            {/* Price USD — Venta */}
+            <PriceRangeFilter
+                currency="USD"
+                min={50000}
+                max={1000000}
+                valueMin={minPriceUSD}
+                valueMax={maxPriceUSD}
+                onChangeMin={setMinPriceUSD}
+                onChangeMax={setMaxPriceUSD}
+                step={5000}
             />
 
-            {/* Price ARS */}
-            <RangeInput
-                label="Precio máx. (ARS/mes)"
-                min={200000} max={2000000}
-                value={maxPriceARS}
-                onChange={setMaxPriceARS}
-                format={v => `$${(v / 1000).toFixed(0)}K`}
+            <div className="border-t border-secondaryLight" />
+
+            {/* Price ARS — Alquiler */}
+            <PriceRangeFilter
+                currency="ARS"
+                min={200000}
+                max={2000000}
+                valueMin={minPriceARS}
+                valueMax={maxPriceARS}
+                onChangeMin={setMinPriceARS}
+                onChangeMax={setMaxPriceARS}
+                step={25000}
             />
 
             <div className="border-t border-secondaryLight" />
 
             {/* Bedrooms */}
             <div>
-                <p className="text-[0.65rem] font-display font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Dormitorios mínimos</p>
+                <p className="text-[0.65rem] font-body font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Dormitorios mínimos</p>
                 <div className="flex gap-2">
                     {[0, 1, 2, 3, 4].map(n => (
                         <button
                             key={n}
                             onClick={() => setMinBeds(n)}
-                            className={`w-9 h-9 rounded-xl text-[0.8rem] font-display font-bold transition-all duration-200 border ${minBeds === n ? 'bg-textPrimary text-white border-textPrimary' : 'bg-white text-textPrimary border-gray-200 hover:border-textPrimary/40'
+                            className={`w-9 h-9 rounded-xl text-[0.8rem] font-body font-bold transition-all duration-200 border ${minBeds === n ? 'bg-textPrimary text-white border-textPrimary' : 'bg-white text-textPrimary border-gray-200 hover:border-textPrimary/40'
                                 }`}
                         >
                             {n === 0 ? 'T' : n}
@@ -649,7 +662,7 @@ export default function Properties() {
 
             {/* Quick filters */}
             <div>
-                <p className="text-[0.65rem] font-display font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Filtros rápidos</p>
+                <p className="text-[0.65rem] font-body font-black tracking-[0.2em] uppercase text-textPrimary/40 mb-3">Filtros rápidos</p>
                 <div className="flex flex-col gap-2">
                     {[
                         { label: 'Solo destacadas', val: onlyFeatured, set: setOnlyFeatured },
@@ -663,7 +676,7 @@ export default function Properties() {
                             >
                                 {val && <CheckCircle2 size={12} className="text-textPrimary" />}
                             </div>
-                            <span className="text-[0.84rem] font-display font-medium text-textPrimary">{label}</span>
+                            <span className="text-[0.84rem] font-body font-medium text-textPrimary">{label}</span>
                         </label>
                     ))}
                 </div>
@@ -673,7 +686,7 @@ export default function Properties() {
             {activeFiltersCount > 0 && (
                 <button
                     onClick={clearAllFilters}
-                    className="w-full py-2.5 rounded-xl border-2 border-red-400 text-red-500 text-[0.75rem] font-display font-bold tracking-wide uppercase transition-all duration-200 hover:bg-red-50"
+                    className="w-full py-2.5 rounded-xl border-2 border-red-400 text-red-500 text-[0.75rem] font-body font-bold tracking-wide uppercase transition-all duration-200 hover:bg-red-50"
                 >
                     Limpiar filtros ({activeFiltersCount})
                 </button>
@@ -697,7 +710,7 @@ export default function Properties() {
                             placeholder="Buscar por barrio, dirección o título..."
                             value={search}
                             onChange={e => setSearch(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 bg-secondaryLight rounded-xl text-[0.85rem] font-display text-textPrimary placeholder:text-textSecondary border border-gray-200 focus:outline-none focus:border-primary focus:bg-white transition-all duration-200"
+                            className="w-full pl-10 pr-4 py-2.5 bg-secondaryLight rounded-xl text-[0.85rem] font-body text-textPrimary placeholder:text-textSecondary border border-gray-200 focus:outline-none focus:border-primary focus:bg-white transition-all duration-200"
                         />
                         {search && (
                             <button onClick={() => setSearch('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-textSecondary hover:text-textPrimary transition-colors">
@@ -709,7 +722,7 @@ export default function Properties() {
                     {/* Mobile filter toggle */}
                     <button
                         onClick={() => setSidebarOpen(true)}
-                        className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-textPrimary text-white rounded-xl text-[0.78rem] font-display font-bold shrink-0 relative"
+                        className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-textPrimary text-white rounded-xl text-[0.78rem] font-body font-bold shrink-0 relative"
                     >
                         <SlidersHorizontal size={14} />
                         Filtros
@@ -726,7 +739,7 @@ export default function Properties() {
                         <div className="relative">
                             <button
                                 onClick={() => setSortOpen(v => !v)}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-secondaryLight border border-gray-200 rounded-xl text-[0.8rem] font-display font-bold text-textPrimary hover:border-textPrimary/40 transition-all"
+                                className="flex items-center gap-2 px-4 py-2.5 bg-secondaryLight border border-gray-200 rounded-xl text-[0.8rem] font-body font-bold text-textPrimary hover:border-textPrimary/40 transition-all"
                             >
                                 <ArrowUpDown size={13} />
                                 {SORT_OPTIONS.find(s => s.value === sortBy)?.label}
@@ -738,7 +751,7 @@ export default function Properties() {
                                         <button
                                             key={opt.value}
                                             onClick={() => { setSortBy(opt.value); setSortOpen(false) }}
-                                            className={`w-full text-left px-4 py-2.5 text-[0.82rem] font-display font-medium transition-colors hover:bg-secondaryLight ${sortBy === opt.value ? 'text-primary font-bold' : 'text-textPrimary'}`}
+                                            className={`w-full text-left px-4 py-2.5 text-[0.82rem] font-body font-medium transition-colors hover:bg-secondaryLight ${sortBy === opt.value ? 'text-primary font-bold' : 'text-textPrimary'}`}
                                         >
                                             {opt.label}
                                         </button>
@@ -788,11 +801,11 @@ export default function Properties() {
                 <aside className="hidden lg:block w-[260px] shrink-0">
                     <div className="bg-white rounded-2xl p-6 sticky top-[170px] shadow-[0_2px_20px_rgba(18,39,58,0.06)] border border-secondaryLight">
                         <div className="flex items-center justify-between mb-6">
-                            <span className="font-display font-black text-textPrimary text-[0.9rem] flex items-center gap-2">
+                            <span className="font-body font-black text-textPrimary text-[0.9rem] flex items-center gap-2">
                                 <Filter size={14} className="text-primary" /> Filtros
                             </span>
                             {activeFiltersCount > 0 && (
-                                <button onClick={clearAllFilters} className="text-[0.7rem] text-red-400 font-display font-bold hover:text-red-500 transition-colors">
+                                <button onClick={clearAllFilters} className="text-[0.7rem] text-red-400 font-body font-bold hover:text-red-500 transition-colors">
                                     Limpiar ({activeFiltersCount})
                                 </button>
                             )}
@@ -806,8 +819,8 @@ export default function Properties() {
                     {/* Results header */}
                     <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
                         <div>
-                            <span className="font-display font-black text-textPrimary text-[1.1rem]">{filtered.length}</span>
-                            <span className="font-display text-textSecondary text-[0.88rem] ml-1.5">
+                            <span className="font-body font-black text-textPrimary text-[1.1rem]">{filtered.length}</span>
+                            <span className="font-body text-textSecondary text-[0.88rem] ml-1.5">
                                 {filtered.length === 1 ? 'propiedad encontrada' : 'propiedades encontradas'}
                             </span>
                         </div>
@@ -816,7 +829,7 @@ export default function Properties() {
                             <select
                                 value={sortBy}
                                 onChange={e => setSortBy(e.target.value)}
-                                className="text-[0.78rem] font-display font-bold text-textPrimary bg-white border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-primary"
+                                className="text-[0.78rem] font-body font-bold text-textPrimary bg-white border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-primary"
                             >
                                 {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                             </select>
@@ -827,27 +840,27 @@ export default function Properties() {
                     {activeFiltersCount > 0 && (
                         <div className="flex flex-wrap gap-2 mb-5">
                             {selectedOps.map(f => (
-                                <span key={f} className="flex items-center gap-1.5 bg-textPrimary/10 text-textPrimary text-[0.7rem] font-display font-bold px-3 py-1.5 rounded-full">
+                                <span key={f} className="flex items-center gap-1.5 bg-textPrimary/10 text-textPrimary text-[0.7rem] font-body font-bold px-3 py-1.5 rounded-full">
                                     {f} <button onClick={() => toggleFilter(selectedOps, setSelectedOps, f)}><X size={10} /></button>
                                 </span>
                             ))}
                             {selectedTypes.map(f => (
-                                <span key={f} className="flex items-center gap-1.5 bg-textPrimary/10 text-textPrimary text-[0.7rem] font-display font-bold px-3 py-1.5 rounded-full">
+                                <span key={f} className="flex items-center gap-1.5 bg-textPrimary/10 text-textPrimary text-[0.7rem] font-body font-bold px-3 py-1.5 rounded-full">
                                     {f} <button onClick={() => toggleFilter(selectedTypes, setSelectedTypes, f)}><X size={10} /></button>
                                 </span>
                             ))}
                             {selectedZones.map(f => (
-                                <span key={f} className="flex items-center gap-1.5 bg-primary/20 text-textPrimary text-[0.7rem] font-display font-bold px-3 py-1.5 rounded-full">
+                                <span key={f} className="flex items-center gap-1.5 bg-primary/20 text-textPrimary text-[0.7rem] font-body font-bold px-3 py-1.5 rounded-full">
                                     <MapPin size={9} /> {f} <button onClick={() => toggleFilter(selectedZones, setSelectedZones, f)}><X size={10} /></button>
                                 </span>
                             ))}
                             {onlyFeatured && (
-                                <span className="flex items-center gap-1.5 bg-textPrimary/10 text-textPrimary text-[0.7rem] font-display font-bold px-3 py-1.5 rounded-full">
+                                <span className="flex items-center gap-1.5 bg-textPrimary/10 text-textPrimary text-[0.7rem] font-body font-bold px-3 py-1.5 rounded-full">
                                     Destacadas <button onClick={() => setOnlyFeatured(false)}><X size={10} /></button>
                                 </span>
                             )}
                             {onlyNew && (
-                                <span className="flex items-center gap-1.5 bg-emerald-100 text-emerald-700 text-[0.7rem] font-display font-bold px-3 py-1.5 rounded-full">
+                                <span className="flex items-center gap-1.5 bg-emerald-100 text-emerald-700 text-[0.7rem] font-body font-bold px-3 py-1.5 rounded-full">
                                     Nuevas <button onClick={() => setOnlyNew(false)}><X size={10} /></button>
                                 </span>
                             )}
@@ -860,11 +873,11 @@ export default function Properties() {
                             <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                 <Search size={24} className="text-gray-400" />
                             </div>
-                            <h3 className="font-display font-bold text-primary text-[1.1rem] mb-2">Sin resultados</h3>
+                            <h3 className="font-body font-bold text-primary text-[1.1rem] mb-2">Sin resultados</h3>
                             <p className="text-[0.88rem] text-textSecondary mb-6">No encontramos propiedades con esos filtros. Probá con otras opciones.</p>
                             <button
                                 onClick={clearAllFilters}
-                                className="inline-flex items-center gap-2 font-display font-bold text-[0.78rem] tracking-wide uppercase bg-primary text-white rounded-full px-6 py-3 hover:bg-primaryDark transition-all"
+                                className="inline-flex items-center gap-2 font-body font-bold text-[0.78rem] tracking-wide uppercase bg-primary text-white rounded-full px-6 py-3 hover:bg-primaryDark transition-all"
                             >
                                 Limpiar filtros <X size={13} />
                             </button>
@@ -896,7 +909,7 @@ export default function Properties() {
                     {/* Drawer */}
                     <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl max-h-[90vh] overflow-y-auto">
                         <div className="sticky top-0 bg-white px-6 pt-5 pb-4 border-b border-secondaryLight flex items-center justify-between z-10">
-                            <span className="font-display font-black text-textPrimary text-[1rem] flex items-center gap-2">
+                            <span className="font-body font-black text-textPrimary text-[1rem] flex items-center gap-2">
                                 <Filter size={15} className="text-primary" /> Filtros avanzados
                             </span>
                             <button
@@ -910,7 +923,7 @@ export default function Properties() {
                             <FilterPanel />
                             <button
                                 onClick={() => setSidebarOpen(false)}
-                                className="w-full mt-6 py-4 bg-textPrimary text-white rounded-2xl font-display font-bold text-[0.85rem] tracking-wide"
+                                className="w-full mt-6 py-4 bg-textPrimary text-white rounded-2xl font-body font-bold text-[0.85rem] tracking-wide"
                             >
                                 Ver {filtered.length} {filtered.length === 1 ? 'propiedad' : 'propiedades'}
                             </button>

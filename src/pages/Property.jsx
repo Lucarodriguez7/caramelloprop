@@ -60,20 +60,20 @@ function SimilarCard({ prop }) {
         >
             <div className="relative h-[160px] overflow-hidden">
                 <img src={prop.imgs[0]} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <span className={`absolute top-2.5 left-2.5 text-[0.55rem] font-display font-black tracking-[0.14em] uppercase px-2.5 py-1.5 rounded-full ${prop.operation === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
+                <span className={`absolute top-2.5 left-2.5 text-[0.55rem] font-body font-black tracking-[0.14em] uppercase px-2.5 py-1.5 rounded-full ${prop.operation === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                     {prop.operation}
                 </span>
             </div>
             <div className="p-4 flex flex-col flex-1">
                 <div className="flex items-center gap-1.5 mb-1.5">
-                    <span className="text-[0.58rem] font-display font-bold tracking-widest uppercase text-primary">{prop.type}</span>
+                    <span className="text-[0.58rem] font-body font-bold tracking-widest uppercase text-primary">{prop.type}</span>
                     <span className="w-0.5 h-0.5 rounded-full bg-gray-300" />
-                    <span className="text-[0.58rem] font-display text-textSecondary">{prop.zone}</span>
+                    <span className="text-[0.58rem] font-body text-textSecondary">{prop.zone}</span>
                 </div>
-                <h4 className="font-display font-bold text-textPrimary text-[0.82rem] leading-snug mb-2 line-clamp-2 flex-1 group-hover:text-secondary transition-colors">{prop.title}</h4>
+                <h4 className="font-body font-bold text-textPrimary text-[0.82rem] leading-snug mb-2 line-clamp-2 flex-1 group-hover:text-secondary transition-colors">{prop.title}</h4>
                 <div className="flex items-center justify-between mt-2">
-                    <span className="font-display font-black text-textPrimary text-[0.95rem]">{formatPrice(prop.price, prop.currency)}</span>
-                    <span className="flex items-center gap-1 text-primary text-[0.62rem] font-display font-bold uppercase group-hover:gap-2 transition-all">
+                    <span className="font-body font-black text-textPrimary text-[0.95rem]">{formatPrice(prop.price, prop.currency)}</span>
+                    <span className="flex items-center gap-1 text-primary text-[0.62rem] font-body font-bold uppercase group-hover:gap-2 transition-all">
                         Ver <ArrowRight size={10} />
                     </span>
                 </div>
@@ -105,18 +105,18 @@ function ContactSidebar({ property }) {
                 <div className="absolute right-0 top-0 w-40 h-40 opacity-10 pointer-events-none"
                     style={{ background: 'radial-gradient(circle at 80% 20%, #12645F, transparent 60%)' }} />
                 <div className="relative z-10">
-                    <p className="text-white/50 text-[0.65rem] font-display font-bold tracking-[0.18em] uppercase mb-1">Asesor disponible</p>
+                    <p className="text-white/50 text-[0.65rem] font-body font-bold tracking-[0.18em] uppercase mb-1">Martillera y corredora pública</p>
                     <div className="flex items-center gap-3 mb-4">
                         <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                            <span className="font-display font-black text-primary text-[0.85rem]">FP</span>
+                            <span className="font-body font-black text-primary text-[0.85rem]">FP</span>
                         </div>
                         <div>
-                            <p className="font-display font-bold text-white text-[0.88rem]">Mariana Caramello</p>
-                            <p className="text-white/45 text-[0.72rem] font-display">Asesor principal</p>
+                            <p className="font-body font-bold text-white text-[0.88rem]">Mariana Caramello</p>
+                            <p className="text-white/45 text-[0.72rem] font-body">Asesor principal</p>
                         </div>
                         <div className="ml-auto flex items-center gap-1.5">
                             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                            <span className="text-emerald-400 text-[0.65rem] font-display font-bold">En línea</span>
+                            <span className="text-emerald-400 text-[0.65rem] font-body font-bold">En línea</span>
                         </div>
                     </div>
 
@@ -124,7 +124,7 @@ function ContactSidebar({ property }) {
                         href={waLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-xl font-display font-bold text-[0.8rem] tracking-wide transition-all duration-300 hover:-translate-y-0.5"
+                        className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-xl font-body font-bold text-[0.8rem] tracking-wide transition-all duration-300 hover:-translate-y-0.5"
                         style={{ background: '#25D366', color: 'white', boxShadow: '0 6px 20px rgba(37,211,102,0.35)' }}
                     >
                         <MessageCircle size={16} fill="white" stroke="none" />
@@ -133,7 +133,7 @@ function ContactSidebar({ property }) {
 
                     <a
                         href="tel:+5492234487206"
-                        className="flex items-center justify-center gap-2 w-full py-3 mt-2.5 rounded-xl font-display font-semibold text-[0.78rem] text-white/70 border border-white/15 hover:border-white/40 hover:text-white transition-all duration-200"
+                        className="flex items-center justify-center gap-2 w-full py-3 mt-2.5 rounded-xl font-body font-semibold text-[0.78rem] text-white/70 border border-white/15 hover:border-white/40 hover:text-white transition-all duration-200"
                     >
                         <Phone size={13} />
                         +54 9 223 448-7206
@@ -143,7 +143,7 @@ function ContactSidebar({ property }) {
 
             {/* Contact form */}
             <div className="bg-white rounded-2xl p-5 border border-secondaryLight" style={{ boxShadow: '0 2px 20px rgba(18,39,58,0.06)' }}>
-                <p className="font-display font-black text-secondary text-[0.9rem] mb-4 flex items-center gap-2">
+                <p className="font-body font-black text-secondary text-[0.9rem] mb-4 flex items-center gap-2">
                     <Mail size={14} className="text-primary" /> Consulta específica
                 </p>
 
@@ -152,7 +152,7 @@ function ContactSidebar({ property }) {
                         <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-3">
                             <CheckCircle2 size={22} className="text-emerald-500" />
                         </div>
-                        <p className="font-display font-bold text-secondary text-[0.9rem] mb-1">¡Consulta enviada!</p>
+                        <p className="font-body font-bold text-secondary text-[0.9rem] mb-1">¡Consulta enviada!</p>
                         <p className="text-[0.78rem] text-textSecondary">Te contactamos en menos de 2 horas hábiles.</p>
                     </div>
                 ) : (
@@ -164,7 +164,7 @@ function ContactSidebar({ property }) {
                                 value={name}
                                 onChange={e => setName(e.target.value)}
                                 required
-                                className="w-full px-4 py-2.5 bg-secondaryLight rounded-xl text-[0.82rem] font-display text-textPrimary placeholder:text-textSecondary border border-gray-200 focus:outline-none focus:border-primary focus:bg-white transition-all"
+                                className="w-full px-4 py-2.5 bg-secondaryLight rounded-xl text-[0.82rem] font-body text-textPrimary placeholder:text-textSecondary border border-gray-200 focus:outline-none focus:border-primary focus:bg-white transition-all"
                             />
                         </div>
                         <div>
@@ -174,7 +174,7 @@ function ContactSidebar({ property }) {
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 required
-                                className="w-full px-4 py-2.5 bg-secondaryLight rounded-xl text-[0.82rem] font-display text-textPrimary placeholder:text-textSecondary border border-gray-200 focus:outline-none focus:border-primary focus:bg-white transition-all"
+                                className="w-full px-4 py-2.5 bg-secondaryLight rounded-xl text-[0.82rem] font-body text-textPrimary placeholder:text-textSecondary border border-gray-200 focus:outline-none focus:border-primary focus:bg-white transition-all"
                             />
                         </div>
                         <div>
@@ -182,16 +182,16 @@ function ContactSidebar({ property }) {
                                 rows={4}
                                 value={msg}
                                 onChange={e => setMsg(e.target.value)}
-                                className="w-full px-4 py-2.5 bg-secondaryLight rounded-xl text-[0.82rem] font-display text-textPrimary placeholder:text-textSecondary border border-gray-200 focus:outline-none focus:border-primary focus:bg-white transition-all resize-none leading-relaxed"
+                                className="w-full px-4 py-2.5 bg-secondaryLight rounded-xl text-[0.82rem] font-body text-textPrimary placeholder:text-textSecondary border border-gray-200 focus:outline-none focus:border-primary focus:bg-white transition-all resize-none leading-relaxed"
                             />
                         </div>
                         <button
                             type="submit"
-                            className="w-full flex items-center justify-center gap-2 py-3 bg-textPrimary text-white rounded-xl font-display font-bold text-[0.8rem] tracking-wide transition-all duration-300 hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,123,123,0.3)]"
+                            className="w-full flex items-center justify-center gap-2 py-3 bg-textPrimary text-white rounded-xl font-body font-bold text-[0.8rem] tracking-wide transition-all duration-300 hover:bg-secondary hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,123,123,0.3)]"
                         >
                             <Send size={14} /> Enviar consulta
                         </button>
-                        <p className="text-[0.67rem] text-textSecondary text-center font-display">
+                        <p className="text-[0.67rem] text-textSecondary text-center font-body">
                             Respondemos en menos de 2 horas hábiles
                         </p>
                     </form>
@@ -200,19 +200,19 @@ function ContactSidebar({ property }) {
 
             {/* Price card */}
             <div className="bg-secondaryLight rounded-2xl p-5 border border-secondaryLight">
-                <p className="text-[0.65rem] font-display font-bold tracking-[0.18em] uppercase text-textSecondary mb-1">Precio</p>
-                <p className="font-display font-black text-secondary text-[1.6rem] leading-tight mb-1">
+                <p className="text-[0.65rem] font-body font-bold tracking-[0.18em] uppercase text-textSecondary mb-1">Precio</p>
+                <p className="font-body font-black text-secondary text-[1.6rem] leading-tight mb-1">
                     {formatPrice(property.price, property.currency)}
                 </p>
                 {property.currency === 'USD' && (
-                    <p className="text-[0.72rem] text-textSecondary font-display">
+                    <p className="text-[0.72rem] text-textSecondary font-body">
                         USD {Math.round(property.price / property.sqm).toLocaleString('es-AR')}/m² · {property.sqm} m² cubiertos
                     </p>
                 )}
                 <div className="mt-3 pt-3 border-t border-gray-200">
-                    <p className="text-[0.72rem] text-textSecondary font-display flex items-center gap-1.5">
+                    <p className="text-[0.72rem] text-textSecondary font-body flex items-center gap-1.5">
                         <Shield size={11} className="text-primary shrink-0" />
-                        Tasación gratuita sin compromiso
+                        Consultá sobre tu tasación
                     </p>
                 </div>
             </div>
@@ -241,7 +241,7 @@ function GalleryModal({ imgs, startIndex, onClose }) {
                 <X size={24} className="text-white" />
             </button>
 
-            <div className="absolute top-6 md:top-10 left-1/2 -translate-x-1/2 text-white/50 text-[0.8rem] font-display font-bold tracking-widest z-50">
+            <div className="absolute top-6 md:top-10 left-1/2 -translate-x-1/2 text-white/50 text-[0.8rem] font-body font-bold tracking-widest z-50">
                 {current + 1} / {imgs.length}
             </div>
 
@@ -315,9 +315,9 @@ export default function Property() {
                     .select('*')
                     .eq('id', id)
                     .single()
-                
+
                 if (error) throw error;
-                
+
                 if (data) {
                     const p = {
                         id: data.id,
@@ -353,13 +353,13 @@ export default function Property() {
                     if (data.m2_cubiertos > 0) p.features['Sup. cubierta'] = `${data.m2_cubiertos} m²`
                     if (data.pisos > 0) p.features['Pisos'] = String(data.pisos)
                     if (data.cochera) p.features['Cochera'] = 'Sí'
-                    
+
                     setProperty(p)
-                    
+
                     try {
                         await supabase.rpc('increment_views', { prop_id: data.id })
                     } catch (e) { }
-                    
+
                     let simQuery = supabase.from('properties').select('*').eq('publicado', true).neq('id', data.id).limit(3);
                     const conditions = [];
                     if (data.tipo) conditions.push(`tipo.eq."${data.tipo}"`);
@@ -368,7 +368,7 @@ export default function Property() {
                         simQuery = simQuery.or(conditions.join(','));
                     }
                     const { data: sim } = await simQuery;
-                    
+
                     setSimilar((sim || []).map(s => ({
                         id: s.id, type: s.tipo, operation: s.operacion, zone: s.zona || '',
                         title: s.titulo, address: s.direccion || '',
@@ -406,13 +406,13 @@ export default function Property() {
                 <div className="px-[4%] lg:px-[6%] py-3 flex items-center justify-between gap-4">
                     <button
                         onClick={() => navigate('/propiedades')}
-                        className="flex items-center gap-2 font-display font-bold text-[0.78rem] uppercase tracking-wide text-textPrimary/60 hover:text-textPrimary transition-colors group"
+                        className="flex items-center gap-2 font-body font-bold text-[0.78rem] uppercase tracking-wide text-textPrimary/60 hover:text-textPrimary transition-colors group"
                     >
                         <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform duration-200" />
                         Volver al catálogo
                     </button>
 
-                    <div className="hidden sm:flex items-center gap-1.5 text-[0.72rem] font-display text-textSecondary">
+                    <div className="hidden sm:flex items-center gap-1.5 text-[0.72rem] font-body text-textSecondary">
                         <span className="hover:text-textPrimary cursor-pointer transition-colors" onClick={() => navigate('/')}>Inicio</span>
                         <ChevronRight size={10} />
                         <span className="hover:text-textPrimary cursor-pointer transition-colors" onClick={() => navigate('/propiedades')}>Propiedades</span>
@@ -446,22 +446,22 @@ export default function Property() {
                         {/* Title block */}
                         <div className="mb-6">
                             <div className="flex items-center gap-2.5 mb-3 flex-wrap">
-                                <span className={`text-[0.6rem] font-display font-black tracking-[0.16em] uppercase px-3 py-1.5 rounded-full ${property.operation === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
+                                <span className={`text-[0.6rem] font-body font-black tracking-[0.16em] uppercase px-3 py-1.5 rounded-full ${property.operation === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                                     {property.operation}
                                 </span>
-                                <span className="text-[0.6rem] font-display font-bold tracking-widest uppercase text-primary">{property.type}</span>
+                                <span className="text-[0.6rem] font-body font-bold tracking-widest uppercase text-primary">{property.type}</span>
                                 <span className="w-1 h-1 rounded-full bg-gray-300" />
-                                <span className="text-[0.6rem] font-display text-textSecondary">{property.zone}</span>
+                                <span className="text-[0.6rem] font-body text-textSecondary">{property.zone}</span>
                                 {property.featured && (
-                                    <span className="flex items-center gap-1 bg-white text-textPrimary text-[0.58rem] font-display font-bold uppercase px-2.5 py-1.5 rounded-full border border-gray-200 shadow-sm">
+                                    <span className="flex items-center gap-1 bg-white text-textPrimary text-[0.58rem] font-body font-bold uppercase px-2.5 py-1.5 rounded-full border border-gray-200 shadow-sm">
                                         <Star size={9} fill="#12645F" stroke="none" /> Destacada
                                     </span>
                                 )}
                                 {property.new && (
-                                    <span className="text-[0.58rem] font-display font-bold tracking-widest uppercase px-2.5 py-1.5 rounded-full bg-emerald-100 text-emerald-700">Nuevo ingreso</span>
+                                    <span className="text-[0.58rem] font-body font-bold tracking-widest uppercase px-2.5 py-1.5 rounded-full bg-emerald-100 text-emerald-700">Nuevo ingreso</span>
                                 )}
                             </div>
-                            <h1 className="font-display font-black text-primary leading-tight mb-2" style={{ fontSize: 'clamp(1.4rem,2.5vw,2.1rem)' }}>
+                            <h1 className="font-body font-black text-primary leading-tight mb-2" style={{ fontSize: 'clamp(1.4rem,2.5vw,2.1rem)' }}>
                                 {property.title}
                             </h1>
                             <div className="flex items-center gap-1.5 text-[0.85rem] text-textSecondary">
@@ -484,12 +484,12 @@ export default function Property() {
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                                 />
                                 <div className="absolute inset-0 bg-textPrimary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="bg-white/90 backdrop-blur-sm rounded-full px-5 py-2.5 flex items-center gap-2 font-display font-bold text-textPrimary text-[0.78rem]">
+                                    <div className="bg-white/90 backdrop-blur-sm rounded-full px-5 py-2.5 flex items-center gap-2 font-body font-bold text-textPrimary text-[0.78rem]">
                                         <ZoomIn size={15} /> Ver en pantalla completa
                                     </div>
                                 </div>
                                 {/* Photo count badge */}
-                                <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-white text-[0.7rem] font-display font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                                <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-white text-[0.7rem] font-body font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
                                     <Camera size={12} /> {property.imgs.length} fotos
                                 </div>
                             </div>
@@ -518,7 +518,7 @@ export default function Property() {
                                         style={{ width: 90, height: 62 }}
                                     >
                                         <ZoomIn size={14} />
-                                        <span className="text-[0.6rem] font-display font-bold">Ver todas</span>
+                                        <span className="text-[0.6rem] font-body font-bold">Ver todas</span>
                                     </button>
                                 </div>
                             )}
@@ -539,8 +539,8 @@ export default function Property() {
                                         <Icon size={16} className="text-secondary" />
                                     </div>
                                     <div>
-                                        <div className="font-display font-black text-textPrimary text-[1.05rem] leading-none">{val}</div>
-                                        <div className="text-[0.68rem] text-textSecondary font-display mt-0.5">{label}</div>
+                                        <div className="font-body font-black text-textPrimary text-[1.05rem] leading-none">{val}</div>
+                                        <div className="text-[0.68rem] text-textSecondary font-body mt-0.5">{label}</div>
                                     </div>
                                 </div>
                             ))}
@@ -548,7 +548,7 @@ export default function Property() {
 
                         {/* ── DESCRIPTION ── */}
                         <div className="bg-white rounded-2xl p-6 border border-secondaryLight mb-6" style={{ boxShadow: '0 2px 16px rgba(18,39,58,0.05)' }}>
-                            <h2 className="font-display font-black text-primary text-[1rem] mb-4 flex items-center gap-2">
+                            <h2 className="font-body font-black text-primary text-[1rem] mb-4 flex items-center gap-2">
                                 <span className="w-1 h-5 bg-primary rounded-full inline-block" />
                                 Descripción
                             </h2>
@@ -562,7 +562,7 @@ export default function Property() {
                         {/* ── AMENITIES ── */}
                         {property.amenities && property.amenities.length > 0 && (
                             <div className="bg-white rounded-2xl p-6 border border-secondaryLight mb-6" style={{ boxShadow: '0 2px 16px rgba(18,39,58,0.05)' }}>
-                                <h2 className="font-display font-black text-primary text-[1rem] mb-5 flex items-center gap-2">
+                                <h2 className="font-body font-black text-primary text-[1rem] mb-5 flex items-center gap-2">
                                     <span className="w-1 h-5 bg-primary rounded-full inline-block" />
                                     Comodidades y extras
                                 </h2>
@@ -574,7 +574,7 @@ export default function Property() {
                                                 <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                                                     <Icon size={13} className="text-secondary sm:w-3.5 sm:h-3.5" />
                                                 </div>
-                                                <span className="font-display font-medium text-textPrimary text-[0.72rem] sm:text-[0.84rem] leading-tight">{a}</span>
+                                                <span className="font-body font-medium text-textPrimary text-[0.72rem] sm:text-[0.84rem] leading-tight">{a}</span>
                                             </div>
                                         )
                                     })}
@@ -584,7 +584,7 @@ export default function Property() {
 
                         {/* ── FEATURES TABLE ── */}
                         <div className="bg-white rounded-2xl p-6 border border-secondaryLight mb-6" style={{ boxShadow: '0 2px 16px rgba(18,39,58,0.05)' }}>
-                            <h2 className="font-display font-black text-primary text-[1rem] mb-5 flex items-center gap-2">
+                            <h2 className="font-body font-black text-primary text-[1rem] mb-5 flex items-center gap-2">
                                 <span className="w-1 h-5 bg-primary rounded-full inline-block" />
                                 Ficha técnica
                             </h2>
@@ -595,8 +595,8 @@ export default function Property() {
                                         className="flex items-center justify-between py-3 sm:px-4"
                                         style={{ borderBottom: '1px solid #f0f2f5' }}
                                     >
-                                        <span className="text-[0.8rem] text-textSecondary font-display">{key}</span>
-                                        <span className="text-[0.8rem] font-display font-bold text-textPrimary">{val}</span>
+                                        <span className="text-[0.8rem] text-textSecondary font-body">{key}</span>
+                                        <span className="text-[0.8rem] font-body font-bold text-textPrimary">{val}</span>
                                     </div>
                                 ))}
                             </div>
@@ -604,18 +604,18 @@ export default function Property() {
 
                         {/* ── LOCATION ── */}
                         <div className="bg-white rounded-2xl p-6 border border-secondaryLight mb-6" style={{ boxShadow: '0 2px 16px rgba(18,39,58,0.05)' }}>
-                            <h2 className="font-display font-black text-primary text-[1rem] mb-2 flex items-center gap-2">
+                            <h2 className="font-body font-black text-primary text-[1rem] mb-2 flex items-center gap-2">
                                 <span className="w-1 h-5 bg-primary rounded-full inline-block" />
                                 Ubicación
                             </h2>
                             <div className="flex items-center gap-2 mb-4">
                                 <MapPin size={13} className="text-primary" />
-                                <span className="text-[0.84rem] text-textSecondary font-display">{property.address}</span>
+                                <span className="text-[0.84rem] text-textSecondary font-body">{property.address}</span>
                                 <a
                                     href={`https://maps.google.com/?q=${encodeURIComponent(property.address)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="ml-auto flex items-center gap-1 text-primary text-[0.72rem] font-display font-bold hover:underline"
+                                    className="ml-auto flex items-center gap-1 text-primary text-[0.72rem] font-body font-bold hover:underline"
                                 >
                                     Ver en Google Maps <ExternalLink size={10} />
                                 </a>
@@ -631,7 +631,7 @@ export default function Property() {
                                     height="100%"
                                     frameBorder="0"
                                     style={{ border: 0, filter: 'grayscale(30%) contrast(1.05)' }}
-                                    src={property.lat && property.lng 
+                                    src={property.lat && property.lng
                                         ? `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000!2d${property.lng}!3d${property.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2sar!4v1`
                                         : `https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&z=15&output=embed`
                                     }
@@ -650,12 +650,12 @@ export default function Property() {
                             <div className="mb-8">
                                 <div className="flex items-center justify-between mb-5">
                                     <div>
-                                        <p className="font-display text-[0.62rem] font-bold tracking-[0.22em] uppercase text-secondary mb-1">Te puede interesar</p>
-                                        <h2 className="font-display font-black text-primary text-[1.1rem]">Propiedades similares</h2>
+                                        <p className="font-body text-[0.62rem] font-bold tracking-[0.22em] uppercase text-secondary mb-1">Te puede interesar</p>
+                                        <h2 className="font-body font-black text-primary text-[1.1rem]">Propiedades similares</h2>
                                     </div>
                                     <button
                                         onClick={() => navigate('/propiedades')}
-                                        className="text-[0.72rem] font-display font-bold text-textPrimary/50 hover:text-textPrimary flex items-center gap-1 transition-colors"
+                                        className="text-[0.72rem] font-body font-bold text-textPrimary/50 hover:text-textPrimary flex items-center gap-1 transition-colors"
                                     >
                                         Ver todas <ArrowRight size={11} />
                                     </button>
@@ -671,14 +671,14 @@ export default function Property() {
                             <div className="absolute right-0 top-0 w-64 h-full opacity-10 pointer-events-none"
                                 style={{ background: 'radial-gradient(circle at 80% 50%, #12645F, transparent 60%)' }} />
                             <div className="relative z-10">
-                                <p className="text-primary text-[0.62rem] font-display font-bold tracking-[0.2em] uppercase mb-2">Tasaciones gratuitas</p>
-                                <p className="font-display font-black text-white text-[1.15rem] leading-tight">
+                                <p className="text-primary text-[0.62rem] font-body font-bold tracking-[0.2em] uppercase mb-2">Servicio de tasación</p>
+                                <p className="font-body font-black text-white text-[1.15rem] leading-tight">
                                     ¿Querés tasar<br />tu propiedad?
                                 </p>
                             </div>
                             <button
                                 onClick={() => navigate('/tasacion')}
-                                className="relative z-10 inline-flex items-center gap-2 font-display font-bold text-[0.78rem] tracking-wider uppercase bg-primary text-white rounded-full px-7 py-3.5 hover:bg-primaryDark hover:shadow-[0_6px_20px_rgba(18,100,95,0.3)] hover:-translate-y-0.5 transition-all duration-300"
+                                className="relative z-10 inline-flex items-center gap-2 font-body font-bold text-[0.78rem] tracking-wider uppercase bg-primary text-white rounded-full px-7 py-3.5 hover:bg-primaryDark hover:shadow-[0_6px_20px_rgba(18,100,95,0.3)] hover:-translate-y-0.5 transition-all duration-300"
                             >
                                 Solicitar tasación <ArrowRight size={13} />
                             </button>

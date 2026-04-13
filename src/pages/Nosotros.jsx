@@ -17,7 +17,7 @@ export default function Nosotros() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                     </span>
-                    <span className="text-[0.65rem] font-display font-bold tracking-[0.2em] uppercase text-primary">
+                    <span className="text-[0.65rem] font-body font-bold tracking-[0.2em] uppercase text-primary">
                         Próximamente
                     </span>
                 </div>
@@ -28,7 +28,7 @@ export default function Nosotros() {
                 </div>
 
                 {/* Texts */}
-                <h1 className="font-display font-black text-white text-[2.5rem] md:text-[4rem] leading-[1.1] mb-6">
+                <h1 className="font-body font-black text-white text-[2.5rem] md:text-[4rem] leading-[1.1] mb-6">
                     Nuestra Historia<br />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
                         está en construcción
@@ -45,13 +45,13 @@ export default function Nosotros() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button
                         onClick={() => navigate('/propiedades')}
-                        className="w-full sm:w-auto inline-flex justify-center items-center gap-2 font-display font-bold text-[0.8rem] tracking-wider uppercase bg-primary text-white shadow-[0_0_20px_rgba(18,100,95,0.2)] rounded-full px-8 py-4 cursor-pointer transition-all duration-300 hover:bg-primaryDark hover:shadow-[0_0_30px_rgba(18,100,95,0.4)] hover:-translate-y-0.5"
+                        className="w-full sm:w-auto inline-flex justify-center items-center gap-2 font-body font-bold text-[0.8rem] tracking-wider uppercase bg-primary text-white shadow-[0_0_20px_rgba(18,100,95,0.2)] rounded-full px-8 py-4 cursor-pointer transition-all duration-300 hover:bg-primaryDark hover:shadow-[0_0_30px_rgba(18,100,95,0.4)] hover:-translate-y-0.5"
                     >
                         Explorar propiedades
                     </button>
                     <button
                         onClick={() => navigate('/')}
-                        className="w-full sm:w-auto inline-flex justify-center items-center gap-2 font-display font-bold text-[0.8rem] tracking-wider uppercase bg-transparent text-white border border-white/20 rounded-full px-8 py-4 cursor-pointer transition-all duration-300 hover:border-white hover:bg-white/10"
+                        className="w-full sm:w-auto inline-flex justify-center items-center gap-2 font-body font-bold text-[0.8rem] tracking-wider uppercase bg-transparent text-white border border-white/20 rounded-full px-8 py-4 cursor-pointer transition-all duration-300 hover:border-white hover:bg-white/10"
                     >
                         <ArrowLeft size={16} /> Volver al inicio
                     </button>

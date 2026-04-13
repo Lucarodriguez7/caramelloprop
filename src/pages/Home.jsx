@@ -85,7 +85,7 @@ const SERVICES = [
         Icon: BarChart2,
         title: 'Tasaciones',
         desc: 'Valuaciones profesionales con análisis comparativo de zona y tendencias del mercado actual.',
-        detail: 'Informe detallado · Benchmarking · Sin cargo',
+        detail: 'Informe detallado · Benchmarking · Asesoramiento',
         color: 'from-primary/15 to-transparent',
         iconBg: 'bg-primary/10',
         num: '03',
@@ -133,7 +133,7 @@ const INSTAGRAM_POSTS = [
     {
         img: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80',
         likes: '312',
-        caption: 'Tasación gratuita — consultá sin compromiso 📊',
+        caption: 'Servicio de tasación — consultá sin compromiso 📊',
     },
     {
         img: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80',
@@ -162,27 +162,27 @@ function PropertyCard({ prop }) {
         >
             <div className="relative h-[210px] overflow-hidden">
                 <img src={prop.img} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <span className={`absolute top-3 left-3 text-[0.6rem] font-display font-bold tracking-[0.14em] uppercase px-3 py-1.5 rounded-full ${prop.tag === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
+                <span className={`absolute top-3 left-3 text-[0.6rem] font-body font-bold tracking-[0.14em] uppercase px-3 py-1.5 rounded-full ${prop.tag === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                     {prop.tag}
                 </span>
                 {prop.featured && (
-                    <span className="absolute top-3 right-3 bg-white/95 text-textPrimary text-[0.6rem] font-display font-bold uppercase px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                    <span className="absolute top-3 right-3 bg-white/95 text-textPrimary text-[0.6rem] font-body font-bold uppercase px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
                         <Star size={9} fill="#00FBFA" stroke="#00FBFA" /> Destacado
                     </span>
                 )}
                 {prop.new && (
-                    <span className="absolute bottom-3 left-3 bg-amber-100 text-amber-700 text-[0.6rem] font-display font-bold uppercase px-2.5 py-1 rounded-full border border-amber-200">
+                    <span className="absolute bottom-3 left-3 bg-amber-100 text-amber-700 text-[0.6rem] font-body font-bold uppercase px-2.5 py-1 rounded-full border border-amber-200">
                         Nuevo ingreso
                     </span>
                 )}
             </div>
             <div className="p-5">
                 <div className="flex items-center gap-2 mb-2">
-                    <span className="text-[0.65rem] font-display font-bold tracking-widest uppercase text-primary">{prop.type}</span>
+                    <span className="text-[0.65rem] font-body font-bold tracking-widest uppercase text-primary">{prop.type}</span>
                     <span className="w-1 h-1 rounded-full bg-gray-300" />
-                    <span className="text-[0.65rem] font-display font-medium tracking-wide text-textSecondary">{prop.zone}</span>
+                    <span className="text-[0.65rem] font-body font-medium tracking-wide text-textSecondary">{prop.zone}</span>
                 </div>
-                <h3 className="font-display font-bold text-primary text-[0.95rem] leading-snug mb-2">{prop.title}</h3>
+                <h3 className="font-body font-bold text-primary text-[0.95rem] leading-snug mb-2">{prop.title}</h3>
                 <div className="flex items-center gap-1.5 text-[0.79rem] text-textSecondary mb-4">
                     <MapPin size={11} className="shrink-0" />{prop.address}
                 </div>
@@ -192,8 +192,8 @@ function PropertyCard({ prop }) {
                     <span>{prop.sqm} m²</span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <div className="font-display font-black text-textPrimary text-[1.18rem]">{prop.price}</div>
-                    <span className="text-primary font-display font-bold text-[0.68rem] tracking-widest uppercase flex items-center gap-1 group-hover:gap-2.5 transition-all duration-200">
+                    <div className="font-body font-black text-textPrimary text-[1.18rem]">{prop.price}</div>
+                    <span className="text-primary font-body font-bold text-[0.68rem] tracking-widest uppercase flex items-center gap-1 group-hover:gap-2.5 transition-all duration-200">
                         Ver más <ArrowRight size={11} />
                     </span>
                 </div>
@@ -238,13 +238,13 @@ function ZoneCard({ zone, onClick }) {
                 }}
             />
             <div className="absolute top-4 left-4">
-                <span className="text-[0.55rem] font-display font-black tracking-[0.18em] uppercase bg-primary text-white px-3 py-1.5 rounded-full">
+                <span className="text-[0.55rem] font-body font-black tracking-[0.18em] uppercase bg-primary text-white px-3 py-1.5 rounded-full">
                     {zone.tag}
                 </span>
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-6">
-                <p className="text-metallic text-[0.65rem] font-display font-bold tracking-[0.2em] uppercase mb-1.5">{zone.tagline}</p>
-                <h3 className="font-display font-black text-white text-[1.5rem] leading-tight mb-3">{zone.name}</h3>
+                <p className="text-metallic text-[0.65rem] font-body font-bold tracking-[0.2em] uppercase mb-1.5">{zone.tagline}</p>
+                <h3 className="font-body font-black text-white text-[1.5rem] leading-tight mb-3">{zone.name}</h3>
                 <div
                     style={{
                         maxHeight: hovered ? '80px' : '0px',
@@ -256,9 +256,9 @@ function ZoneCard({ zone, onClick }) {
                     <p className="text-white/75 text-[0.82rem] leading-[1.7] mb-4">{zone.desc}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-white/50 text-[0.73rem] font-display">{zone.count}</span>
+                    <span className="text-white/50 text-[0.73rem] font-body">{zone.count}</span>
                     <span
-                        className="flex items-center gap-1.5 text-primary font-display font-bold text-[0.7rem] tracking-[0.12em] uppercase"
+                        className="flex items-center gap-1.5 text-primary font-body font-bold text-[0.7rem] tracking-[0.12em] uppercase"
                         style={{
                             opacity: hovered ? 1 : 0.6,
                             transform: hovered ? 'translateX(0)' : 'translateX(-4px)',
@@ -291,14 +291,14 @@ function ZoneSwiperCard({ zone, onClick }) {
             <img src={zone.img} alt={zone.name} className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(12,26,45,0.92) 0%, rgba(12,26,45,0.2) 60%, transparent 100%)' }} />
             <div className="absolute top-3 left-3">
-                <span className="text-[0.5rem] font-display font-black tracking-[0.18em] uppercase bg-primary text-white px-2.5 py-1.5 rounded-full">{zone.tag}</span>
+                <span className="text-[0.5rem] font-body font-black tracking-[0.18em] uppercase bg-primary text-white px-2.5 py-1.5 rounded-full">{zone.tag}</span>
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-5">
-                <p className="text-metallic text-[0.6rem] font-display font-bold tracking-[0.18em] uppercase mb-1">{zone.tagline}</p>
-                <h3 className="font-display font-black text-white text-[1.2rem] leading-tight mb-2">{zone.name}</h3>
+                <p className="text-metallic text-[0.6rem] font-body font-bold tracking-[0.18em] uppercase mb-1">{zone.tagline}</p>
+                <h3 className="font-body font-black text-white text-[1.2rem] leading-tight mb-2">{zone.name}</h3>
                 <div className="flex items-center justify-between">
-                    <span className="text-white/50 text-[0.7rem] font-display">{zone.count}</span>
-                    <span className="flex items-center gap-1 text-primary font-display font-bold text-[0.65rem] tracking-widest uppercase">Ver <ArrowRight size={11} /></span>
+                    <span className="text-white/50 text-[0.7rem] font-body">{zone.count}</span>
+                    <span className="flex items-center gap-1 text-primary font-body font-bold text-[0.65rem] tracking-widest uppercase">Ver <ArrowRight size={11} /></span>
                 </div>
             </div>
         </div>
@@ -350,7 +350,7 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
                         <Icon size={21} />
                     </div>
                     <span
-                        className="font-display font-black text-[2rem] leading-none select-none"
+                        className="font-body font-black text-[2rem] leading-none select-none"
                         style={{
                             color: hovered ? 'rgba(0,251,250,0.25)' : 'rgba(18,39,58,0.06)',
                             transition: 'color 0.4s ease',
@@ -359,7 +359,7 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
                         {num}
                     </span>
                 </div>
-                <h3 className="font-display font-bold text-primary text-[0.95rem] mb-2">{title}</h3>
+                <h3 className="font-body font-bold text-primary text-[0.95rem] mb-2">{title}</h3>
                 <p className="text-[0.83rem] text-textSecondary leading-[1.7] mb-5">{desc}</p>
                 <div
                     style={{
@@ -369,9 +369,9 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
                         transition: 'max-height 0.35s ease, opacity 0.3s ease',
                     }}
                 >
-                    <p className="text-[0.72rem] font-display font-medium tracking-wide text-primary uppercase">{detail}</p>
+                    <p className="text-[0.72rem] font-body font-medium tracking-wide text-primary uppercase">{detail}</p>
                 </div>
-                <div className="flex items-center gap-1.5 mt-4 text-[0.72rem] font-display font-bold tracking-widest uppercase text-textPrimary/30 group-hover:text-primary transition-colors duration-300">
+                <div className="flex items-center gap-1.5 mt-4 text-[0.72rem] font-body font-bold tracking-widest uppercase text-textPrimary/30 group-hover:text-primary transition-colors duration-300">
                     <span>Saber más</span>
                     <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform duration-200" />
                 </div>
@@ -416,7 +416,7 @@ function InstagramCard({ post }) {
                 }}
             >
                 <Instagram size={26} className="text-white" />
-                <span className="text-white font-display font-bold text-[0.78rem] tracking-wider">Ver en Instagram</span>
+                <span className="text-white font-body font-bold text-[0.78rem] tracking-wider">Ver en Instagram</span>
                 <span className="text-white/60 text-[0.72rem] flex items-center gap-1">
                     <Star size={10} fill="white" stroke="none" /> {post.likes}
                 </span>
@@ -436,7 +436,7 @@ function InstagramCard({ post }) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   HERO SECTION — Rediseñado
+   HERO SECTION — Rediseño Premium Emocional
 ══════════════════════════════════════════════════════════════ */
 function HeroSection({ navigate }) {
     const sectionRef = useRef(null)
@@ -445,10 +445,10 @@ function HeroSection({ navigate }) {
     const overlayRef = useRef(null)
     const lineRef = useRef(null)
     const eyebrowRef = useRef(null)
-    const titleLine1Ref = useRef(null)
+    const titleRef = useRef(null)
     const titleLine2Ref = useRef(null)
-    const titleLine3Ref = useRef(null)
-    const bodyRef = useRef(null)
+    const subtitleRef = useRef(null)
+    const separatorRef = useRef(null)
     const ctaRef = useRef(null)
     const scrollRef = useRef(null)
 
@@ -458,8 +458,8 @@ function HeroSection({ navigate }) {
         // Zoom-out suave del fondo
         tl.fromTo(
             [bgDesktopRef.current, bgMobileRef.current],
-            { scale: 1.12 },
-            { scale: 1.04, duration: 2.2, ease: 'power3.out' },
+            { scale: 1.15 },
+            { scale: 1.04, duration: 2.8, ease: 'power3.out' },
             0
         )
 
@@ -487,24 +487,36 @@ function HeroSection({ navigate }) {
             0.55
         )
 
-        // Título — cada línea en cascada con clip-path
+        // Título H1 — primera parte
         tl.fromTo(
-            [titleLine1Ref.current, titleLine2Ref.current, titleLine3Ref.current],
-            { opacity: 0, y: 42 },
-            {
-                opacity: 1, y: 0,
-                duration: 0.85,
-                stagger: 0.13,
-            },
+            titleRef.current,
+            { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
             0.7
         )
 
-        // Body
+        // Título H1 — segunda parte
         tl.fromTo(
-            bodyRef.current,
+            titleLine2Ref.current,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' },
+            0.9
+        )
+
+        // Separador
+        tl.fromTo(
+            separatorRef.current,
+            { scaleX: 0, transformOrigin: 'left center' },
+            { scaleX: 1, duration: 0.7, ease: 'power3.inOut' },
+            1.15
+        )
+
+        // Subtítulo H2
+        tl.fromTo(
+            subtitleRef.current,
             { opacity: 0, y: 22 },
             { opacity: 1, y: 0, duration: 0.75 },
-            1.15
+            1.25
         )
 
         // CTAs
@@ -512,7 +524,7 @@ function HeroSection({ navigate }) {
             ctaRef.current,
             { opacity: 0, y: 22 },
             { opacity: 1, y: 0, duration: 0.7 },
-            1.35
+            1.5
         )
 
         // Indicador scroll
@@ -520,10 +532,8 @@ function HeroSection({ navigate }) {
             scrollRef.current,
             { opacity: 0, y: -10 },
             { opacity: 1, y: 0, duration: 0.6 },
-            1.7
+            1.9
         )
-
-
 
         // Dot del scroll — animación continua
         const dot = scrollRef.current?.querySelector('.scroll-dot')
@@ -534,12 +544,10 @@ function HeroSection({ navigate }) {
                 yoyo: true,
                 duration: 0.9,
                 ease: 'sine.inOut',
-                delay: 2,
+                delay: 2.4,
             })
         }
     }, [])
-
-
 
     return (
         <section
@@ -570,32 +578,32 @@ function HeroSection({ navigate }) {
             {/* ── Overlay multicapa ─────────────────────── */}
             <div ref={overlayRef} className="absolute inset-0">
                 {/* Capa base mobile */}
-                <div className="absolute inset-0 bg-[#0b1622]/55 md:bg-transparent" />
+                <div className="absolute inset-0 bg-[#0b1622]/60 md:bg-transparent" />
 
                 {/* Desktop — degradado lateral principal */}
                 <div
                     className="absolute inset-0 hidden md:block"
                     style={{
                         background:
-                            'linear-gradient(105deg, rgba(10,20,34,0.93) 0%, rgba(10,20,34,0.74) 38%, rgba(10,20,34,0.28) 65%, transparent 100%)',
+                            'linear-gradient(108deg, rgba(8,16,28,0.94) 0%, rgba(8,16,28,0.78) 35%, rgba(8,16,28,0.35) 60%, rgba(8,16,28,0.12) 80%, transparent 100%)',
                     }}
                 />
 
-                {/* Degradado inferior — zona de stats */}
+                {/* Degradado inferior sutil */}
                 <div
-                    className="absolute bottom-0 left-0 right-0 h-[48%]"
+                    className="absolute bottom-0 left-0 right-0 h-[40%]"
                     style={{
                         background:
-                            'linear-gradient(to top, rgba(8,16,28,0.90) 0%, rgba(8,16,28,0.52) 50%, transparent 100%)',
+                            'linear-gradient(to top, rgba(8,16,28,0.85) 0%, rgba(8,16,28,0.40) 50%, transparent 100%)',
                     }}
                 />
 
-                {/* Toque cálido — vignette amber en esquina inferior derecha */}
+                {/* Toque cálido — vignette en esquina inferior derecha */}
                 <div
                     className="absolute bottom-0 right-0 w-[55%] h-[55%] hidden md:block"
                     style={{
                         background:
-                            'radial-gradient(ellipse at bottom right, rgba(180,120,40,0.10) 0%, transparent 70%)',
+                            'radial-gradient(ellipse at bottom right, rgba(18,100,95,0.08) 0%, transparent 70%)',
                     }}
                 />
             </div>
@@ -608,114 +616,122 @@ function HeroSection({ navigate }) {
                     left: 'calc(8% - 1px)',
                     width: '1px',
                     background:
-                        'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.12) 20%, rgba(0,251,250,0.28) 50%, rgba(255,255,255,0.08) 80%, transparent 100%)',
+                        'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.10) 20%, rgba(18,100,95,0.35) 50%, rgba(255,255,255,0.06) 80%, transparent 100%)',
                 }}
             />
 
             {/* ════════════════════════════════════════════
-                CONTENIDO PRINCIPAL
+                CONTENIDO PRINCIPAL — Texto alineado a la izquierda
+                Decisión: alineación izquierda genera lectura natural,
+                jerarquía clara y sensación editorial premium.
             ════════════════════════════════════════════ */}
             <div className="relative z-10 flex flex-col flex-1 px-[8%]">
 
                 <div className="flex-1 flex items-center">
-                    <div className="w-full max-w-[640px] pt-16 md:pt-24 pb-32 md:pb-48">
+                    <div className="w-full max-w-[680px] pt-16 md:pt-24 pb-28 md:pb-40">
 
                         {/* Eyebrow */}
                         <div
                             ref={eyebrowRef}
-                            className="inline-flex items-center gap-2.5 mb-7 opacity-0"
+                            className="inline-flex items-center gap-3 mb-8 md:mb-10 opacity-0"
                         >
                             <span
-                                className="block w-6 h-[1px]"
-                                style={{ background: 'rgba(0,251,250,0.7)' }}
+                                className="block w-8 h-[1px]"
+                                style={{ background: 'rgba(18,100,95,0.8)' }}
                             />
                             <span
-                                className="font-display text-[0.58rem] tracking-[0.32em] uppercase"
-                                style={{ color: 'rgba(0,251,250,0.85)' }}
+                                className="font-body text-[0.6rem] md:text-[0.65rem] font-semibold tracking-[0.3em] uppercase"
+                                style={{ color: 'rgba(255,255,255,0.55)' }}
                             >
                                 Mar del Plata · Desde 1998
                             </span>
                         </div>
 
-                        {/* Título en 3 líneas con animación escalonada */}
-                        <h1
-                            className="font-sans font-black text-white leading-[1.05] tracking-[-0.02em] mb-8"
-                            style={{ fontSize: 'clamp(2.7rem, 5.4vw, 4.4rem)' }}
-                        >
-                            {/* Línea 1 — texto sólido */}
+                        {/* ── H1 — Julius Sans One ──
+                            Estructura emocional en dos bloques:
+                            Bloque 1: "Cada propiedad es un hogar."
+                            Bloque 2: "Y cada hogar, una nueva historia."
+                        */}
+                        <h1 className="mb-6 md:mb-8">
+                            {/* Línea 1 */}
                             <span
-                                ref={titleLine1Ref}
-                                className="block opacity-0"
-                            >
-                                Tu próxima
-                            </span>
-
-                            {/* Línea 2 — outline / stroke: comunica distinción sin frialdad */}
-                            <span
-                                ref={titleLine2Ref}
-                                className="block opacity-0 select-none"
+                                ref={titleRef}
+                                className="block font-display text-white opacity-0"
                                 style={{
-                                    WebkitTextStroke: '1.8px rgba(255,255,255,0.88)',
-                                    color: 'transparent',
-                                    fontStyle: 'italic',
-                                    letterSpacing: '-0.03em',
+                                    fontSize: 'clamp(2.2rem, 4.8vw, 3.8rem)',
+                                    lineHeight: 1.15,
+                                    letterSpacing: '0.04em',
+                                    textTransform: 'uppercase',
                                 }}
                             >
-                                propiedad
+                                Cada propiedad es un hogar.
                             </span>
 
-                            {/* Línea 3 — text fill normal */}
+                            {/* Línea 2 — estilo outline para contraste visual */}
                             <span
-                                ref={titleLine3Ref}
-                                className="block opacity-0"
+                                ref={titleLine2Ref}
+                                className="block font-display opacity-0 mt-1 md:mt-2"
+                                style={{
+                                    fontSize: 'clamp(2.2rem, 4.8vw, 3.8rem)',
+                                    lineHeight: 1.15,
+                                    letterSpacing: '0.04em',
+                                    textTransform: 'uppercase',
+                                    WebkitTextStroke: '1.5px rgba(255,255,255,0.75)',
+                                    color: 'transparent',
+                                }}
                             >
-                                empieza acá.
+                                Y cada hogar, una nueva historia.
                             </span>
                         </h1>
 
-                        {/* Separador cyan */}
+                        {/* Separador — línea de acento brand */}
                         <div
-                            className="w-12 h-[2px] mb-7 rounded-full"
+                            ref={separatorRef}
+                            className="w-16 h-[2px] mb-6 md:mb-8 rounded-full"
                             style={{
-                                background: 'linear-gradient(90deg, #00FBFA, rgba(0,251,250,0.15))',
+                                background: 'linear-gradient(90deg, #12645F, rgba(18,100,95,0.15))',
                             }}
                         />
 
-                        {/* Descripción */}
-                        <p
-                            ref={bodyRef}
-                            className="text-[1rem] leading-[1.95] mb-10 max-w-[460px] opacity-0"
-                            style={{ color: 'rgba(255,255,255,0.76)' }}
+                        {/* ── H2 — Inter, liviano y legible ── */}
+                        <h2
+                            ref={subtitleRef}
+                            className="font-body font-light text-white/65 mb-10 md:mb-12 max-w-[480px] opacity-0"
+                            style={{
+                                fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+                                lineHeight: 1.85,
+                                letterSpacing: '0.01em',
+                            }}
                         >
-                            Más de dos décadas acompañando cada etapa: compra,
-                            venta y alquiler en Mar del Plata con criterio,
-                            calidez y total transparencia.
-                        </p>
+                            Te acompañamos en cada paso con confianza y cercanía.
+                        </h2>
 
                         {/* CTAs */}
                         <div
                             ref={ctaRef}
                             className="flex flex-col sm:flex-row gap-3 sm:gap-4 opacity-0"
                         >
-                            {/* CTA principal — adaptado al branding general */}
+                            {/* CTA principal */}
                             <button
-                                onClick={() => navigate('/contacto')}
-                                className="group flex items-center justify-center gap-2.5 px-8 py-[1.05rem] rounded-full font-display font-bold text-[0.72rem] tracking-[0.18em] uppercase transition-all duration-300"
+                                onClick={() => navigate('/propiedades')}
+                                className="group flex items-center justify-center gap-2.5 px-9 py-[1.1rem] rounded-full font-body font-semibold text-[0.75rem] tracking-[0.14em] uppercase transition-all duration-300"
                                 style={{
                                     background: '#12645F',
                                     color: '#FFFFFF',
-                                    boxShadow: '0 8px 32px rgba(18, 100, 95, 0.26)',
+                                    boxShadow: '0 8px 32px rgba(18, 100, 95, 0.28)',
                                 }}
                                 onMouseEnter={e => {
                                     e.currentTarget.style.transform = 'translateY(-2px)'
-                                    e.currentTarget.style.boxShadow = '0 14px 40px rgba(18, 100, 95, 0.38)'
+                                    e.currentTarget.style.boxShadow = '0 14px 40px rgba(18, 100, 95, 0.40)'
+                                    e.currentTarget.style.background = '#0A4441'
                                 }}
                                 onMouseLeave={e => {
                                     e.currentTarget.style.transform = 'translateY(0)'
-                                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(18, 100, 95, 0.26)'
+                                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(18, 100, 95, 0.28)'
+                                    e.currentTarget.style.background = '#12645F'
                                 }}
                             >
-                                Hablar con un asesor
+                                Ver propiedades
                                 <ArrowRight
                                     size={14}
                                     className="group-hover:translate-x-1 transition-transform duration-200"
@@ -724,27 +740,27 @@ function HeroSection({ navigate }) {
 
                             {/* CTA secundario — glass */}
                             <button
-                                onClick={() => navigate('/propiedades')}
-                                className="group flex items-center justify-center gap-2.5 px-8 py-[1.05rem] rounded-full font-display font-bold text-[0.72rem] tracking-[0.18em] uppercase text-white transition-all duration-300"
+                                onClick={() => navigate('/contacto')}
+                                className="group flex items-center justify-center gap-2.5 px-9 py-[1.1rem] rounded-full font-body font-semibold text-[0.75rem] tracking-[0.14em] uppercase text-white transition-all duration-300"
                                 style={{
-                                    background: 'rgba(255,255,255,0.08)',
-                                    border: '1px solid rgba(255,255,255,0.22)',
-                                    backdropFilter: 'blur(8px)',
-                                    WebkitBackdropFilter: 'blur(8px)',
+                                    background: 'rgba(255,255,255,0.06)',
+                                    border: '1px solid rgba(255,255,255,0.18)',
+                                    backdropFilter: 'blur(10px)',
+                                    WebkitBackdropFilter: 'blur(10px)',
                                 }}
                                 onMouseEnter={e => {
-                                    e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
-                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.38)'
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.14)'
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)'
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.background = 'rgba(255,255,255,0.08)'
-                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.22)'
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)'
                                 }}
                             >
-                                Ver propiedades
+                                Contactar
                                 <ArrowRight
                                     size={14}
-                                    className="opacity-55 group-hover:translate-x-1 transition-transform duration-200"
+                                    className="opacity-50 group-hover:translate-x-1 transition-transform duration-200"
                                 />
                             </button>
                         </div>
@@ -752,11 +768,7 @@ function HeroSection({ navigate }) {
                     </div>
                 </div>
 
-
-
             </div>
-
-
 
             {/* ── Indicador scroll (desktop) ────────────── */}
             <div
@@ -771,12 +783,12 @@ function HeroSection({ navigate }) {
                         className="scroll-dot absolute top-0 left-0 w-full rounded-full"
                         style={{
                             height: '45%',
-                            background: 'linear-gradient(to bottom, #00FBFA, rgba(0,251,250,0))',
+                            background: 'linear-gradient(to bottom, #12645F, rgba(18,100,95,0))',
                         }}
                     />
                 </div>
                 <span
-                    className="font-display text-[0.5rem] tracking-[0.28em] uppercase"
+                    className="font-body text-[0.5rem] tracking-[0.28em] uppercase"
                     style={{
                         color: 'rgba(255,255,255,0.3)',
                         writingMode: 'vertical-rl',
@@ -857,10 +869,10 @@ export default function Home() {
 
                 {/* Right Column (Content) */}
                 <div className="lg:w-[52%]">
-                    <p className="font-display text-[0.65rem] tracking-[0.3em] uppercase text-secondary mb-3">
+                    <p className="font-body text-[0.65rem] tracking-[0.3em] uppercase text-secondary mb-3">
                         Trayectoria y confianza
                     </p>
-                    <h2 className="font-display font-black text-primary leading-tight mb-6"
+                    <h2 className="font-body font-black text-primary leading-tight mb-6"
                         style={{ fontSize: 'clamp(2rem,3.2vw,2.6rem)' }}>
                         Acompañando decisiones
                         <br />
@@ -876,35 +888,35 @@ export default function Home() {
                             <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
                                 <Search size={17} className="text-secondary" />
                             </div>
-                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Búsqueda precisa</h4>
+                            <h4 className="font-body font-bold text-primary mb-2 text-[0.95rem]">Búsqueda precisa</h4>
                             <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Selección cuidada de oportunidades según cada necesidad.</p>
                         </div>
                         <div>
                             <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
                                 <BarChart2 size={17} className="text-secondary" />
                             </div>
-                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Tasación profesional</h4>
+                            <h4 className="font-body font-bold text-primary mb-2 text-[0.95rem]">Tasación profesional</h4>
                             <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Análisis basado en datos reales del mercado local.</p>
                         </div>
                         <div>
                             <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
                                 <Shield size={17} className="text-secondary" />
                             </div>
-                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Seguridad jurídica</h4>
+                            <h4 className="font-body font-bold text-primary mb-2 text-[0.95rem]">Seguridad jurídica</h4>
                             <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Procesos claros y respaldo en cada operación.</p>
                         </div>
                         <div>
                             <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
                                 <TrendingUp size={17} className="text-secondary" />
                             </div>
-                            <h4 className="font-display font-bold text-primary mb-2 text-[0.95rem]">Visión estratégica</h4>
+                            <h4 className="font-body font-bold text-primary mb-2 text-[0.95rem]">Visión estratégica</h4>
                             <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Enfoque en decisiones sostenibles y bien fundamentadas.</p>
                         </div>
                     </div>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8">
                         <button
                             onClick={() => navigate('/contacto')}
-                            className="bg-textPrimary text-white px-8 py-4 rounded-full font-display font-bold text-[0.75rem] uppercase tracking-widest flex items-center gap-2 hover:bg-primary hover:-translate-y-0.5 transition-all duration-300 shadow-lg shadow-textPrimary/20">
+                            className="bg-textPrimary text-white px-8 py-4 rounded-full font-body font-bold text-[0.75rem] uppercase tracking-widest flex items-center gap-2 hover:bg-primary hover:-translate-y-0.5 transition-all duration-300 shadow-lg shadow-textPrimary/20">
                             Hablar con un asesor <ArrowUpRight size={15} />
                         </button>
                         <div className="flex items-center gap-4">
@@ -913,7 +925,7 @@ export default function Home() {
                             </div>
                             <div>
                                 <p className="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-1">Contacto directo</p>
-                                <p className="font-display font-bold text-[0.95rem] text-primary">+54 9 223 448-7206</p>
+                                <p className="font-body font-bold text-[0.95rem] text-primary">+54 9 223 448-7206</p>
                             </div>
                         </div>
                     </div>
@@ -924,8 +936,8 @@ export default function Home() {
             <section data-aos="fade-up" className="py-20 px-[8%] bg-white">
                 <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
                     <div>
-                        <p className="font-display text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary mb-2">¿Qué estás buscando?</p>
-                        <h2 className="font-display font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
+                        <p className="font-body text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary mb-2">¿Qué estás buscando?</p>
+                        <h2 className="font-body font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
                             Encontrá el espacio <span className="text-metallic">ideal.</span>
                         </h2>
                         <p className="mt-2 text-[0.9rem] text-textSecondary max-w-[400px] leading-relaxed">
@@ -947,7 +959,7 @@ export default function Home() {
                             <ZoneSwiperCard key={item.id} zone={item} onClick={() => handleZoneClick(item.filter)} />
                         ))}
                     </HorizontalSwiper>
-                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-display tracking-wide">Deslizá para explorar categorías →</p>
+                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-body tracking-wide">Deslizá para explorar categorías →</p>
                 </div>
             </section>
 
@@ -955,8 +967,8 @@ export default function Home() {
             <section data-aos="fade-up" className="py-20 px-[8%] bg-secondaryLight">
                 <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
                     <div>
-                        <p className="font-display text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary mb-2">Destacadas</p>
-                        <h2 className="font-display font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
+                        <p className="font-body text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary mb-2">Destacadas</p>
+                        <h2 className="font-body font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
                             Propiedades <span className="text-metallic">seleccionadas</span>
                         </h2>
                     </div>
@@ -969,7 +981,7 @@ export default function Home() {
                     <HorizontalSwiper>
                         {PROPERTIES.map(p => <PropertyCard key={p.id} prop={p} />)}
                     </HorizontalSwiper>
-                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-display tracking-wide">Deslizá para ver más →</p>
+                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-body tracking-wide">Deslizá para ver más →</p>
                 </div>
             </section>
 
@@ -980,8 +992,8 @@ export default function Home() {
                 />
                 <div className="relative z-10 max-w-[1200px] mx-auto">
                     <div className="max-w-[720px] mb-16" data-aos="fade-up">
-                        <p className="font-display text-[0.65rem] tracking-[0.3em] uppercase text-secondary mb-3">Desde 1998</p>
-                        <h2 className="font-display font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.8rem,3vw,2.6rem)' }}>
+                        <p className="font-body text-[0.65rem] tracking-[0.3em] uppercase text-secondary mb-3">Desde 1998</p>
+                        <h2 className="font-body font-black text-primary leading-tight" style={{ fontSize: 'clamp(1.8rem,3vw,2.6rem)' }}>
                             Más de dos décadas construyendo<span className="text-metallic"> confianza</span>
                         </h2>
                         <p className="mt-5 text-textSecondary text-[0.95rem] leading-[1.9] max-w-[520px]">
@@ -991,15 +1003,15 @@ export default function Home() {
                     <div className="grid lg:grid-cols-2 gap-14 items-center">
                         <div className="flex flex-col gap-6">
                             <div data-aos="fade-up" data-aos-delay="100" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
-                                <h3 className="font-display text-[1rem] text-primary font-bold mb-2">Trayectoria comprobada</h3>
+                                <h3 className="font-body text-[1rem] text-primary font-bold mb-2">Trayectoria comprobada</h3>
                                 <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Desde 1998 operando en el mercado inmobiliario, con un conocimiento profundo de cada zona y sus oportunidades reales.</p>
                             </div>
                             <div data-aos="fade-up" data-aos-delay="200" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
-                                <h3 className="font-display text-[1rem] text-primary font-bold mb-2">Asesoramiento personalizado</h3>
+                                <h3 className="font-body text-[1rem] text-primary font-bold mb-2">Asesoramiento personalizado</h3>
                                 <p className="text-textSecondary text-[0.9rem] leading-[1.8]">No trabajamos con soluciones genéricas. Cada cliente recibe una estrategia pensada según su situación y objetivos.</p>
                             </div>
                             <div data-aos="fade-up" data-aos-delay="300" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
-                                <h3 className="font-display text-[1rem] text-primary font-bold mb-2">Transparencia en cada paso</h3>
+                                <h3 className="font-body text-[1rem] text-primary font-bold mb-2">Transparencia en cada paso</h3>
                                 <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Información clara, procesos ordenados y acompañamiento constante para tomar decisiones con seguridad.</p>
                             </div>
                         </div>
@@ -1009,7 +1021,7 @@ export default function Home() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                             </div>
                             <div className="absolute -bottom-6 -left-6 bg-white px-6 py-4 rounded-xl shadow-xl border border-neutral-200" data-aos="fade-up" data-aos-delay="400">
-                                <p className="font-display text-[1.4rem] font-black text-primary leading-none">+25 años</p>
+                                <p className="font-body text-[1.4rem] font-black text-primary leading-none">+25 años</p>
                                 <p className="text-[0.75rem] text-textSecondary">de experiencia en el mercado</p>
                             </div>
                         </div>
@@ -1030,9 +1042,9 @@ export default function Home() {
                             style={{ background: 'linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
                             <Instagram size={16} className="text-white" />
                         </div>
-                        <span className="font-display text-[0.63rem] font-bold tracking-[0.25em] uppercase text-textSecondary">@Caramellopropiedades3288</span>
+                        <span className="font-body text-[0.63rem] font-bold tracking-[0.25em] uppercase text-textSecondary">@Caramellopropiedades3288</span>
                     </div>
-                    <h2 className="font-display font-black text-primary leading-tight mb-3" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
+                    <h2 className="font-body font-black text-primary leading-tight mb-3" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
                         Seguinos en <span className="text-metallic">Instagram</span>
                     </h2>
                     <p className="text-[0.93rem] text-textSecondary max-w-[380px] mx-auto leading-[1.8]">
@@ -1066,14 +1078,14 @@ export default function Home() {
                 <div className="absolute right-0 top-0 w-[400px] h-full opacity-20 pointer-events-none"
                     style={{ background: 'radial-gradient(circle at 80% 50%, #00FBFA, transparent 60%)' }} />
                 <div className="relative z-10">
-                    <p className="font-display text-[0.62rem] font-bold tracking-[0.2em] uppercase text-secondary mb-3">Tasaciones gratuitas</p>
-                    <h2 className="font-display font-black text-white leading-tight mb-2" style={{ fontSize: 'clamp(1.5rem,2.5vw,2.1rem)' }}>
+                    <p className="font-body text-[0.62rem] font-bold tracking-[0.2em] uppercase text-secondary mb-3">Servicio de tasación</p>
+                    <h2 className="font-body font-black text-white leading-tight mb-2" style={{ fontSize: 'clamp(1.5rem,2.5vw,2.1rem)' }}>
                         ¿Querés saber cuánto vale<br />tu <span className="text-primary">propiedad</span>?
                     </h2>
                     <p className="text-white/70 text-[0.93rem]">Sin compromiso. Resultados en 48 horas hábiles.</p>
                 </div>
                 <button onClick={() => navigate('/tasacion')} className="relative z-10 btn-primary cursor-pointer">
-                    Solicitar tasación gratuita <ArrowRight size={14} />
+                    Consultá sobre tu tasación <ArrowRight size={14} />
                 </button>
             </section>
 

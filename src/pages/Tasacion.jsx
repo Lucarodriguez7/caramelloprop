@@ -23,7 +23,7 @@ const TIPOS = [
 ];
 
 const BENEFICIOS = [
-    { title: 'Gratuita y sin compromiso', desc: 'La tasación no tiene costo. Conocé el valor real de tu propiedad sin obligación de venta ni contrato.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.3" /><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg> },
+    { title: 'Consultá sin compromiso', desc: 'Te asesoramos sobre tu tasación. Conocé el valor real de tu propiedad sin obligación de venta ni contrato.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.3" /><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg> },
     { title: 'Basada en datos reales', desc: 'Analizamos ventas recientes, demanda actual y ubicación para darte un valor preciso y competitivo.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 16l4-4 3 3 4-5 5 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg> },
     { title: 'En menos de 48hs', desc: 'Recibís el informe de tasación en tu WhatsApp o email en un plazo máximo de 48 horas hábiles.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.3" /><path d="M11 6v5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg> },
     { title: 'Asesoramiento incluido', desc: 'Te orientamos sobre el mejor momento para vender o alquilar según las condiciones del mercado.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" /></svg> },
@@ -268,8 +268,8 @@ export default function Tasaciones() {
                 {/* Hero */}
                 <div className="tas-hero" ref={heroRef}>
 
-                    <h1>Tasá tu propiedad<br /><span className="gt">de forma gratuita</span></h1>
-                    <p>Completá el formulario y recibí una tasación profesional basada en datos reales del mercado de Mar del Plata. Sin compromiso, sin costo.</p>
+                    <h1>Consultá sobre<br /><span className="gt">tu tasación</span></h1>
+                    <p>Completá el formulario y te asesoramos para una tasación profesional basada en datos reales del mercado de Mar del Plata. Sin compromiso.</p>
                 </div>
 
                 {/* Benefits */}

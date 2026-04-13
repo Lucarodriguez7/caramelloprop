@@ -31,10 +31,10 @@ function StatItem({ value, label, delay, startCounting, mobile }) {
             style={{ transitionDelay: `${delay}ms` }}
             className={`transition-all duration-700 ${startCounting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         >
-            <div className={`font-display font-black text-[1.7rem] leading-none tracking-tight ${mobile ? 'text-white drop-shadow-md' : 'text-textPrimary'}`}>
+            <div className={`font-body font-black text-[1.7rem] leading-none tracking-tight ${mobile ? 'text-white drop-shadow-md' : 'text-textPrimary'}`}>
                 {display}
             </div>
-            <div className={`font-display text-[0.58rem] font-semibold tracking-[0.16em] uppercase mt-2.5 ${mobile ? 'text-white/80' : 'text-textSecondary'}`}>
+            <div className={`font-body text-[0.58rem] font-semibold tracking-[0.16em] uppercase mt-2.5 ${mobile ? 'text-white/80' : 'text-textSecondary'}`}>
                 {label}
             </div>
         </div>

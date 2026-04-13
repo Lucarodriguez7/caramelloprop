@@ -59,7 +59,7 @@ export default function Footer() {
 
                 {/* Propiedades */}
                 <div>
-                    <h4 className="font-display font-bold text-[0.62rem] tracking-[0.2em] uppercase text-primary mb-4">
+                    <h4 className="font-body font-bold text-[0.62rem] tracking-[0.2em] uppercase text-primary mb-4">
                         Propiedades
                     </h4>
                     <ul className="flex flex-col gap-2.5 list-none m-0 p-0">
@@ -78,7 +78,7 @@ export default function Footer() {
 
                 {/* Servicios */}
                 <div>
-                    <h4 className="font-display font-bold text-[0.62rem] tracking-[0.2em] uppercase text-primary mb-4">
+                    <h4 className="font-body font-bold text-[0.62rem] tracking-[0.2em] uppercase text-primary mb-4">
                         Servicios
                     </h4>
                     <ul className="flex flex-col gap-2.5 list-none m-0 p-0">
@@ -94,7 +94,7 @@ export default function Footer() {
 
                 {/* Contacto */}
                 <div>
-                    <h4 className="font-display font-bold text-[0.62rem] tracking-[0.2em] uppercase text-primary mb-4">
+                    <h4 className="font-body font-bold text-[0.62rem] tracking-[0.2em] uppercase text-primary mb-4">
                         Contacto
                     </h4>
                     <ul className="flex flex-col gap-3 list-none m-0 p-0">
@@ -124,7 +124,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 group no-underline"
                 >
-                    <span className="text-[0.7rem] text-white/40 font-display uppercase tracking-widest transition-colors group-hover:text-white/60">
+                    <span className="text-[0.7rem] text-white/40 font-body uppercase tracking-widest transition-colors group-hover:text-white/60">
                         Powered by
                     </span>
                     <span className="text-[0.75rem] font-black tracking-tighter text-[#00ff41] flex items-center gap-1 group-hover:brightness-110 transition-all">

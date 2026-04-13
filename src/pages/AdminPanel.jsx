@@ -340,7 +340,7 @@ export default function AdminPanel() {
     return (
         <div className="cp">
             <aside className="cp-sidebar">
-                <div className="cp-sidebar-logo"><img src="/logo.png" alt="CP" style={{ height: 36 }} /><span>Caramello</span></div>
+                <div className="cp-sidebar-logo"><img src="/logo.png" alt="CP" style={{ height: 36 }} /></div>
                 <nav className="cp-sidebar-nav">
                     {[{ id: 'dashboard', label: 'Dashboard', icon: <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /></svg> }, { id: 'properties', label: 'Propiedades', icon: <svg viewBox="0 0 20 20" fill="none"><path d="M3 8l7-5 7 5v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" stroke="currentColor" strokeWidth="1.3" /></svg> }, { id: 'leads', label: 'Consultas', icon: <svg viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.3" /><path d="M2 5l8 5 8-5" stroke="currentColor" strokeWidth="1.3" /></svg> }, { id: 'settings', label: 'Ajustes', icon: <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" strokeWidth="1.3" /><path d="M10 2v2M10 16v2M2 10h2M16 10h2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg> }].map(n => <button key={n.id} className={`cp-nav${view === n.id || (view === 'property-edit' && n.id === 'properties') ? ' active' : ''}`} onClick={() => { setView(n.id); setEditId(null); }}>{n.icon}{n.label}</button>)}
                 </nav>
@@ -382,7 +382,7 @@ function PropList({ setView, setEditId }) {
     const del = async (id) => { if (!confirm('¿Eliminar?')) return; await supabase.from('properties').delete().eq('id', id); load(); };
     const togPub = async (id, c) => { await supabase.from('properties').update({ publicado: !c }).eq('id', id); load(); };
     const fmt = (p) => p.moneda === 'USD' ? `USD ${Number(p.precio).toLocaleString('es-AR')}` : `$${Number(p.precio).toLocaleString('es-AR')}`;
-    return (<><div className="cp-page-title">Propiedades</div><div className="cp-page-sub">Gestión del catálogo</div><div className="cp-table-wrap"><div className="cp-table-header"><span className="cp-table-title">{props.length} propiedad{props.length !== 1 ? 'es' : ''}</span><button className="cp-btn-new" onClick={() => { setEditId(null); setView('property-edit'); }}>+ Nueva</button></div>{loading ? <div className="cp-loading">Cargando...</div> : <table className="cp-table"><thead><tr><th></th><th>Título</th><th>Precio</th><th>Tipo</th><th>m² Cub.</th><th>m² Lote</th><th>Views</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>{props.map(p => <tr key={p.id}><td>{p.imagenes?.[0] ? <img className="cp-table-img" src={p.imagenes[0]} alt="" /> : <div style={{ width: 48, height: 36, background: 'var(--gray-100)', borderRadius: 6 }} />}</td><td style={{ fontWeight: 600, color: 'var(--gray-800)', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.titulo}{p.nuevo_ingreso && <span className="cp-badge cp-badge-nuevo" style={{ marginLeft: 6 }}>Nuevo</span>}</td><td>{fmt(p)}</td><td>{p.tipo}</td><td>{p.m2_cubiertos || '-'}</td><td>{p.m2_lote || '-'}</td><td><span className="cp-views"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" stroke="currentColor" strokeWidth="1.2" /><circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.2" /></svg>{p.views || 0}</span></td><td><span className={`cp-badge ${p.publicado ? 'cp-badge-pub' : 'cp-badge-draft'}`}>{p.publicado ? 'Publicada' : 'Borrador'}</span></td><td><div className="cp-actions"><button className="cp-btn-sm" onClick={() => { setEditId(p.id); setView('property-edit'); }}>Editar</button><button className="cp-btn-sm cp-btn-sm-ficha" onClick={()=>window.open('/ficha/'+p.id,'_blank')}>Ficha</button><button className="cp-btn-sm" onClick={() => togPub(p.id, p.publicado)}>{p.publicado ? 'Ocultar' : 'Publicar'}</button><button className="cp-btn-sm cp-btn-sm-danger" onClick={() => del(p.id)}>Eliminar</button></div></td></tr>)}{props.length === 0 && <tr><td colSpan={9} className="cp-empty">No hay propiedades</td></tr>}</tbody></table>}</div></>);
+    return (<><div className="cp-page-title">Propiedades</div><div className="cp-page-sub">Gestión del catálogo</div><div className="cp-table-wrap"><div className="cp-table-header"><span className="cp-table-title">{props.length} propiedad{props.length !== 1 ? 'es' : ''}</span><button className="cp-btn-new" onClick={() => { setEditId(null); setView('property-edit'); }}>+ Nueva</button></div>{loading ? <div className="cp-loading">Cargando...</div> : <table className="cp-table"><thead><tr><th></th><th>Título</th><th>Precio</th><th>Tipo</th><th>m² Cub.</th><th>m² Lote</th><th>Views</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>{props.map(p => <tr key={p.id}><td>{p.imagenes?.[0] ? <img className="cp-table-img" src={p.imagenes[0]} alt="" /> : <div style={{ width: 48, height: 36, background: 'var(--gray-100)', borderRadius: 6 }} />}</td><td style={{ fontWeight: 600, color: 'var(--gray-800)', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.titulo}{p.nuevo_ingreso && <span className="cp-badge cp-badge-nuevo" style={{ marginLeft: 6 }}>Nuevo</span>}</td><td>{fmt(p)}</td><td>{p.tipo}</td><td>{p.m2_cubiertos || '-'}</td><td>{p.m2_lote || '-'}</td><td><span className="cp-views"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" stroke="currentColor" strokeWidth="1.2" /><circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.2" /></svg>{p.views || 0}</span></td><td><span className={`cp-badge ${p.publicado ? 'cp-badge-pub' : 'cp-badge-draft'}`}>{p.publicado ? 'Publicada' : 'Borrador'}</span></td><td><div className="cp-actions"><button className="cp-btn-sm" onClick={() => { setEditId(p.id); setView('property-edit'); }}>Editar</button><button className="cp-btn-sm cp-btn-sm-ficha" onClick={() => window.open('/ficha/' + p.id, '_blank')}>Ficha</button><button className="cp-btn-sm" onClick={() => togPub(p.id, p.publicado)}>{p.publicado ? 'Ocultar' : 'Publicar'}</button><button className="cp-btn-sm cp-btn-sm-danger" onClick={() => del(p.id)}>Eliminar</button></div></td></tr>)}{props.length === 0 && <tr><td colSpan={9} className="cp-empty">No hay propiedades</td></tr>}</tbody></table>}</div></>);
 }
 
 /* ── PROPERTY EDITOR ── */
@@ -425,19 +425,20 @@ function PropEditor({ id, setView }) {
         </div><div style={{ display: 'flex', gap: 20, marginTop: 14, flexWrap: 'wrap' }}>
                 <Check k="cochera" label="Cochera" /><Check k="destacado" label="Destacada" /><Check k="publicado" label="Publicada" /><Check k="nuevo_ingreso" label="⭐ Nuevo ingreso" />
             </div>
-            
-            <div style={{marginTop:20,borderTop:'1px solid var(--gray-200)',paddingTop:16}}>
-                <label style={{fontSize:11,fontWeight:600,letterSpacing:'.5px',textTransform:'uppercase',color:'var(--gray-500)',marginBottom:10,display:'block'}}>Amenities</label>
-                <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-                    {['Pileta','Pileta climatizada','Jardín','Quincho','Parrilla','Terraza','Balcón','Cochera','Baulera','Seguridad 24h','Gimnasio','SUM','Portería','Domótica','Ascensor','Laundry','Vista al mar','Chimenea','Vestidor','Home cinema','Aire acondicionado','Calefacción','Piso radiante'].map(a => (
-                    <button key={a} type="button" onClick={() => s('amenities', f.amenities?.includes(a) ? f.amenities.filter(x=>x!==a) : [...(f.amenities||[]), a])}
-                        style={{padding:'6px 14px',borderRadius:20,fontSize:11,fontWeight:600,cursor:'pointer',transition:'all .15s',
-                        border: f.amenities?.includes(a) ? '1px solid var(--teal)' : '1px solid var(--gray-200)',
-                        background: f.amenities?.includes(a) ? 'var(--teal-50)' : 'var(--white)',
-                        color: f.amenities?.includes(a) ? 'var(--teal-dark)' : 'var(--gray-500)',
-                        }}>
-                        {f.amenities?.includes(a) ? '✓ ' : ''}{a}
-                    </button>
+
+            <div style={{ marginTop: 20, borderTop: '1px solid var(--gray-200)', paddingTop: 16 }}>
+                <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.5px', textTransform: 'uppercase', color: 'var(--gray-500)', marginBottom: 10, display: 'block' }}>Amenities</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {['Pileta', 'Pileta climatizada', 'Jardín', 'Quincho', 'Parrilla', 'Terraza', 'Balcón', 'Cochera', 'Baulera', 'Seguridad 24h', 'Gimnasio', 'SUM', 'Portería', 'Domótica', 'Ascensor', 'Laundry', 'Vista al mar', 'Chimenea', 'Vestidor', 'Home cinema', 'Aire acondicionado', 'Calefacción', 'Piso radiante'].map(a => (
+                        <button key={a} type="button" onClick={() => s('amenities', f.amenities?.includes(a) ? f.amenities.filter(x => x !== a) : [...(f.amenities || []), a])}
+                            style={{
+                                padding: '6px 14px', borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: 'pointer', transition: 'all .15s',
+                                border: f.amenities?.includes(a) ? '1px solid var(--teal)' : '1px solid var(--gray-200)',
+                                background: f.amenities?.includes(a) ? 'var(--teal-50)' : 'var(--white)',
+                                color: f.amenities?.includes(a) ? 'var(--teal-dark)' : 'var(--gray-500)',
+                            }}>
+                            {f.amenities?.includes(a) ? '✓ ' : ''}{a}
+                        </button>
                     ))}
                 </div>
             </div>
@@ -467,77 +468,77 @@ function Leads() {
             <div className="cp-table-header"><span className="cp-table-title">{leads.length} consulta{leads.length !== 1 ? 's' : ''}</span></div>
             {loading ? <div className="cp-loading">Cargando...</div> : <table className="cp-table">
                 <thead><tr><th>Nombre</th><th>Teléfono</th><th>Tipo</th><th>Propiedad</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead>
-                <tbody>{leads.map(l => <tr key={l.id} style={{cursor:'pointer'}} onClick={()=>setDetail(l)}>
+                <tbody>{leads.map(l => <tr key={l.id} style={{ cursor: 'pointer' }} onClick={() => setDetail(l)}>
                     <td style={{ fontWeight: 600, color: 'var(--gray-800)' }}>{l.nombre}</td>
                     <td>{l.telefono}</td>
                     <td><span className="cp-badge cp-badge-pub">{l.tipo}</span></td>
                     <td style={{ maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.properties?.titulo || '-'}</td>
-                    <td onClick={e=>e.stopPropagation()}><select className="cp-select" style={{ padding: '5px 8px', fontSize: 10, minWidth: 110 }} value={l.estado} onChange={e => upd(l.id, e.target.value)}><option value="nuevo">Nuevo</option><option value="contactado">Contactado</option><option value="en_proceso">En proceso</option><option value="cerrado">Cerrado</option></select></td>
+                    <td onClick={e => e.stopPropagation()}><select className="cp-select" style={{ padding: '5px 8px', fontSize: 10, minWidth: 110 }} value={l.estado} onChange={e => upd(l.id, e.target.value)}><option value="nuevo">Nuevo</option><option value="contactado">Contactado</option><option value="en_proceso">En proceso</option><option value="cerrado">Cerrado</option></select></td>
                     <td>{new Date(l.created_at).toLocaleDateString('es-AR')}</td>
-                    <td onClick={e=>e.stopPropagation()}><a href={wa(l)} target="_blank" rel="noreferrer" className="cp-btn-sm cp-btn-sm-wa" style={{ textDecoration: 'none' }}>WhatsApp</a></td>
+                    <td onClick={e => e.stopPropagation()}><a href={wa(l)} target="_blank" rel="noreferrer" className="cp-btn-sm cp-btn-sm-wa" style={{ textDecoration: 'none' }}>WhatsApp</a></td>
                 </tr>)}{leads.length === 0 && <tr><td colSpan={7} className="cp-empty">Sin consultas</td></tr>}</tbody>
             </table>}
         </div>
 
         {/* Modal de detalle */}
         {detail && (
-            <div style={{position:'fixed',inset:0,zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setDetail(null)}>
-                <div style={{position:'absolute',inset:0,background:'rgba(0,0,0,0.4)',backdropFilter:'blur(4px)'}} />
-                <div onClick={e=>e.stopPropagation()} style={{position:'relative',background:'#fff',borderRadius:16,padding:32,maxWidth:520,width:'90%',maxHeight:'85vh',overflowY:'auto',boxShadow:'0 24px 60px rgba(0,0,0,0.15)'}}>
-                    <button onClick={()=>setDetail(null)} style={{position:'absolute',top:16,right:16,width:32,height:32,borderRadius:'50%',border:'1px solid var(--gray-200)',background:'var(--gray-50)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:14,color:'var(--gray-400)'}}>✕</button>
-                    
-                    <div style={{fontSize:10,fontWeight:600,letterSpacing:'.15em',textTransform:'uppercase',color:'var(--gray-400)',marginBottom:4}}>Detalle de consulta</div>
-                    <div style={{fontSize:20,fontWeight:800,color:'var(--gray-900)',marginBottom:4}}>{detail.nombre}</div>
-                    <div style={{display:'flex',gap:8,marginBottom:20,flexWrap:'wrap'}}>
+            <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setDetail(null)}>
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)' }} />
+                <div onClick={e => e.stopPropagation()} style={{ position: 'relative', background: '#fff', borderRadius: 16, padding: 32, maxWidth: 520, width: '90%', maxHeight: '85vh', overflowY: 'auto', boxShadow: '0 24px 60px rgba(0,0,0,0.15)' }}>
+                    <button onClick={() => setDetail(null)} style={{ position: 'absolute', top: 16, right: 16, width: 32, height: 32, borderRadius: '50%', border: '1px solid var(--gray-200)', background: 'var(--gray-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 14, color: 'var(--gray-400)' }}>✕</button>
+
+                    <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--gray-400)', marginBottom: 4 }}>Detalle de consulta</div>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--gray-900)', marginBottom: 4 }}>{detail.nombre}</div>
+                    <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
                         <span className="cp-badge cp-badge-pub">{detail.tipo}</span>
-                        <span className={`cp-badge cp-badge-${detail.estado==='nuevo'?'new':detail.estado==='contactado'?'contacted':'closed'}`}>{detail.estado}</span>
+                        <span className={`cp-badge cp-badge-${detail.estado === 'nuevo' ? 'new' : detail.estado === 'contactado' ? 'contacted' : 'closed'}`}>{detail.estado}</span>
                     </div>
 
-                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:20}}>
-                        <div style={{padding:'12px 14px',background:'var(--gray-50)',borderRadius:10,border:'1px solid var(--gray-200)'}}>
-                            <div style={{fontSize:9,fontWeight:600,letterSpacing:'.1em',textTransform:'uppercase',color:'var(--gray-400)',marginBottom:4}}>Teléfono</div>
-                            <div style={{fontSize:14,fontWeight:600,color:'var(--gray-800)'}}>{detail.telefono}</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 }}>
+                        <div style={{ padding: '12px 14px', background: 'var(--gray-50)', borderRadius: 10, border: '1px solid var(--gray-200)' }}>
+                            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--gray-400)', marginBottom: 4 }}>Teléfono</div>
+                            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.telefono}</div>
                         </div>
-                        <div style={{padding:'12px 14px',background:'var(--gray-50)',borderRadius:10,border:'1px solid var(--gray-200)'}}>
-                            <div style={{fontSize:9,fontWeight:600,letterSpacing:'.1em',textTransform:'uppercase',color:'var(--gray-400)',marginBottom:4}}>Email</div>
-                            <div style={{fontSize:14,fontWeight:600,color:'var(--gray-800)'}}>{detail.email || '-'}</div>
+                        <div style={{ padding: '12px 14px', background: 'var(--gray-50)', borderRadius: 10, border: '1px solid var(--gray-200)' }}>
+                            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--gray-400)', marginBottom: 4 }}>Email</div>
+                            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.email || '-'}</div>
                         </div>
-                        <div style={{padding:'12px 14px',background:'var(--gray-50)',borderRadius:10,border:'1px solid var(--gray-200)'}}>
-                            <div style={{fontSize:9,fontWeight:600,letterSpacing:'.1em',textTransform:'uppercase',color:'var(--gray-400)',marginBottom:4}}>Fecha</div>
-                            <div style={{fontSize:14,fontWeight:600,color:'var(--gray-800)'}}>{new Date(detail.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})}</div>
+                        <div style={{ padding: '12px 14px', background: 'var(--gray-50)', borderRadius: 10, border: '1px solid var(--gray-200)' }}>
+                            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--gray-400)', marginBottom: 4 }}>Fecha</div>
+                            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--gray-800)' }}>{new Date(detail.created_at).toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
                         </div>
-                        <div style={{padding:'12px 14px',background:'var(--gray-50)',borderRadius:10,border:'1px solid var(--gray-200)'}}>
-                            <div style={{fontSize:9,fontWeight:600,letterSpacing:'.1em',textTransform:'uppercase',color:'var(--gray-400)',marginBottom:4}}>Propiedad</div>
-                            <div style={{fontSize:14,fontWeight:600,color:'var(--gray-800)'}}>{detail.properties?.titulo || 'No especificada'}</div>
+                        <div style={{ padding: '12px 14px', background: 'var(--gray-50)', borderRadius: 10, border: '1px solid var(--gray-200)' }}>
+                            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--gray-400)', marginBottom: 4 }}>Propiedad</div>
+                            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.properties?.titulo || 'No especificada'}</div>
                         </div>
                     </div>
 
                     {detail.mensaje && (
-                        <div style={{marginBottom:20}}>
-                            <div style={{fontSize:9,fontWeight:600,letterSpacing:'.1em',textTransform:'uppercase',color:'var(--gray-400)',marginBottom:6}}>Mensaje</div>
-                            <div style={{padding:'14px 16px',background:'var(--gray-50)',borderRadius:10,border:'1px solid var(--gray-200)',fontSize:13,lineHeight:1.7,color:'var(--gray-600)',whiteSpace:'pre-line'}}>{detail.mensaje}</div>
+                        <div style={{ marginBottom: 20 }}>
+                            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--gray-400)', marginBottom: 6 }}>Mensaje</div>
+                            <div style={{ padding: '14px 16px', background: 'var(--gray-50)', borderRadius: 10, border: '1px solid var(--gray-200)', fontSize: 13, lineHeight: 1.7, color: 'var(--gray-600)', whiteSpace: 'pre-line' }}>{detail.mensaje}</div>
                         </div>
                     )}
 
                     {detail.tasacion_data && (
-                        <div style={{marginBottom:20}}>
-                            <div style={{fontSize:9,fontWeight:600,letterSpacing:'.1em',textTransform:'uppercase',color:'var(--teal)',marginBottom:10}}>Datos de tasación</div>
-                            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
-                                {detail.tasacion_data.motivo && <div style={{padding:'10px 12px',background:'var(--teal-50)',borderRadius:8,border:'1px solid #ccfbf1'}}><div style={{fontSize:9,fontWeight:600,color:'var(--teal)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Motivo</div><div style={{fontSize:13,fontWeight:600,color:'var(--gray-800)'}}>{detail.tasacion_data.motivo}</div></div>}
-                                {detail.tasacion_data.tipo_propiedad && <div style={{padding:'10px 12px',background:'var(--teal-50)',borderRadius:8,border:'1px solid #ccfbf1'}}><div style={{fontSize:9,fontWeight:600,color:'var(--teal)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Tipo</div><div style={{fontSize:13,fontWeight:600,color:'var(--gray-800)'}}>{detail.tasacion_data.tipo_propiedad}</div></div>}
-                                {detail.tasacion_data.m2 && <div style={{padding:'10px 12px',background:'var(--teal-50)',borderRadius:8,border:'1px solid #ccfbf1'}}><div style={{fontSize:9,fontWeight:600,color:'var(--teal)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Superficie</div><div style={{fontSize:13,fontWeight:600,color:'var(--gray-800)'}}>{detail.tasacion_data.m2} m²</div></div>}
-                                {detail.tasacion_data.m2_lote && <div style={{padding:'10px 12px',background:'var(--teal-50)',borderRadius:8,border:'1px solid #ccfbf1'}}><div style={{fontSize:9,fontWeight:600,color:'var(--teal)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Lote</div><div style={{fontSize:13,fontWeight:600,color:'var(--gray-800)'}}>{detail.tasacion_data.m2_lote} m²</div></div>}
-                                {detail.tasacion_data.dormitorios && <div style={{padding:'10px 12px',background:'var(--teal-50)',borderRadius:8,border:'1px solid #ccfbf1'}}><div style={{fontSize:9,fontWeight:600,color:'var(--teal)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Dormitorios</div><div style={{fontSize:13,fontWeight:600,color:'var(--gray-800)'}}>{detail.tasacion_data.dormitorios}</div></div>}
-                                {detail.tasacion_data.banos && <div style={{padding:'10px 12px',background:'var(--teal-50)',borderRadius:8,border:'1px solid #ccfbf1'}}><div style={{fontSize:9,fontWeight:600,color:'var(--teal)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Baños</div><div style={{fontSize:13,fontWeight:600,color:'var(--gray-800)'}}>{detail.tasacion_data.banos}</div></div>}
-                                {detail.tasacion_data.antiguedad && <div style={{padding:'10px 12px',background:'var(--teal-50)',borderRadius:8,border:'1px solid #ccfbf1'}}><div style={{fontSize:9,fontWeight:600,color:'var(--teal)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Antigüedad</div><div style={{fontSize:13,fontWeight:600,color:'var(--gray-800)'}}>{detail.tasacion_data.antiguedad}</div></div>}
-                                {detail.tasacion_data.direccion && <div style={{padding:'10px 12px',background:'var(--teal-50)',borderRadius:8,border:'1px solid #ccfbf1',gridColumn:'1/-1'}}><div style={{fontSize:9,fontWeight:600,color:'var(--teal)',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:2}}>Dirección</div><div style={{fontSize:13,fontWeight:600,color:'var(--gray-800)'}}>{detail.tasacion_data.direccion}</div></div>}
+                        <div style={{ marginBottom: 20 }}>
+                            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--teal)', marginBottom: 10 }}>Datos de tasación</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                                {detail.tasacion_data.motivo && <div style={{ padding: '10px 12px', background: 'var(--teal-50)', borderRadius: 8, border: '1px solid #ccfbf1' }}><div style={{ fontSize: 9, fontWeight: 600, color: 'var(--teal)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Motivo</div><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.tasacion_data.motivo}</div></div>}
+                                {detail.tasacion_data.tipo_propiedad && <div style={{ padding: '10px 12px', background: 'var(--teal-50)', borderRadius: 8, border: '1px solid #ccfbf1' }}><div style={{ fontSize: 9, fontWeight: 600, color: 'var(--teal)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Tipo</div><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.tasacion_data.tipo_propiedad}</div></div>}
+                                {detail.tasacion_data.m2 && <div style={{ padding: '10px 12px', background: 'var(--teal-50)', borderRadius: 8, border: '1px solid #ccfbf1' }}><div style={{ fontSize: 9, fontWeight: 600, color: 'var(--teal)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Superficie</div><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.tasacion_data.m2} m²</div></div>}
+                                {detail.tasacion_data.m2_lote && <div style={{ padding: '10px 12px', background: 'var(--teal-50)', borderRadius: 8, border: '1px solid #ccfbf1' }}><div style={{ fontSize: 9, fontWeight: 600, color: 'var(--teal)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Lote</div><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.tasacion_data.m2_lote} m²</div></div>}
+                                {detail.tasacion_data.dormitorios && <div style={{ padding: '10px 12px', background: 'var(--teal-50)', borderRadius: 8, border: '1px solid #ccfbf1' }}><div style={{ fontSize: 9, fontWeight: 600, color: 'var(--teal)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Dormitorios</div><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.tasacion_data.dormitorios}</div></div>}
+                                {detail.tasacion_data.banos && <div style={{ padding: '10px 12px', background: 'var(--teal-50)', borderRadius: 8, border: '1px solid #ccfbf1' }}><div style={{ fontSize: 9, fontWeight: 600, color: 'var(--teal)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Baños</div><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.tasacion_data.banos}</div></div>}
+                                {detail.tasacion_data.antiguedad && <div style={{ padding: '10px 12px', background: 'var(--teal-50)', borderRadius: 8, border: '1px solid #ccfbf1' }}><div style={{ fontSize: 9, fontWeight: 600, color: 'var(--teal)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Antigüedad</div><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.tasacion_data.antiguedad}</div></div>}
+                                {detail.tasacion_data.direccion && <div style={{ padding: '10px 12px', background: 'var(--teal-50)', borderRadius: 8, border: '1px solid #ccfbf1', gridColumn: '1/-1' }}><div style={{ fontSize: 9, fontWeight: 600, color: 'var(--teal)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Dirección</div><div style={{ fontSize: 13, fontWeight: 600, color: 'var(--gray-800)' }}>{detail.tasacion_data.direccion}</div></div>}
                             </div>
                         </div>
                     )}
 
-                    <div style={{display:'flex',gap:8}}>
-                        <a href={wa(detail)} target="_blank" rel="noreferrer" style={{flex:1,padding:'12px',background:'#25D366',color:'#fff',borderRadius:10,textAlign:'center',fontSize:13,fontWeight:600,textDecoration:'none',transition:'all .2s'}}>WhatsApp</a>
-                        {detail.telefono && <a href={`tel:${detail.telefono}`} style={{flex:1,padding:'12px',background:'var(--gray-50)',color:'var(--gray-700)',border:'1px solid var(--gray-200)',borderRadius:10,textAlign:'center',fontSize:13,fontWeight:600,textDecoration:'none'}}>Llamar</a>}
+                    <div style={{ display: 'flex', gap: 8 }}>
+                        <a href={wa(detail)} target="_blank" rel="noreferrer" style={{ flex: 1, padding: '12px', background: '#25D366', color: '#fff', borderRadius: 10, textAlign: 'center', fontSize: 13, fontWeight: 600, textDecoration: 'none', transition: 'all .2s' }}>WhatsApp</a>
+                        {detail.telefono && <a href={`tel:${detail.telefono}`} style={{ flex: 1, padding: '12px', background: 'var(--gray-50)', color: 'var(--gray-700)', border: '1px solid var(--gray-200)', borderRadius: 10, textAlign: 'center', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>Llamar</a>}
                     </div>
                 </div>
             </div>
