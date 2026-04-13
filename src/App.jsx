@@ -32,7 +32,7 @@ function AppContent() {
 
   return (
     <>
-      {!isNoLayout && <Preloader />}
+      {!isNoLayout && <Preloader key={location.pathname} />}
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />

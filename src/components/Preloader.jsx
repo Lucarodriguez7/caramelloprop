@@ -8,8 +8,8 @@ export default function Preloader() {
     useEffect(() => {
         const timer = setTimeout(() => {
             setFadeOut(true);
-            setTimeout(() => setLoading(false), 700);
-        }, 1800);
+            setTimeout(() => setLoading(false), 400);
+        }, 300);
         return () => clearTimeout(timer);
     }, []);
 
@@ -17,18 +17,18 @@ export default function Preloader() {
 
     return (
         <div
-            className={`fixed inset-0 z-[9999] bg-white flex items-center justify-center transition-all duration-700 ${fadeOut ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}
+            className={`fixed inset-0 z-[9999] bg-white flex items-center justify-center transition-all duration-500 ease-in-out ${fadeOut ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}
             style={{ pointerEvents: fadeOut ? 'none' : 'auto' }}
         >
             <div className="flex flex-col items-center gap-6">
                 {/* Logo with entrance animation */}
-                <div className="animate-[logoEntrance_0.8s_ease-out_forwards]">
+                <div className="animate-[logoEntrance_0.4s_ease-out_forwards]">
                     <img src="/logo.png" alt="Caramello Propiedades" className="h-28 w-auto object-contain" />
                 </div>
 
                 {/* Premium progress bar */}
                 <div className="w-20 h-[2px] bg-secondaryLight rounded-full overflow-hidden mt-2">
-                    <div className="h-full rounded-full animate-[progressSlide_1.4s_ease-in-out_infinite]"
+                    <div className="h-full rounded-full animate-[progressSlide_0.8s_ease-in-out_infinite]"
                         style={{
                             background: 'linear-gradient(90deg, #12645F, #1ABFB5)',
                         }}
