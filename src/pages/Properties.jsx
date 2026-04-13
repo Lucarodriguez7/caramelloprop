@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useEffect, useRef, memo, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import PriceRangeFilter from '../components/PriceRangeFilter'
@@ -11,130 +11,6 @@ import {
 
 /* ─── DATA ──────────────────────────────────────────────────── */
 const ALL_PROPERTIES = [] // se carga dinámicamente desde Supabase
-
-const _UNUSED = [
-    {
-        id: 1, type: 'Casa', operation: 'Venta', zone: 'Playa Grande', zona: 'playa-grande',
-        title: 'Residencia frente al mar con vista panorámica', address: 'Av. Constitución 2450',
-        beds: 4, baths: 3, sqm: 420, garages: 2, price: 580000, currency: 'USD',
-        tag: 'Venta', featured: true, new: false, reduced: false,
-        img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
-        imgs: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80'],
-        desc: 'Excepcional residencia de categoría ubicada en el corazón de Playa Grande. Amplios ambientes con terminaciones de primera calidad, vista al mar desde todos los niveles y acceso directo a la playa privada.',
-        amenities: ['Pileta', 'Jardín', 'Quincho', 'Seguridad 24h'],
-        age: 5,
-    },
-    {
-        id: 2, type: 'Departamento', operation: 'Venta', zone: 'Centro', zona: 'centro',
-        title: 'Moderno departamento a metros del mar', address: 'Bvd. Marítimo 1180, 8°B',
-        beds: 2, baths: 1, sqm: 68, garages: 1, price: 145000, currency: 'USD',
-        tag: 'Venta', featured: false, new: true, reduced: false,
-        img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80',
-        desc: 'Departamento a estrenar en edificio premium frente al mar. Cocina integrada al living, balcón con vista al océano y terminaciones de alta gama. Incluye cochera y baulera.',
-        amenities: ['Balcón', 'Cochera', 'Baulera', 'Gimnasio'],
-        age: 0,
-    },
-    {
-        id: 3, type: 'Local', operation: 'Alquiler', zone: 'Güemes', zona: 'guemes',
-        title: 'Local en esquina en zona comercial premium', address: 'Güemes 3450 esq. Castelli',
-        beds: null, baths: 1, sqm: 180, garages: 0, price: 980000, currency: 'ARS',
-        tag: 'Alquiler', featured: true, new: false, reduced: true,
-        img: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
-        desc: 'Local estratégico en la esquina más transitada del barrio Güemes. Vidrieras en ambas calles, depósito trasero y baño. Ideal para gastronomía, indumentaria o servicios.',
-        amenities: ['Depósito', 'Baño', 'Vidrieras', 'Excelente ubicación'],
-        age: 15,
-    },
-    {
-        id: 4, type: 'Casa', operation: 'Venta', zone: 'Los Troncos', zona: 'los-troncos',
-        title: 'Casa familiar en barrio arbolado con jardín', address: 'Jujuy 2890',
-        beds: 3, baths: 2, sqm: 220, garages: 1, price: 185000, currency: 'USD',
-        tag: 'Venta', featured: false, new: false, reduced: false,
-        img: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80',
-        desc: 'Hermosa casa familiar en el mejor sector de Los Troncos. Amplio jardín arbolado, living-comedor con chimenea, cocina equipada y garage para 1 auto. Barrio silencioso y seguro.',
-        amenities: ['Jardín', 'Quincho', 'Cochera', 'Chimenea'],
-        age: 12,
-    },
-    {
-        id: 5, type: 'Departamento', operation: 'Alquiler', zone: 'Centro', zona: 'centro',
-        title: 'Monoambiente premium con vista al mar', address: 'Córdoba 2100, 12°A',
-        beds: 1, baths: 1, sqm: 42, garages: 0, price: 320000, currency: 'ARS',
-        tag: 'Alquiler', featured: false, new: true, reduced: false,
-        img: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
-        desc: 'Monoambiente de diseño en piso alto con vista al mar. Totalmente amueblado y equipado, ideal para profesionales o pareja. Edificio con amenities y seguridad.',
-        amenities: ['Amueblado', 'Vista al mar', 'WiFi incluido', 'Lavandería'],
-        age: 2,
-    },
-    {
-        id: 6, type: 'Casa', operation: 'Venta', zone: 'Playa Grande', zona: 'playa-grande',
-        title: 'Villa moderna con pileta climatizada', address: 'H. Yrigoyen 4500',
-        beds: 5, baths: 4, sqm: 580, garages: 3, price: 980000, currency: 'USD',
-        tag: 'Venta', featured: true, new: false, reduced: false,
-        img: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
-        desc: 'Villa de lujo en el sector más exclusivo de Playa Grande. Diseño arquitectónico único, pileta climatizada, jardín paisajístico, home cinema y domótica integral.',
-        amenities: ['Pileta climatizada', 'Home cinema', 'Domótica', 'Seguridad'],
-        age: 3,
-    },
-    {
-        id: 7, type: 'Departamento', operation: 'Venta', zone: 'Güemes', zona: 'guemes',
-        title: 'Duplex con terraza y parrilla propia', address: 'San Luis 1780, PB',
-        beds: 3, baths: 2, sqm: 130, garages: 1, price: 245000, currency: 'USD',
-        tag: 'Venta', featured: false, new: true, reduced: false,
-        img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
-        desc: 'Duplex a estrenar en Güemes con terraza privada y parrilla. Living doble altura, cocina abierta de diseño, suite principal con vestidor. El barrio de moda de la ciudad.',
-        amenities: ['Terraza', 'Parrilla', 'Doble altura', 'Vestidor'],
-        age: 0,
-    },
-    {
-        id: 8, type: 'Oficina', operation: 'Alquiler', zone: 'Centro', zona: 'centro',
-        title: 'Oficina corporativa piso completo', address: 'Rivadavia 2850, 5° piso',
-        beds: null, baths: 2, sqm: 320, garages: 2, price: 1850000, currency: 'ARS',
-        tag: 'Alquiler', featured: false, new: false, reduced: true,
-        img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
-        desc: 'Piso completo en edificio AAA en pleno centro comercial. Open space con salas de reuniones, kitchenette, 2 baños y 2 cocheras. Ideal para empresa en expansión.',
-        amenities: ['Open space', 'Salas reuniones', 'Cocheras', 'Seguridad 24h'],
-        age: 8,
-    },
-    {
-        id: 9, type: 'Casa', operation: 'Venta', zone: 'Los Troncos', zona: 'los-troncos',
-        title: 'Chalet estilo inglés con amplio parque', address: 'Chile 3310',
-        beds: 4, baths: 3, sqm: 310, garages: 2, price: 320000, currency: 'USD',
-        tag: 'Venta', featured: false, new: false, reduced: true,
-        img: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=800&q=80',
-        desc: 'Precioso chalet estilo inglés en lote de 900m². Parque diseñado con árboles maduros, galería cubierta, 3 dormitorios en planta alta y suite con jacuzzi.',
-        amenities: ['Parque 900m²', 'Galería', 'Jacuzzi', 'Quincho'],
-        age: 20,
-    },
-    {
-        id: 10, type: 'Departamento', operation: 'Alquiler', zone: 'Playa Grande', zona: 'playa-grande',
-        title: 'Departamento de temporada frente al mar', address: 'Av. Martínez de Hoz 6120',
-        beds: 2, baths: 1, sqm: 75, garages: 1, price: 1200000, currency: 'ARS',
-        tag: 'Alquiler', featured: true, new: false, reduced: false,
-        img: 'https://images.unsplash.com/photo-1560185008-b033106af5c3?w=800&q=80',
-        desc: 'Departamento con vista directa al océano en Playa Grande. Completamente amueblado y equipado para temporada. Edificio con pileta en terraza y seguridad.',
-        amenities: ['Vista al mar', 'Pileta en terraza', 'Amueblado', 'Cochera'],
-        age: 6,
-    },
-    {
-        id: 11, type: 'Local', operation: 'Venta', zone: 'Centro', zona: 'centro',
-        title: 'Inversión rentable: local comercial céntrico', address: 'San Martín 2320',
-        beds: null, baths: 1, sqm: 95, garages: 0, price: 195000, currency: 'USD',
-        tag: 'Venta', featured: false, new: false, reduced: false,
-        img: 'https://images.unsplash.com/photo-1555992336-03a23c7b20ee?w=800&q=80',
-        desc: 'Local en la arteria comercial más importante de Mar del Plata. Gran vidriería, depósito, baño y entrepiso. Inquilino actual con contrato vigente. Excelente renta.',
-        amenities: ['Renta activa', 'Depósito', 'Entrepiso', 'Alta visibilidad'],
-        age: 25,
-    },
-    {
-        id: 12, type: 'Casa', operation: 'Venta', zone: 'Güemes', zona: 'guemes',
-        title: 'Casa de diseño en el nuevo Güemes', address: 'Entre Ríos 1450',
-        beds: 3, baths: 2, sqm: 175, garages: 1, price: 265000, currency: 'USD',
-        tag: 'Venta', featured: false, new: true, reduced: false,
-        img: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80',
-        desc: 'Casa de arquitectura contemporánea en el corazón bohemio de Güemes. Grandes ventanales, materiales nobles, patio central con jardín vertical. A pasos de los mejores restaurantes.',
-        amenities: ['Patio central', 'Jardín vertical', 'Diseño contemporáneo', 'Barrio gastronómico'],
-        age: 1,
-    },
-]
 
 const TYPES = ['Casa', 'Departamento', 'PH', 'Local', 'Oficina', 'Terreno', 'Cochera', 'Depósito']
 const OPERATIONS = ['Venta', 'Alquiler', 'Alquiler Temporal']
@@ -170,41 +46,29 @@ function Badge({ children, variant = 'primary' }) {
     )
 }
 
-/* ─── PROPERTY CARD — GRID VIEW ─────────────────────────────── */
-function PropertyCardGrid({ prop, onFavorite, isFavorite }) {
+/* ─── PROPERTY CARD — GRID VIEW (memoized) ─────────────────── */
+const PropertyCardGrid = memo(function PropertyCardGrid({ prop, onFavorite, isFavorite }) {
     const navigate = useNavigate()
-    const [imgHover, setImgHover] = useState(false)
 
     return (
         <div
-            className="group bg-white rounded-2xl overflow-hidden cursor-pointer flex flex-col"
-            style={{
-                boxShadow: '0 2px 20px rgba(18,39,58,0.07)',
-                border: '1px solid rgba(18,39,58,0.05)',
-                transition: 'box-shadow 0.35s ease, transform 0.35s ease',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 16px 48px rgba(18,39,58,0.16)'; e.currentTarget.style.transform = 'translateY(-4px)' }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 20px rgba(18,39,58,0.07)'; e.currentTarget.style.transform = 'translateY(0)' }}
+            className="group bg-white rounded-2xl overflow-hidden cursor-pointer flex flex-col property-card-grid"
             onClick={() => navigate(`/propiedades/${prop.id}`)}
         >
             {/* Image */}
             <div
                 className="relative overflow-hidden"
                 style={{ height: '220px' }}
-                onMouseEnter={() => setImgHover(true)}
-                onMouseLeave={() => setImgHover(false)}
             >
                 <img
                     src={prop.img}
                     alt={prop.title}
-                    className="w-full h-full object-cover"
-                    style={{
-                        transform: imgHover ? 'scale(1.07)' : 'scale(1)',
-                        transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)',
-                    }}
+                    className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-[1.07]"
+                    loading="lazy"
+                    decoding="async"
                 />
                 {/* Gradient */}
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(12,26,45,0.45) 0%, transparent 50%)' }} />
+                <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(12,26,45,0.45) 0%, transparent 50%)' }} />
 
                 {/* Badges top-left */}
                 <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
@@ -294,21 +158,14 @@ function PropertyCardGrid({ prop, onFavorite, isFavorite }) {
             </div>
         </div>
     )
-}
+})
 
-/* ─── PROPERTY CARD — LIST VIEW ─────────────────────────────── */
-function PropertyCardList({ prop, onFavorite, isFavorite }) {
+/* ─── PROPERTY CARD — LIST VIEW (memoized) ─────────────────── */
+const PropertyCardList = memo(function PropertyCardList({ prop, onFavorite, isFavorite }) {
     const navigate = useNavigate()
     return (
         <div
-            className="group bg-white rounded-2xl overflow-hidden cursor-pointer flex gap-0"
-            style={{
-                boxShadow: '0 2px 16px rgba(18,39,58,0.07)',
-                border: '1px solid rgba(18,39,58,0.05)',
-                transition: 'box-shadow 0.3s ease, transform 0.3s ease',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 10px_32px rgba(18,39,58,0.14)'; e.currentTarget.style.transform = 'translateX(4px)' }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px_16px rgba(18,39,58,0.07)'; e.currentTarget.style.transform = 'translateX(0)' }}
+            className="group bg-white rounded-2xl overflow-hidden cursor-pointer flex gap-0 property-card-list"
             onClick={() => navigate(`/propiedades/${prop.id}`)}
         >
             {/* Accent bar */}
@@ -316,7 +173,13 @@ function PropertyCardList({ prop, onFavorite, isFavorite }) {
 
             {/* Image */}
             <div className="relative w-[200px] sm:w-[240px] shrink-0 overflow-hidden">
-                <img src={prop.img} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img
+                    src={prop.img}
+                    alt={prop.title}
+                    className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                />
                 <div className="absolute top-3 left-3 flex gap-1 flex-wrap">
                     <Badge variant={prop.operation === 'Venta' ? 'primary' : 'secondary'}>{prop.operation}</Badge>
                 </div>
@@ -356,10 +219,10 @@ function PropertyCardList({ prop, onFavorite, isFavorite }) {
             </div>
         </div>
     )
-}
+})
 
 /* ─── FILTER CHIP ────────────────────────────────────────────── */
-function FilterChip({ label, active, onClick, icon: Icon }) {
+const FilterChip = memo(function FilterChip({ label, active, onClick, icon: Icon }) {
     return (
         <button
             onClick={onClick}
@@ -372,7 +235,7 @@ function FilterChip({ label, active, onClick, icon: Icon }) {
             {label}
         </button>
     )
-}
+})
 
 /* ─── RANGE SLIDER (legacy — kept for non-price uses) ────────── */
 function RangeInput({ label, min, max, value, onChange, format }) {
@@ -402,140 +265,23 @@ function RangeInput({ label, min, max, value, onChange, format }) {
     )
 }
 
-/* ─── MAIN COMPONENT ─────────────────────────────────────────── */
-export default function Properties() {
-    const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
-
-    /* View */
-    const [viewMode, setViewMode] = useState('grid')
-
-    /* Properties from Supabase */
-    const [allProps, setAllProps] = useState([])
-
-    useEffect(() => {
-        const load = async () => {
-            const { data } = await supabase
-                .from('properties')
-                .select('*')
-                .eq('publicado', true)
-                .order('created_at', { ascending: false })
-            setAllProps((data || []).map(p => ({
-                id: p.id,
-                type: p.tipo,
-                operation: p.operacion,
-                zone: p.zona || '',
-                title: p.titulo,
-                address: p.direccion || '',
-                beds: p.dormitorios || null,
-                baths: p.banos || 0,
-                sqm: p.m2_cubiertos || 0,
-                sqmLote: p.m2_lote || 0,
-                garages: p.cochera ? 1 : 0,
-                price: Number(p.precio),
-                currency: p.moneda,
-                tag: p.operacion,
-                featured: p.destacado,
-                new: p.nuevo_ingreso,
-                reduced: false,
-                img: p.imagenes?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
-                imgs: p.imagenes || [],
-                desc: p.descripcion || '',
-                amenities: [],
-                age: 0,
-            })))
-        }
-        load()
-    }, [])
-
-    /* Search */
-    const [search, setSearch] = useState('')
-
-    /* Filters */
-    const [selectedOps, setSelectedOps] = useState([])
-    const [selectedTypes, setSelectedTypes] = useState(
-        searchParams.get('tipo')
-            ? [searchParams.get('tipo').charAt(0).toUpperCase() + searchParams.get('tipo').slice(1)]
-            : []
-    );
-    const [selectedZones, setSelectedZones] = useState(
-        searchParams.get('zona') ? [searchParams.get('zona').replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())] : []
-    )
-    const [minPriceUSD, setMinPriceUSD] = useState(50000)
-    const [maxPriceUSD, setMaxPriceUSD] = useState(1000000)
-    const [minPriceARS, setMinPriceARS] = useState(200000)
-    const [maxPriceARS, setMaxPriceARS] = useState(2000000)
-    const [minBeds, setMinBeds] = useState(0)
-    const [minSqm, setMinSqm] = useState(0)
-    const [onlyFeatured, setOnlyFeatured] = useState(false)
-    const [onlyNew, setOnlyNew] = useState(false)
-
-    /* Sort */
-    const [sortBy, setSortBy] = useState('relevance')
-    const [sortOpen, setSortOpen] = useState(false)
-
-    /* Sidebar on mobile */
-    const [sidebarOpen, setSidebarOpen] = useState(false)
-
-    /* Favorites */
-    const [favorites, setFavorites] = useState([])
-
-    const toggleFav = (id) => setFavorites(prev => prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id])
-    const toggleFilter = (arr, setArr, val) => setArr(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])
-
-    /* Apply zone from URL param on load */
-    useEffect(() => {
-        const tipo = searchParams.get('tipo');
-        if (tipo) {
-            // Busca 'Departamento' en el array TYPES si el parámetro es 'departamento'
-            const label = TYPES.find(t => t.toLowerCase() === tipo.toLowerCase());
-            if (label) setSelectedTypes([label]);
-        }
-    }, [searchParams]); // Se ejecuta si cambia la URL
-
-    /* Filtered + sorted */
-    const filtered = useMemo(() => {
-        let list = allProps.filter(p => {
-            if (search && !p.title.toLowerCase().includes(search.toLowerCase()) &&
-                !p.address.toLowerCase().includes(search.toLowerCase()) &&
-                !p.zone.toLowerCase().includes(search.toLowerCase())) return false
-            if (selectedOps.length && !selectedOps.includes(p.operation)) return false
-            if (selectedTypes.length && !selectedTypes.includes(p.type)) return false
-            if (selectedZones.length && !selectedZones.includes(p.zone)) return false
-            if (p.currency === 'USD' && (p.price < minPriceUSD || p.price > maxPriceUSD)) return false
-            if (p.currency === 'ARS' && (p.price < minPriceARS || p.price > maxPriceARS)) return false
-            if (minBeds > 0 && (p.beds === null || p.beds < minBeds)) return false
-            if (minSqm > 0 && p.sqm < minSqm) return false
-            if (onlyFeatured && !p.featured) return false
-            if (onlyNew && !p.new) return false
-            return true
-        })
-
-        switch (sortBy) {
-            case 'price-asc': return [...list].sort((a, b) => (a.currency === b.currency ? a.price - b.price : a.currency === 'USD' ? -1 : 1))
-            case 'price-desc': return [...list].sort((a, b) => (a.currency === b.currency ? b.price - a.price : b.currency === 'USD' ? -1 : 1))
-            case 'sqm-desc': return [...list].sort((a, b) => b.sqm - a.sqm)
-            case 'newest': return [...list].sort((a, b) => a.age - b.age)
-            default: return [...list].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
-        }
-    }, [search, selectedOps, selectedTypes, selectedZones, minPriceUSD, maxPriceUSD, minPriceARS, maxPriceARS, minBeds, minSqm, onlyFeatured, onlyNew, sortBy, allProps])
-
-    const activeFiltersCount = selectedOps.length + selectedTypes.length + selectedZones.length +
-        (onlyFeatured ? 1 : 0) + (onlyNew ? 1 : 0) +
-        (minPriceUSD > 50000 || maxPriceUSD < 1000000 ? 1 : 0) +
-        (minPriceARS > 200000 || maxPriceARS < 2000000 ? 1 : 0) +
-        (minBeds > 0 ? 1 : 0) + (minSqm > 0 ? 1 : 0)
-
-    const clearAllFilters = () => {
-        setSelectedOps([]); setSelectedTypes([]); setSelectedZones([])
-        setMinPriceUSD(50000); setMaxPriceUSD(1000000)
-        setMinPriceARS(200000); setMaxPriceARS(2000000)
-        setMinBeds(0); setMinSqm(0)
-        setOnlyFeatured(false); setOnlyNew(false); setSearch('')
-    }
-
-    /* ── SIDEBAR FILTER PANEL ── */
-    const FilterPanel = () => (
+/* ─── FILTER PANEL (extracted outside render) ────────────────── */
+const FilterPanel = memo(function FilterPanel({
+    selectedOps, setSelectedOps,
+    selectedTypes, setSelectedTypes,
+    selectedZones, setSelectedZones,
+    minPriceUSD, setMinPriceUSD,
+    maxPriceUSD, setMaxPriceUSD,
+    minPriceARS, setMinPriceARS,
+    maxPriceARS, setMaxPriceARS,
+    minBeds, setMinBeds,
+    minSqm, setMinSqm,
+    onlyFeatured, setOnlyFeatured,
+    onlyNew, setOnlyNew,
+    activeFiltersCount, clearAllFilters,
+    toggleFilter,
+}) {
+    return (
         <div className="space-y-7">
             {/* Operation */}
             <div>
@@ -693,6 +439,139 @@ export default function Properties() {
             )}
         </div>
     )
+})
+
+/* ─── MAIN COMPONENT ─────────────────────────────────────────── */
+export default function Properties() {
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+
+    /* View */
+    const [viewMode, setViewMode] = useState('grid')
+
+    /* Properties from Supabase */
+    const [allProps, setAllProps] = useState([])
+
+    useEffect(() => {
+        const load = async () => {
+            const { data } = await supabase
+                .from('properties')
+                .select('*')
+                .eq('publicado', true)
+                .order('created_at', { ascending: false })
+            setAllProps((data || []).map(p => ({
+                id: p.id,
+                type: p.tipo,
+                operation: p.operacion,
+                zone: p.zona || '',
+                title: p.titulo,
+                address: p.direccion || '',
+                beds: p.dormitorios || null,
+                baths: p.banos || 0,
+                sqm: p.m2_cubiertos || 0,
+                sqmLote: p.m2_lote || 0,
+                garages: p.cochera ? 1 : 0,
+                price: Number(p.precio),
+                currency: p.moneda,
+                tag: p.operacion,
+                featured: p.destacado,
+                new: p.nuevo_ingreso,
+                reduced: false,
+                img: p.imagenes?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
+                imgs: p.imagenes || [],
+                desc: p.descripcion || '',
+                amenities: [],
+                age: 0,
+            })))
+        }
+        load()
+    }, [])
+
+    /* Search */
+    const [search, setSearch] = useState('')
+
+    /* Filters */
+    const [selectedOps, setSelectedOps] = useState([])
+    const [selectedTypes, setSelectedTypes] = useState(
+        searchParams.get('tipo')
+            ? [searchParams.get('tipo').charAt(0).toUpperCase() + searchParams.get('tipo').slice(1)]
+            : []
+    );
+    const [selectedZones, setSelectedZones] = useState(
+        searchParams.get('zona') ? [searchParams.get('zona').replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())] : []
+    )
+    const [minPriceUSD, setMinPriceUSD] = useState(50000)
+    const [maxPriceUSD, setMaxPriceUSD] = useState(1000000)
+    const [minPriceARS, setMinPriceARS] = useState(200000)
+    const [maxPriceARS, setMaxPriceARS] = useState(2000000)
+    const [minBeds, setMinBeds] = useState(0)
+    const [minSqm, setMinSqm] = useState(0)
+    const [onlyFeatured, setOnlyFeatured] = useState(false)
+    const [onlyNew, setOnlyNew] = useState(false)
+
+    /* Sort */
+    const [sortBy, setSortBy] = useState('relevance')
+    const [sortOpen, setSortOpen] = useState(false)
+
+    /* Sidebar on mobile */
+    const [sidebarOpen, setSidebarOpen] = useState(false)
+
+    /* Favorites */
+    const [favorites, setFavorites] = useState([])
+
+    const toggleFav = useCallback((id) => setFavorites(prev => prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]), [])
+    const toggleFilter = useCallback((arr, setArr, val) => setArr(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]), [])
+
+    /* Apply zone from URL param on load */
+    useEffect(() => {
+        const tipo = searchParams.get('tipo');
+        if (tipo) {
+            // Busca 'Departamento' en el array TYPES si el parámetro es 'departamento'
+            const label = TYPES.find(t => t.toLowerCase() === tipo.toLowerCase());
+            if (label) setSelectedTypes([label]);
+        }
+    }, [searchParams]); // Se ejecuta si cambia la URL
+
+    /* Filtered + sorted */
+    const filtered = useMemo(() => {
+        let list = allProps.filter(p => {
+            if (search && !p.title.toLowerCase().includes(search.toLowerCase()) &&
+                !p.address.toLowerCase().includes(search.toLowerCase()) &&
+                !p.zone.toLowerCase().includes(search.toLowerCase())) return false
+            if (selectedOps.length && !selectedOps.includes(p.operation)) return false
+            if (selectedTypes.length && !selectedTypes.includes(p.type)) return false
+            if (selectedZones.length && !selectedZones.includes(p.zone)) return false
+            if (p.currency === 'USD' && (p.price < minPriceUSD || p.price > maxPriceUSD)) return false
+            if (p.currency === 'ARS' && (p.price < minPriceARS || p.price > maxPriceARS)) return false
+            if (minBeds > 0 && (p.beds === null || p.beds < minBeds)) return false
+            if (minSqm > 0 && p.sqm < minSqm) return false
+            if (onlyFeatured && !p.featured) return false
+            if (onlyNew && !p.new) return false
+            return true
+        })
+
+        switch (sortBy) {
+            case 'price-asc': return [...list].sort((a, b) => (a.currency === b.currency ? a.price - b.price : a.currency === 'USD' ? -1 : 1))
+            case 'price-desc': return [...list].sort((a, b) => (a.currency === b.currency ? b.price - a.price : b.currency === 'USD' ? -1 : 1))
+            case 'sqm-desc': return [...list].sort((a, b) => b.sqm - a.sqm)
+            case 'newest': return [...list].sort((a, b) => a.age - b.age)
+            default: return [...list].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+        }
+    }, [search, selectedOps, selectedTypes, selectedZones, minPriceUSD, maxPriceUSD, minPriceARS, maxPriceARS, minBeds, minSqm, onlyFeatured, onlyNew, sortBy, allProps])
+
+    const activeFiltersCount = selectedOps.length + selectedTypes.length + selectedZones.length +
+        (onlyFeatured ? 1 : 0) + (onlyNew ? 1 : 0) +
+        (minPriceUSD > 50000 || maxPriceUSD < 1000000 ? 1 : 0) +
+        (minPriceARS > 200000 || maxPriceARS < 2000000 ? 1 : 0) +
+        (minBeds > 0 ? 1 : 0) + (minSqm > 0 ? 1 : 0)
+
+    const clearAllFilters = useCallback(() => {
+        setSelectedOps([]); setSelectedTypes([]); setSelectedZones([])
+        setMinPriceUSD(50000); setMaxPriceUSD(1000000)
+        setMinPriceARS(200000); setMaxPriceARS(2000000)
+        setMinBeds(0); setMinSqm(0)
+        setOnlyFeatured(false); setOnlyNew(false); setSearch('')
+    }, [])
 
     return (
         <div className="bg-secondaryLight min-h-screen">
@@ -810,7 +689,22 @@ export default function Properties() {
                                 </button>
                             )}
                         </div>
-                        <FilterPanel />
+                        <FilterPanel
+                            selectedOps={selectedOps} setSelectedOps={setSelectedOps}
+                            selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes}
+                            selectedZones={selectedZones} setSelectedZones={setSelectedZones}
+                            minPriceUSD={minPriceUSD} setMinPriceUSD={setMinPriceUSD}
+                            maxPriceUSD={maxPriceUSD} setMaxPriceUSD={setMaxPriceUSD}
+                            minPriceARS={minPriceARS} setMinPriceARS={setMinPriceARS}
+                            maxPriceARS={maxPriceARS} setMaxPriceARS={setMaxPriceARS}
+                            minBeds={minBeds} setMinBeds={setMinBeds}
+                            minSqm={minSqm} setMinSqm={setMinSqm}
+                            onlyFeatured={onlyFeatured} setOnlyFeatured={setOnlyFeatured}
+                            onlyNew={onlyNew} setOnlyNew={setOnlyNew}
+                            activeFiltersCount={activeFiltersCount}
+                            clearAllFilters={clearAllFilters}
+                            toggleFilter={toggleFilter}
+                        />
                     </div>
                 </aside>
 
@@ -920,7 +814,22 @@ export default function Properties() {
                             </button>
                         </div>
                         <div className="px-6 py-6">
-                            <FilterPanel />
+                            <FilterPanel
+                                selectedOps={selectedOps} setSelectedOps={setSelectedOps}
+                                selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes}
+                                selectedZones={selectedZones} setSelectedZones={setSelectedZones}
+                                minPriceUSD={minPriceUSD} setMinPriceUSD={setMinPriceUSD}
+                                maxPriceUSD={maxPriceUSD} setMaxPriceUSD={setMaxPriceUSD}
+                                minPriceARS={minPriceARS} setMinPriceARS={setMinPriceARS}
+                                maxPriceARS={maxPriceARS} setMaxPriceARS={setMaxPriceARS}
+                                minBeds={minBeds} setMinBeds={setMinBeds}
+                                minSqm={minSqm} setMinSqm={setMinSqm}
+                                onlyFeatured={onlyFeatured} setOnlyFeatured={setOnlyFeatured}
+                                onlyNew={onlyNew} setOnlyNew={setOnlyNew}
+                                activeFiltersCount={activeFiltersCount}
+                                clearAllFilters={clearAllFilters}
+                                toggleFilter={toggleFilter}
+                            />
                             <button
                                 onClick={() => setSidebarOpen(false)}
                                 className="w-full mt-6 py-4 bg-textPrimary text-white rounded-2xl font-body font-bold text-[0.85rem] tracking-wide"

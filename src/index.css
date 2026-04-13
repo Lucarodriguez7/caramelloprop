@@ -118,13 +118,43 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   PROPERTY CARDS — GPU-accelerated hover effects (no JS re-renders)
+═══════════════════════════════════════════════════════════════════ */
+
+.property-card-grid {
+  box-shadow: 0 2px 20px rgba(18,39,58,0.07);
+  border: 1px solid rgba(18,39,58,0.05);
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+  will-change: transform, box-shadow;
+}
+.property-card-grid:hover {
+  box-shadow: 0 16px 48px rgba(18,39,58,0.16);
+  transform: translateY(-4px);
+}
+
+.property-card-list {
+  box-shadow: 0 2px 16px rgba(18,39,58,0.07);
+  border: 1px solid rgba(18,39,58,0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  will-change: transform, box-shadow;
+}
+.property-card-list:hover {
+  box-shadow: 0 10px 32px rgba(18,39,58,0.14);
+  transform: translateX(4px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    PRICE RANGE SLIDER — Dual Thumb Premium Styles
    Dos inputs range superpuestos con thumbs personalizados.
+   Performance: touch-action: pan-x permite al browser manejar
+   el gesto horizontal nativo sin conflictos con JS.
 ═══════════════════════════════════════════════════════════════════ */
 
 .price-slider-container {
   position: relative;
-  touch-action: none;
+  touch-action: pan-x;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .price-slider-thumb {
@@ -141,6 +171,7 @@
   padding: 0;
   outline: none;
   z-index: 3;
+  touch-action: pan-x;
 }
 
 /* ── WebKit (Chrome, Safari, Edge) ── */
@@ -159,22 +190,21 @@
   border-radius: 50%;
   background: #ffffff;
   border: 3px solid #12645F;
-  box-shadow: 0 2px 8px rgba(18, 100, 95, 0.20), 0 0 0 0 rgba(18, 100, 95, 0);
-  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(18, 100, 95, 0.20);
+  cursor: grab;
   margin-top: -8.5px;
-  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
   position: relative;
   z-index: 4;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .price-slider-thumb::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
   box-shadow: 0 3px 12px rgba(18, 100, 95, 0.30), 0 0 0 6px rgba(18, 100, 95, 0.08);
   border-color: #0A4441;
 }
 
 .price-slider-thumb::-webkit-slider-thumb:active {
-  transform: scale(1.2);
+  cursor: grabbing;
   box-shadow: 0 3px 16px rgba(18, 100, 95, 0.35), 0 0 0 8px rgba(18, 100, 95, 0.10);
   border-color: #0A4441;
 }
@@ -194,13 +224,16 @@
   background: #ffffff;
   border: 3px solid #12645F;
   box-shadow: 0 2px 8px rgba(18, 100, 95, 0.20);
-  cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  cursor: grab;
+  transition: box-shadow 0.15s ease;
 }
 
 .price-slider-thumb::-moz-range-thumb:hover {
-  transform: scale(1.15);
   box-shadow: 0 3px 12px rgba(18, 100, 95, 0.30), 0 0 0 6px rgba(18, 100, 95, 0.08);
+}
+
+.price-slider-thumb::-moz-range-thumb:active {
+  cursor: grabbing;
 }
 
 /* ── Focus visible para accesibilidad ── */
@@ -211,15 +244,15 @@
 /* ── Touch: thumbs más grandes en mobile ── */
 @media (pointer: coarse) {
   .price-slider-thumb::-webkit-slider-thumb {
-    width: 28px;
-    height: 28px;
-    margin-top: -11.5px;
+    width: 30px;
+    height: 30px;
+    margin-top: -12.5px;
   }
   .price-slider-thumb::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
   }
   .price-slider-container {
-    height: 2rem;
+    height: 2.5rem;
   }
 }

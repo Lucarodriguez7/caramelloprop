@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, memo } from 'react'
 import { DollarSign } from 'lucide-react'
 
 /* ──────────────────────────────────────────────────────────────────
@@ -10,6 +10,11 @@ import { DollarSign } from 'lucide-react'
    3. Sub-label dinámico (dólares/pesos) → contexto inmediato
    4. Validación silenciosa (clamp, swap) → previene errores
    5. Track con gradiente → feedback visual del rango seleccionado
+   
+   Performance:
+   - El slider usa estado local y solo propaga al padre via
+     requestAnimationFrame para evitar re-renders bloqueantes.
+   - Los handlers de input no bloquean el hilo principal.
 ────────────────────────────────────────────────────────────────── */
 
 /** Formatea un número con separador de miles estilo argentino (.) */
@@ -30,7 +35,7 @@ function formatWithCurrency(value, currency) {
     return `$${formatNumber(value)}`
 }
 
-export default function PriceRangeFilter({
+function PriceRangeFilter({
     currency = 'USD',
     min: absMin,
     max: absMax,
@@ -45,6 +50,19 @@ export default function PriceRangeFilter({
     const sublabel = isUSD ? 'En dólares estadounidenses' : 'En pesos argentinos'
     const computedStep = step || Math.max(1, Math.round((absMax - absMin) / 100))
 
+    /* ── Local state for slider thumbs (decoupled from parent) ── */
+    const [localMin, setLocalMin] = useState(valueMin)
+    const [localMax, setLocalMax] = useState(valueMax)
+    const rafRef = useRef(null)
+
+    /* Sync local state when parent values change externally (e.g. clear filters) */
+    useEffect(() => {
+        setLocalMin(valueMin)
+    }, [valueMin])
+    useEffect(() => {
+        setLocalMax(valueMax)
+    }, [valueMax])
+
     /* ── Local state para inputs editables ── */
     const [minInput, setMinInput] = useState(formatNumber(valueMin))
     const [maxInput, setMaxInput] = useState(formatNumber(valueMax))
@@ -53,54 +71,74 @@ export default function PriceRangeFilter({
 
     /* Sincronizar inputs cuando cambian los valores desde el slider */
     useEffect(() => {
-        if (!minFocused) setMinInput(formatNumber(valueMin))
-    }, [valueMin, minFocused])
+        if (!minFocused) setMinInput(formatNumber(localMin))
+    }, [localMin, minFocused])
 
     useEffect(() => {
-        if (!maxFocused) setMaxInput(formatNumber(valueMax))
-    }, [valueMax, maxFocused])
+        if (!maxFocused) setMaxInput(formatNumber(localMax))
+    }, [localMax, maxFocused])
 
     /* ── Track visual: calcula posición de los thumbs ── */
-    const minPercent = ((valueMin - absMin) / (absMax - absMin)) * 100
-    const maxPercent = ((valueMax - absMin) / (absMax - absMin)) * 100
+    const minPercent = ((localMin - absMin) / (absMax - absMin)) * 100
+    const maxPercent = ((localMax - absMin) / (absMax - absMin)) * 100
+
+    /* ── Propagate to parent with RAF debounce ── */
+    const propagateMin = useCallback((val) => {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current)
+        rafRef.current = requestAnimationFrame(() => {
+            onChangeMin(val)
+        })
+    }, [onChangeMin])
+
+    const propagateMax = useCallback((val) => {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current)
+        rafRef.current = requestAnimationFrame(() => {
+            onChangeMax(val)
+        })
+    }, [onChangeMax])
+
+    /* Cleanup RAF on unmount */
+    useEffect(() => {
+        return () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current)
+        }
+    }, [])
 
     /* ── Handlers del slider ── */
     const handleMinSlider = useCallback((e) => {
         const val = Number(e.target.value)
-        if (val <= valueMax) {
-            onChangeMin(val)
-        } else {
-            onChangeMin(valueMax)
-        }
-    }, [valueMax, onChangeMin])
+        const clamped = Math.min(val, localMax)
+        setLocalMin(clamped)
+        propagateMin(clamped)
+    }, [localMax, propagateMin])
 
     const handleMaxSlider = useCallback((e) => {
         const val = Number(e.target.value)
-        if (val >= valueMin) {
-            onChangeMax(val)
-        } else {
-            onChangeMax(valueMin)
-        }
-    }, [valueMin, onChangeMax])
+        const clamped = Math.max(val, localMin)
+        setLocalMax(clamped)
+        propagateMax(clamped)
+    }, [localMin, propagateMax])
 
     /* ── Handlers de inputs ── */
     const commitMinInput = useCallback(() => {
         let val = parseFormattedNumber(minInput)
         val = Math.max(absMin, Math.min(val, absMax))
-        if (val > valueMax) val = valueMax
+        if (val > localMax) val = localMax
+        setLocalMin(val)
         onChangeMin(val)
         setMinInput(formatNumber(val))
         setMinFocused(false)
-    }, [minInput, absMin, absMax, valueMax, onChangeMin])
+    }, [minInput, absMin, absMax, localMax, onChangeMin])
 
     const commitMaxInput = useCallback(() => {
         let val = parseFormattedNumber(maxInput)
         val = Math.max(absMin, Math.min(val, absMax))
-        if (val < valueMin) val = valueMin
+        if (val < localMin) val = localMin
+        setLocalMax(val)
         onChangeMax(val)
         setMaxInput(formatNumber(val))
         setMaxFocused(false)
-    }, [maxInput, absMin, absMax, valueMin, onChangeMax])
+    }, [maxInput, absMin, absMax, localMin, onChangeMax])
 
     const handleKeyDown = (e, commitFn) => {
         if (e.key === 'Enter') {
@@ -211,7 +249,7 @@ export default function PriceRangeFilter({
                     min={absMin}
                     max={absMax}
                     step={computedStep}
-                    value={valueMin}
+                    value={localMin}
                     onChange={handleMinSlider}
                     className="price-slider-thumb"
                     aria-label="Precio mínimo slider"
@@ -223,7 +261,7 @@ export default function PriceRangeFilter({
                     min={absMin}
                     max={absMax}
                     step={computedStep}
-                    value={valueMax}
+                    value={localMax}
                     onChange={handleMaxSlider}
                     className="price-slider-thumb"
                     aria-label="Precio máximo slider"
@@ -243,9 +281,11 @@ export default function PriceRangeFilter({
             {/* ── Selected range summary ── */}
             <div className="mt-3 text-center">
                 <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-body font-bold text-primary bg-primary/8 px-3 py-1.5 rounded-full">
-                    {formatWithCurrency(valueMin, currency)} – {formatWithCurrency(valueMax, currency)}
+                    {formatWithCurrency(localMin, currency)} – {formatWithCurrency(localMax, currency)}
                 </span>
             </div>
         </div>
     )
 }
+
+export default memo(PriceRangeFilter)

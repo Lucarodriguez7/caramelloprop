@@ -59,7 +59,7 @@ function SimilarCard({ prop }) {
             onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 16px rgba(18,39,58,0.07)'; e.currentTarget.style.transform = 'none' }}
         >
             <div className="relative h-[160px] overflow-hidden">
-                <img src={prop.imgs[0]} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img src={prop.imgs[0]} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-105" loading="lazy" decoding="async" />
                 <span className={`absolute top-2.5 left-2.5 text-[0.55rem] font-body font-black tracking-[0.14em] uppercase px-2.5 py-1.5 rounded-full ${prop.operation === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                     {prop.operation}
                 </span>
@@ -252,6 +252,7 @@ function GalleryModal({ imgs, startIndex, onClose }) {
                     alt=""
                     className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
                     onClick={e => e.stopPropagation()}
+                    decoding="async"
                 />
             </div>
 
@@ -283,7 +284,7 @@ function GalleryModal({ imgs, startIndex, onClose }) {
                                 opacity: i === current ? 1 : 0.5,
                             }}
                         >
-                            <img src={img} alt="" className="w-full h-full object-cover" />
+                            <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         </button>
                     ))}
                 </div>
@@ -481,7 +482,8 @@ export default function Property() {
                                 <img
                                     src={property.imgs[activeImg]}
                                     alt={property.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                                    className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-[1.02]"
+                                    decoding="async"
                                 />
                                 <div className="absolute inset-0 bg-textPrimary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                     <div className="bg-white/90 backdrop-blur-sm rounded-full px-5 py-2.5 flex items-center gap-2 font-body font-bold text-textPrimary text-[0.78rem]">
@@ -509,7 +511,7 @@ export default function Property() {
                                                 boxShadow: i === activeImg ? '0 4px 12px rgba(18,100,95,0.25)' : 'none',
                                             }}
                                         >
-                                            <img src={img} alt="" className="w-full h-full object-cover" />
+                                            <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                                         </button>
                                     ))}
                                     <button
@@ -636,6 +638,7 @@ export default function Property() {
                                         : `https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&z=15&output=embed`
                                     }
                                     allowFullScreen
+                                    loading="lazy"
                                 />
                             </div>
                         </div>
