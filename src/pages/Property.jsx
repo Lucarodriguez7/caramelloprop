@@ -105,14 +105,14 @@ function ContactSidebar({ property }) {
                 <div className="absolute right-0 top-0 w-40 h-40 opacity-10 pointer-events-none"
                     style={{ background: 'radial-gradient(circle at 80% 20%, #12645F, transparent 60%)' }} />
                 <div className="relative z-10">
-                    <p className="text-white/50 text-[0.65rem] font-body font-bold tracking-[0.18em] uppercase mb-1">Martillera y corredora pública</p>
+
                     <div className="flex items-center gap-3 mb-4">
                         <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
                             <span className="font-body font-black text-primary text-[0.85rem]">FP</span>
                         </div>
                         <div>
                             <p className="font-body font-bold text-white text-[0.88rem]">Mariana Caramello</p>
-                            <p className="text-white/45 text-[0.72rem] font-body">Asesor principal</p>
+                            <p className="text-white/45 text-[0.72rem] font-body">Martillera y corredora pública</p>
                         </div>
                         <div className="ml-auto flex items-center gap-1.5">
                             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
