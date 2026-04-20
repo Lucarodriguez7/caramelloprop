@@ -39,7 +39,7 @@ const VALUES = [
     },
     {
         Icon: Star,
-        title: 'Excelencia',
+        title: 'Trayectoria',
         desc: 'Más de 25 años de experiencia en el mercado inmobiliario de Mar del Plata.',
         num: '04',
     },
@@ -57,11 +57,11 @@ const SERVICES = [
 ]
 
 const TIMELINE = [
-    { year: '1998', text: 'Inicio de actividad como martillera pública en Mar del Plata.' },
-    { year: '2005', text: 'Incorporación de la unidad de alquileres y administración.' },
-    { year: '2012', text: 'Expansión al segmento de propiedades comerciales y countries.' },
-    { year: '2020', text: 'Digitalización total del servicio con plataforma online.' },
-    { year: 'Hoy', text: 'Consolidación plena en el mercado marplatense, con presencia activa en todos los segmentos inmobiliarios.' },
+    { year: '1998', text: 'Aldo Pedro Caramello inicia la actividad inmobiliaria en Güemes, con el Estudio Inmobiliario ubicado en Güemes casi Roca.' },
+    { year: '2001', text: 'Con el acompañamiento constante de la familia y el valioso aporte de su esposa, la firma crece y se consolida como Caramello Propiedades en Güemes 3231.' },
+    { year: '2008', text: 'Nueva etapa para la firma: traslado a la oficina de Alvarado 1218 e incorporación de Mariana Caramello como profesional matriculada, impulsando crecimiento y renovación.' },
+    { year: '2019', text: 'Traslado a la actual oficina de calle Sarmiento, un espacio pensado para brindar mayor comodidad, calidez, confianza y atención personalizada.' },
+    { year: 'Hoy', text: 'Más de 25 años combinando legado familiar, experiencia y atención personalizada en Mar del Plata.' },
 ]
 
 /* ── Componente principal ──────────────────────────────── */
@@ -371,17 +371,9 @@ export default function Nosotros() {
                         </h2>
 
                         <p className="story-anim opacity-0 text-textSecondary leading-relaxed mb-5" style={{ fontSize: '1rem' }}>
-                            Mariana Caramello es martillera y corredora pública matriculada, con más de
-                            25 años de trayectoria en el mercado inmobiliario de Mar del Plata.
-                            Trabaja de manera <strong className="text-textPrimary font-semibold">independiente</strong>, lo
-                            que le permite dedicar atención personalizada y exclusiva a cada cliente.
-                        </p>
-
-                        <p className="story-anim opacity-0 text-textSecondary leading-relaxed mb-8" style={{ fontSize: '1rem' }}>
-                            Su enfoque combina el rigor legal de la corredura pública con la calidez
-                            humana que cada operación merece. Desde viviendas familiares hasta
-                            subasta y remate público, Mariana ofrece una gestión completa, transparente
-                            y orientada al mejor resultado para sus clientes.
+                            Más de 25 años de historia en el mercado inmobiliario de Mar del Plata, continuando un legado familiar y ejerciendo
+                            profesionalmente desde 2008 como martillera y corredora pública matriculada. Hoy brinda una atención independiente,
+                            cercana y personalizada en cada operación.
                         </p>
 
                         <div className="story-anim opacity-0 flex flex-col gap-3">
@@ -542,8 +534,8 @@ export default function Nosotros() {
                             <span className="text-primary">NECESITÁS</span>
                         </h2>
                         <p className="text-textSecondary leading-relaxed mb-10" style={{ fontSize: '1rem' }}>
-                            Ofrezco un servicio integral que cubre todas las etapas del proceso
-                            inmobiliario, con respaldo legal y asesoría personalizada en cada paso.
+                            Soluciones concretas para cada etapa del proceso inmobiliario,
+                            desde la búsqueda inicial hasta la firma final, con gestión ágil y atención dedicada.
                         </p>
 
                         <div className="flex flex-col gap-3">
@@ -630,8 +622,8 @@ export default function Nosotros() {
                         ¿LISTO PARA DAR<br />EL PRÓXIMO PASO?
                     </h2>
                     <p className="text-white/65 text-[1rem] leading-relaxed mb-10 max-w-[440px] mx-auto">
-                        Consultá sin compromiso. Te acompañamos desde la primera visita
-                        hasta la firma de la escritura.
+                        Consultá sin compromiso. Te acompañamos
+                        desde el primer contacto hasta la firma final.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button

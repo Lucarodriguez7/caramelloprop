@@ -829,8 +829,8 @@ export default function Home() {
                 beds: p.dormitorios || null,
                 baths: p.banos || null,
                 sqm: p.m2_cubiertos || 0,
-                price: p.moneda === 'USD' 
-                    ? `USD ${Number(p.precio).toLocaleString('es-AR')}` 
+                price: p.moneda === 'USD'
+                    ? `USD ${Number(p.precio).toLocaleString('es-AR')}`
                     : `$${Number(p.precio).toLocaleString('es-AR')}/mes`,
                 tag: p.operacion,
                 featured: p.destacado,
@@ -879,9 +879,9 @@ export default function Home() {
                         <span className="text-metallic">importantes en cada proceso</span>
                     </h2>
                     <p className="text-[0.95rem] text-textSecondary leading-[1.9] mb-14 max-w-[520px]">
-                        Entendemos que cada operación inmobiliaria implica mucho más que una propiedad.
-                        Por eso trabajamos con un enfoque cercano, profesional y transparente, acompañando
-                        cada etapa del proceso con criterio y experiencia real en el mercado.
+                        Entendemos que no se trata solo de comprar, vender o alquilar una propiedad, sino de decisiones importantes.
+                        Por eso en Caramello Propiedades acompañamos cada proceso con experiencia, honestidad y
+                        atención personalizada.
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10 mb-14">
                         <div>
@@ -941,7 +941,7 @@ export default function Home() {
                             Encontrá el espacio <span className="text-metallic">ideal.</span>
                         </h2>
                         <p className="mt-2 text-[0.9rem] text-textSecondary max-w-[400px] leading-relaxed">
-                            Desde el hogar de tus sueños hasta el próximo paso para tu negocio.
+                            Desde tu próximo hogar hasta el espacio ideal para tu desarrollo profesional y laboral.
                         </p>
                     </div>
                     <button onClick={() => navigate('/propiedades')} className="btn-secondary">
@@ -997,22 +997,22 @@ export default function Home() {
                             Más de dos décadas construyendo<span className="text-metallic"> confianza</span>
                         </h2>
                         <p className="mt-5 text-textSecondary text-[0.95rem] leading-[1.9] max-w-[520px]">
-                            Cada operación es única. Por eso, acompañamos de manera personalizada, con criterio profesional, experiencia en el mercado y un enfoque humano que prioriza decisiones seguras.
+                            Cada cliente y cada operación son únicos. Te brindamos experiencia real, procesos claros y acompañamiento cercano para avanzar con seguridad en cada paso.
                         </p>
                     </div>
                     <div className="grid lg:grid-cols-2 gap-14 items-center">
                         <div className="flex flex-col gap-6">
                             <div data-aos="fade-up" data-aos-delay="100" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
                                 <h3 className="font-body text-[1rem] text-primary font-bold mb-2">Trayectoria comprobada</h3>
-                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Desde 1998 operando en el mercado inmobiliario, con un conocimiento profundo de cada zona y sus oportunidades reales.</p>
+                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Desde 1998 acompañando operaciones inmobiliarias, con conocimiento real de cada zona y sus oportunidades.</p>
                             </div>
                             <div data-aos="fade-up" data-aos-delay="200" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
                                 <h3 className="font-body text-[1rem] text-primary font-bold mb-2">Asesoramiento personalizado</h3>
-                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">No trabajamos con soluciones genéricas. Cada cliente recibe una estrategia pensada según su situación y objetivos.</p>
+                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Cada cliente y cada operación son únicos. Por eso diseñamos estrategias según cada necesidad y objetivo.</p>
                             </div>
                             <div data-aos="fade-up" data-aos-delay="300" className="border border-neutral-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-500 bg-white">
                                 <h3 className="font-body text-[1rem] text-primary font-bold mb-2">Transparencia en cada paso</h3>
-                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Información clara, procesos ordenados y acompañamiento constante para tomar decisiones con seguridad.</p>
+                                <p className="text-textSecondary text-[0.9rem] leading-[1.8]">Información clara, procesos ordenados y seguimiento constante para avanzar con tranquilidad.</p>
                             </div>
                         </div>
                         <div data-aos="fade-left" data-aos-delay="200" className="relative">
@@ -1073,7 +1073,7 @@ export default function Home() {
 
             {/* ════ CTA BANNER ══════════════════════════════════════ */}
             <section data-aos="zoom-in" className="mx-[4%] my-16 rounded-3xl px-[6%] py-16 flex items-center justify-between gap-8 flex-wrap relative overflow-hidden">
-                <div className="absolute inset-0" style={{ backgroundImage: "url('https://i.imgur.com/ZJd2QMZ.jpg')", backgroundSize: "cover", backgroundPosition: "center" }} />
+                <div className="absolute inset-0" style={{ backgroundImage: "url('')", backgroundSize: "cover", backgroundPosition: "center" }} />
                 <div className="absolute inset-0 bg-textPrimary/85" />
                 <div className="absolute right-0 top-0 w-[400px] h-full opacity-20 pointer-events-none"
                     style={{ background: 'radial-gradient(circle at 80% 50%, #00FBFA, transparent 60%)' }} />

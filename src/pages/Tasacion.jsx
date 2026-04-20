@@ -5,12 +5,12 @@ import { supabase } from '../lib/supabaseClient';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WA = 'https://wa.me/5492235901529'; // El WA del usuario
+const WA = 'https://wa.me/5492234487206'; // El WA del usuario
 
 const MOTIVOS = [
     { id: 'vender', label: 'Vender', desc: 'Quiero tasar para poner en venta', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="1.5" /><path d="M9 22V12h6v10" stroke="currentColor" strokeWidth="1.5" /></svg> },
     { id: 'alquilar', label: 'Alquilar', desc: 'Quiero saber el valor de alquiler', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" strokeWidth="1.5" /><circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" /></svg> },
-    { id: 'valor', label: 'Conocer el valor', desc: 'Solo quiero saber cuánto vale', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg> },
+    { id: 'valor', label: 'Tasación formal', desc: 'Para sucesiones, trámites o fines contables. Incluye bono y timbrado.', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg> },
 ];
 
 const TIPOS = [
@@ -25,7 +25,7 @@ const TIPOS = [
 const BENEFICIOS = [
     { title: 'Consultá sin compromiso', desc: 'Te asesoramos sobre tu tasación. Conocé el valor real de tu propiedad sin obligación de venta ni contrato.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.3" /><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg> },
     { title: 'Basada en datos reales', desc: 'Analizamos ventas recientes, demanda actual y ubicación para darte un valor preciso y competitivo.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 16l4-4 3 3 4-5 5 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" /></svg> },
-    { title: 'En menos de 48hs', desc: 'Recibís el informe de tasación en tu WhatsApp o email en un plazo máximo de 48 horas hábiles.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.3" /><path d="M11 6v5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg> },
+    { title: 'Gestión eficiente', desc: 'Analizamos tu propiedad y respondemos de forma clara y ágil.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.3" /><path d="M11 6v5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg> },
     { title: 'Asesoramiento incluido', desc: 'Te orientamos sobre el mejor momento para vender o alquilar según las condiciones del mercado.', icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" /></svg> },
 ];
 
@@ -208,7 +208,7 @@ export default function Tasaciones() {
             const m_label = MOTIVOS.find(m => m.id === motivo)?.label || motivo;
             const t_label = TIPOS.find(t => t.id === tipo)?.label || tipo;
 
-            const extraMsg = 
+            const extraMsg =
                 `📌 TIPO DE INQUETUD: Tasación (${m_label})\n` +
                 `📌 PROPIEDAD: ${t_label}\n` +
                 `📌 SUPERFICIE: ${chars.m2}m² cubiertos${chars.m2Lote ? ` / ${chars.m2Lote}m² de lote` : ''}\n` +
