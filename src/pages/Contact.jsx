@@ -101,7 +101,7 @@ export default function Contact() {
                                 </div>
                                 <h3 className="font-body font-black text-primary text-[1.8rem] mb-2">¡Consulta enviada!</h3>
                                 <p className="text-textSecondary text-[0.95rem] font-body leading-relaxed">
-                                    Recibimos tus datos correctamente.<br />Un asesor se pondrá en contacto contigo en breve.
+                                    Recibimos tus datos correctamente.<br />Nos pondremos en contacto contigo en breve.
                                 </p>
                             </div>
                         ) : (

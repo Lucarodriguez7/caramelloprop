@@ -69,12 +69,7 @@ export default function Nosotros() {
     const navigate = useNavigate()
 
     /* refs para animaciones */
-    const heroRef = useRef(null)
-    const heroBgRef = useRef(null)
-    const heroOverlayRef = useRef(null)
-    const heroTextRef = useRef(null)
-    const heroBadgeRef = useRef(null)
-    const heroCtaRef = useRef(null)
+    const headerRef = useRef(null)
 
     const storyRef = useRef(null)
     const storyImgRef = useRef(null)
@@ -92,302 +87,185 @@ export default function Nosotros() {
     const ctaBannerRef = useRef(null)
 
     useEffect(() => {
-        /* ── HERO ── */
-        const heroTl = gsap.timeline({ defaults: { ease: 'power4.out' } })
+        const ctx = gsap.context(() => {
+            /* ── HEADER ── */
+            if (headerRef.current) {
+                gsap.set(headerRef.current, { opacity: 1 })
+                gsap.fromTo(headerRef.current.querySelector('h1'),
+                    { opacity: 0, scale: 0.9, y: 30 },
+                    { opacity: 1, scale: 1, y: 0, duration: 1.8, ease: 'power4.out', delay: 1.0 })
+                gsap.fromTo(headerRef.current.querySelectorAll('.header-line'),
+                    { width: 0, opacity: 0 },
+                    { width: '4rem', opacity: 1, duration: 1.5, ease: 'power3.out', delay: 1.4, stagger: 0.2 })
+            }
 
-        heroTl
-            .fromTo(heroBgRef.current,
-                { scale: 1.12 },
-                { scale: 1.03, duration: 2.6, ease: 'power3.out' }, 0)
-            .fromTo(heroOverlayRef.current,
-                { opacity: 0 },
-                { opacity: 1, duration: 1.2 }, 0)
-            .fromTo(heroBadgeRef.current,
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.7 }, 0.6)
-            .fromTo(heroTextRef.current.querySelectorAll('.hero-anim'),
-                { opacity: 0, y: 40 },
-                { opacity: 1, y: 0, duration: 0.9, stagger: 0.15 }, 0.75)
-            .fromTo(heroCtaRef.current,
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.7 }, 1.4)
+            /* ── STORY ── */
+            if (storyImgRef.current) {
+                gsap.fromTo(storyImgRef.current,
+                    { opacity: 0, x: -50 },
+                    {
+                        opacity: 1, x: 0, duration: 1,
+                        scrollTrigger: { trigger: storyRef.current, start: 'top 80%', toggleActions: 'play none none none' }
+                    })
+            }
+            if (storyContentRef.current) {
+                gsap.fromTo(storyContentRef.current.querySelectorAll('.story-anim'),
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1, y: 0, duration: 0.8, stagger: 0.12,
+                        scrollTrigger: { trigger: storyRef.current, start: 'top 75%', toggleActions: 'play none none none' }
+                    })
+            }
 
-        /* ── STORY ── */
-        gsap.fromTo(storyImgRef.current,
-            { opacity: 0, x: -50 },
-            {
-                opacity: 1, x: 0, duration: 1,
-                scrollTrigger: { trigger: storyRef.current, start: 'top 80%' }
-            })
-        gsap.fromTo(storyContentRef.current.querySelectorAll('.story-anim'),
-            { opacity: 0, y: 30 },
-            {
-                opacity: 1, y: 0, duration: 0.8, stagger: 0.12,
-                scrollTrigger: { trigger: storyRef.current, start: 'top 75%' }
-            })
-
-        /* ── VALUES ── */
-        valueCardsRef.current.forEach((el, i) => {
-            if (!el) return
-            gsap.fromTo(el,
-                { opacity: 0, y: 40 },
-                {
-                    opacity: 1, y: 0, duration: 0.7, delay: i * 0.1,
-                    scrollTrigger: { trigger: valuesRef.current, start: 'top 78%' }
+            /* ── VALUES ── */
+            const filteredValues = valueCardsRef.current.filter(Boolean)
+            if (filteredValues.length && valuesRef.current) {
+                filteredValues.forEach((el, i) => {
+                    gsap.fromTo(el,
+                        { opacity: 0, y: 40 },
+                        {
+                            opacity: 1, y: 0, duration: 0.7, delay: i * 0.1,
+                            scrollTrigger: { trigger: valuesRef.current, start: 'top 78%', toggleActions: 'play none none none' }
+                        })
                 })
-        })
+            }
 
-        /* ── TIMELINE ── */
-        timelineItemsRef.current.forEach((el, i) => {
-            if (!el) return
-            gsap.fromTo(el,
-                { opacity: 0, x: -30 },
-                {
-                    opacity: 1, x: 0, duration: 0.65, delay: i * 0.12,
-                    scrollTrigger: { trigger: timelineRef.current, start: 'top 80%' }
+            /* ── TIMELINE ── */
+            const filteredTimeline = timelineItemsRef.current.filter(Boolean)
+            if (filteredTimeline.length && timelineRef.current) {
+                filteredTimeline.forEach((el, i) => {
+                    gsap.fromTo(el,
+                        { opacity: 0, x: -30 },
+                        {
+                            opacity: 1, x: 0, duration: 0.65, delay: i * 0.12,
+                            scrollTrigger: { trigger: timelineRef.current, start: 'top 80%', toggleActions: 'play none none none' }
+                        })
                 })
-        })
+            }
 
-        /* ── SERVICES ── */
-        serviceItemsRef.current.forEach((el, i) => {
-            if (!el) return
-            gsap.fromTo(el,
-                { opacity: 0, x: 20 },
-                {
-                    opacity: 1, x: 0, duration: 0.5, delay: i * 0.07,
-                    scrollTrigger: { trigger: servicesRef.current, start: 'top 80%' }
+            /* ── SERVICES ── */
+            const filteredServices = serviceItemsRef.current.filter(Boolean)
+            if (filteredServices.length && servicesRef.current) {
+                filteredServices.forEach((el, i) => {
+                    gsap.fromTo(el,
+                        { opacity: 0, x: 20 },
+                        {
+                            opacity: 1, x: 0, duration: 0.5, delay: i * 0.07,
+                            scrollTrigger: { trigger: servicesRef.current, start: 'top 80%', toggleActions: 'play none none none' }
+                        })
                 })
-        })
+            }
 
-        /* ── CTA BANNER ── */
-        gsap.fromTo(ctaBannerRef.current,
-            { opacity: 0, y: 30 },
-            {
-                opacity: 1, y: 0, duration: 0.9,
-                scrollTrigger: { trigger: ctaBannerRef.current, start: 'top 85%' }
-            })
+            /* ── CTA BANNER ── */
+            if (ctaBannerRef.current) {
+                gsap.fromTo(ctaBannerRef.current,
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1, y: 0, duration: 0.9,
+                        scrollTrigger: { trigger: ctaBannerRef.current, start: 'top 85%', toggleActions: 'play none none none' }
+                    })
+            }
+        }) // End Context
 
-        return () => ScrollTrigger.getAll().forEach(t => t.kill())
+        return () => ctx.revert()
     }, [])
 
     return (
-        <div className="bg-white overflow-x-hidden">
+        <div className="bg-white overflow-clip">
 
             {/* ═══════════════════════════════════════════
-                HERO
+                HEADER SECUNDARIO
             ═══════════════════════════════════════════ */}
-            <section
-                ref={heroRef}
-                className="relative flex items-center overflow-hidden"
-                style={{ minHeight: 'calc(100vh - 70px)' }}
-            >
-                {/* Fondo */}
-                <div
-                    ref={heroBgRef}
-                    className="absolute inset-0 bg-cover bg-center will-change-transform"
-                    style={{
-                        backgroundImage: 'url(https://images.unsplash.com/photo-1560185127-6a6a3b73f1b9?w=2000&q=80)',
-                        backgroundPosition: '55% center',
-                    }}
-                />
-
-                {/* Overlay */}
-                <div ref={heroOverlayRef} className="absolute inset-0 opacity-0">
-                    <div
-                        className="absolute inset-0"
-                        style={{
-                            background:
-                                'linear-gradient(112deg, rgba(8,16,28,0.95) 0%, rgba(8,16,28,0.75) 40%, rgba(8,16,28,0.30) 70%, transparent 100%)',
-                        }}
-                    />
-                    <div
-                        className="absolute bottom-0 left-0 right-0 h-[45%]"
-                        style={{
-                            background: 'linear-gradient(to top, rgba(8,16,28,0.9) 0%, transparent 100%)',
-                        }}
-                    />
+            <div ref={headerRef} className="pt-[160px] pb-[80px] bg-gradient-to-b from-secondaryLight/80 to-white flex flex-col justify-center items-center opacity-0 border-b border-secondaryLight/60 overflow-hidden relative">
+                {/* Decoración de fondo */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/5 blur-[80px] rounded-full -z-10" />
+                
+                <div className="flex items-center gap-4 mb-3">
+                    <span className="header-line w-16 h-[2px] block" style={{ background: 'linear-gradient(90deg, transparent, #12645F)' }}></span>
+                    <h1 className="font-display text-primary uppercase" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', lineHeight: 1.1, letterSpacing: '0.05em' }}>
+                        Quiénes Somos
+                    </h1>
+                    <span className="header-line w-16 h-[2px] block" style={{ background: 'linear-gradient(270deg, transparent, #12645F)' }}></span>
                 </div>
-
-                {/* Línea decorativa */}
-                <div
-                    className="absolute top-0 bottom-0 hidden md:block"
-                    style={{
-                        left: 'calc(8% - 1px)',
-                        width: '1px',
-                        background: 'linear-gradient(to bottom, transparent, rgba(18,100,95,0.4) 50%, transparent)',
-                    }}
-                />
-
-                {/* Contenido */}
-                <div className="relative z-10 px-[8%] py-28 md:py-40 w-full">
-                    {/* Badge */}
-                    <div
-                        ref={heroBadgeRef}
-                        className="inline-flex items-center gap-2 mb-8 opacity-0"
-                        style={{
-                            background: 'rgba(18,100,95,0.15)',
-                            border: '1px solid rgba(18,100,95,0.35)',
-                            borderRadius: '9999px',
-                            padding: '6px 16px',
-                        }}
-                    >
-                        <span className="block w-1.5 h-1.5 rounded-full bg-[#12645F]" />
-                        <span className="text-[0.6rem] font-body font-bold tracking-[0.22em] uppercase text-[#12645F]">
-                            Martillera · Corredora Pública · Independiente
-                        </span>
-                    </div>
-
-                    <div ref={heroTextRef} className="max-w-[640px]">
-                        <h1 className="hero-anim mb-4 opacity-0">
-                            <span
-                                className="block font-display text-white"
-                                style={{
-                                    fontSize: 'clamp(2.4rem, 5vw, 4rem)',
-                                    lineHeight: 1.12,
-                                    letterSpacing: '0.04em',
-                                    textTransform: 'uppercase',
-                                }}
-                            >
-                                Mariana
-                            </span>
-                            <span
-                                className="block font-display mt-1"
-                                style={{
-                                    fontSize: 'clamp(2.4rem, 5vw, 4rem)',
-                                    lineHeight: 1.12,
-                                    letterSpacing: '0.04em',
-                                    textTransform: 'uppercase',
-                                    WebkitTextStroke: '1.5px rgba(255,255,255,0.7)',
-                                    color: 'transparent',
-                                }}
-                            >
-                                Caramello
-                            </span>
-                        </h1>
-
-                        <div
-                            className="hero-anim w-16 h-[2px] mb-6 rounded-full opacity-0"
-                            style={{ background: 'linear-gradient(90deg, #12645F, rgba(18,100,95,0.1))' }}
-                        />
-
-                        <p
-                            className="hero-anim font-body font-light text-white/65 max-w-[460px] opacity-0"
-                            style={{ fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', lineHeight: 1.85 }}
-                        >
-                            Más de 25 años acompañando operaciones inmobiliarias en Mar del Plata con
-                            confianza, ética profesional y resultados concretos.
-                        </p>
-                    </div>
-
-                    <div ref={heroCtaRef} className="flex flex-col sm:flex-row gap-3 mt-10 opacity-0">
-                        <button
-                            onClick={() => navigate('/propiedades')}
-                            className="group flex items-center justify-center gap-2.5 px-9 py-[1.1rem] rounded-full font-body font-semibold text-[0.75rem] tracking-[0.14em] uppercase text-white transition-all duration-300"
-                            style={{ background: '#12645F', boxShadow: '0 8px 32px rgba(18,100,95,0.28)' }}
-                            onMouseEnter={e => { e.currentTarget.style.background = '#0A4441'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-                            onMouseLeave={e => { e.currentTarget.style.background = '#12645F'; e.currentTarget.style.transform = 'translateY(0)' }}
-                        >
-                            Ver propiedades <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
-                        </button>
-                        <button
-                            onClick={() => navigate('/contacto')}
-                            className="group flex items-center justify-center gap-2.5 px-9 py-[1.1rem] rounded-full font-body font-semibold text-[0.75rem] tracking-[0.14em] uppercase text-white transition-all duration-300"
-                            style={{
-                                background: 'rgba(255,255,255,0.06)',
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                backdropFilter: 'blur(10px)',
-                            }}
-                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.14)'}
-                            onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
-                        >
-                            Contactar <ArrowRight size={14} className="opacity-50 group-hover:translate-x-1 transition-transform duration-200" />
-                        </button>
-                    </div>
-                </div>
-
-                {/* Stats flotantes */}
-                <div className="absolute bottom-10 right-[8%] hidden lg:flex gap-8">
-                    <div className="text-right">
-                        <div className="font-display text-white text-[1.5rem] leading-none">Desde 1998</div>
-                        <div className="text-[0.6rem] font-body tracking-[0.18em] uppercase text-white/40 mt-1">En el mercado</div>
-                    </div>
-                </div>
-            </section>
+            </div>
 
             {/* ═══════════════════════════════════════════
-                STORY — Quién es Mariana
+                PROFILE — Mariana Caramello Avatar
             ═══════════════════════════════════════════ */}
-            <section ref={storyRef} className="py-24 md:py-32 px-[8%] bg-white">
-                <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <section ref={storyRef} className="py-20 md:py-28 px-[8%] bg-white flex justify-center">
+                <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-center gap-14 md:gap-20">
 
-                    {/* Imagen */}
-                    <div ref={storyImgRef} className="relative opacity-0">
-                        <div className="relative rounded-2xl overflow-hidden aspect-[4/5] max-w-[440px]">
+                    {/* Avatar Image */}
+                    <div ref={storyImgRef} className="relative opacity-0 shrink-0">
+                        <div className="relative w-[280px] h-[280px] md:w-[340px] md:h-[340px] rounded-full overflow-hidden border-[8px] border-white bg-secondaryLight/20 z-10 flex items-center justify-center"
+                            style={{ boxShadow: '0 30px 60px -15px rgba(18,100,95,0.4), inset 0 10px 30px rgba(18,100,95,0.08)' }}>
                             <img
-                                src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
-                                alt="Caramello Propiedades - Mar del Plata"
-                                className="w-full h-full object-cover"
+                                src="https://imgur.com/jKwGLvd.jpg"
+                                alt="Mariana Caramello - Corredora Pública"
+                                className="w-[85%] h-[85%] object-cover rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
+                                style={{
+                                    boxShadow: 'inset 0 4px 20px rgba(0,0,0,0.1)'
+                                }}
                             />
-                            {/* Overlay brand */}
-                            <div
-                                className="absolute inset-0"
-                                style={{ background: 'linear-gradient(to top, rgba(18,100,95,0.5) 0%, transparent 60%)' }}
-                            />
-                            <div className="absolute bottom-0 left-0 right-0 p-6">
-                                <div className="inline-flex items-center gap-2 bg-white/95 rounded-full px-4 py-2 shadow-lg">
-                                    <Briefcase size={14} className="text-primary" />
-                                    <span className="text-[0.7rem] font-body font-bold text-textPrimary tracking-wide uppercase">
-                                        Martillera · Reg. 3288
-                                    </span>
-                                </div>
-                            </div>
                         </div>
-                        {/* Decoración */}
-                        <div
-                            className="absolute -top-6 -left-6 w-40 h-40 rounded-2xl -z-10"
-                            style={{ background: 'rgba(18,100,95,0.08)' }}
-                        />
-                        <div
-                            className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full -z-10"
-                            style={{ background: 'rgba(18,100,95,0.06)' }}
-                        />
+                        {/* Decorative background elements */}
+                        <div className="absolute -inset-6 rounded-full border border-secondaryLight -z-10" />
+                        <div className="absolute top-2 -right-6 w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center -z-10">
+                            <div className="w-8 h-8 rounded-full bg-primary/10" />
+                        </div>
+                        <div className="absolute bottom-8 -left-8 w-20 h-20 rounded-full bg-secondaryLight/50 -z-10" />
+
+                        {/* Registration Badge */}
+                        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-full shadow-lg border border-secondaryLight z-20 flex items-center gap-2 whitespace-nowrap">
+                            <Briefcase size={15} className="text-primary" />
+                            <span className="text-[0.65rem] font-bold text-textPrimary tracking-[0.1em] uppercase">Reg. 3288</span>
+                        </div>
                     </div>
 
-                    {/* Texto */}
-                    <div ref={storyContentRef}>
-                        <div className="story-anim opacity-0 inline-flex items-center gap-3 mb-6">
-                            <span className="block w-8 h-[1px] bg-primary" />
-                            <span className="text-[0.6rem] font-body font-bold tracking-[0.25em] uppercase text-secondary">
-                                Nuestra historia
+                    {/* Content & CTA */}
+                    <div ref={storyContentRef} className="text-center md:text-left flex-1 max-w-[500px]">
+                        <div className="story-anim opacity-0 inline-flex items-center justify-center md:justify-start gap-3 mb-5 mx-auto md:mx-0 w-full md:w-auto">
+                            <span className="block w-6 h-[1px] bg-primary" />
+                            <span className="text-[0.65rem] font-body font-bold tracking-[0.25em] uppercase text-secondary">
+                                Atención personalizada
                             </span>
                         </div>
 
                         <h2
                             className="story-anim opacity-0 font-display text-textPrimary mb-6"
-                            style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.7rem)', lineHeight: 1.2, letterSpacing: '0.03em' }}
+                            style={{ fontSize: 'clamp(2.2rem, 4vw, 3rem)', lineHeight: 1.1, letterSpacing: '0.02em' }}
                         >
-                            IMPULSADA POR<br />
-                            <span className="text-primary">LA CONFIANZA</span>
+
+                            <span className="text-primary">MARIANA CARAMELLO</span>
                         </h2>
 
-                        <p className="story-anim opacity-0 text-textSecondary leading-relaxed mb-5" style={{ fontSize: '1rem' }}>
-                            Más de 25 años de historia en el mercado inmobiliario de Mar del Plata, continuando un legado familiar y ejerciendo
-                            profesionalmente desde 2008 como martillera y corredora pública matriculada. Hoy brinda una atención independiente,
-                            cercana y personalizada en cada operación.
+                        <p className="story-anim opacity-0 text-textSecondary leading-relaxed mb-8" style={{ fontSize: '1rem' }}>
+                            Detrás de cada propiedad hay una historia, una familia y un gran proyecto de vida. Mi objetivo
+                            como profesional matriculada es escucharte, comprender lo que buscás y acompañar tus decisiones con absoluta
+                            transparencia, calidez y dedicación constante.
                         </p>
 
-                        <div className="story-anim opacity-0 flex flex-col gap-3">
-                            {[
-                                'Martillera Pública matriculada',
-                                'Corredora Inmobiliaria matriculada',
-                                'Operadora independiente — sin franquicias',
-                                'Mar del Plata · Desde 1998',
-                            ].map((item, i) => (
-                                <div key={i} className="flex items-center gap-3">
-                                    <CheckCircle size={16} className="text-primary shrink-0" />
-                                    <span className="text-[0.9rem] text-textSecondary">{item}</span>
-                                </div>
-                            ))}
+                        <div className="story-anim opacity-0 flex justify-center md:justify-start">
+                            <button
+                                onClick={() => window.open('https://wa.me/5492234487206', '_blank')}
+                                className="group flex items-center justify-center gap-3 px-8 py-[1.1rem] rounded-full font-body font-bold text-[0.75rem] tracking-[0.15em] uppercase text-white transition-all duration-300"
+                                style={{
+                                    background: '#12645F',
+                                    boxShadow: '0 8px 24px rgba(18,100,95,0.25)',
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.transform = 'translateY(-3px)'
+                                    e.currentTarget.style.boxShadow = '0 14px 32px rgba(18,100,95,0.35)'
+                                    e.currentTarget.style.background = '#0A4441'
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.transform = 'translateY(0)'
+                                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(18,100,95,0.25)'
+                                    e.currentTarget.style.background = '#12645F'
+                                }}
+                            >
+                                Comunicate conmigo <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-200" />
+                            </button>
                         </div>
                     </div>
                 </div>

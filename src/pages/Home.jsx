@@ -895,7 +895,7 @@ function HeroSection({ navigate }) {
                                     color: 'transparent',
                                 }}
                             >
-                                Y cada hogar, una nueva historia.
+                                Cada hogar, una nueva historia.
                             </span>
                         </h1>
 
@@ -918,7 +918,7 @@ function HeroSection({ navigate }) {
                                 letterSpacing: '0.01em',
                             }}
                         >
-                            Te acompañamos en cada paso con confianza y cercanía.
+                            Mas de 25 años acompañando nuvos comienzos con confianza y cercanía.
                         </h2>
 
                         {/* CTAs */}
@@ -1077,7 +1077,7 @@ export default function Home() {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                         </div>
                         <div className="absolute -top-10 -right-4 lg:-right-10 w-[45%] aspect-square rounded-[1.5rem] overflow-hidden shadow-[0_20px_40px_rgba(18,39,58,0.15)] border-[6px] border-white">
-                            <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/309881372.jpg?k=9386697f93507aeba29d78f53f4aaa029e71ff09305be3ac97e094a135d466eb&o=&hp=1" className="w-full h-full object-cover" alt="Detalle propiedad" />
+                            <img src="https://img.freepik.com/fotos-premium/sala-estar-gran-ventanal-que-tiene-vista-al-mar_865967-32087.jpg" className="w-full h-full object-cover" alt="Detalle propiedad" />
                         </div>
                     </div>
                 </div>
@@ -1091,12 +1091,11 @@ export default function Home() {
                         style={{ fontSize: 'clamp(2rem,3.2vw,2.6rem)' }}>
                         Acompañando decisiones
                         <br />
-                        <span className="text-metallic">importantes en cada proceso</span>
+                        <span className="text-metallic">importantes en cada paso</span>
                     </h2>
                     <p className="text-[0.95rem] text-textSecondary leading-[1.9] mb-14 max-w-[520px]">
-                        Entendemos que no se trata solo de comprar, vender o alquilar una propiedad, sino de decisiones importantes.
-                        Por eso en Caramello Propiedades acompañamos cada proceso con experiencia, honestidad y
-                        atención personalizada.
+                        Sabemos que detrás de cada operación hay una desición importante.
+                        Por eso brindamos un acompañamiento cercano, profesional y transparente, con experiencia real en el mercado inmobiliario.
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10 mb-14">
                         <div>
@@ -1132,7 +1131,7 @@ export default function Home() {
                         <button
                             onClick={() => navigate('/contacto')}
                             className="bg-textPrimary text-white px-8 py-4 rounded-full font-body font-bold text-[0.75rem] uppercase tracking-widest flex items-center gap-2 hover:bg-primary hover:-translate-y-0.5 transition-all duration-300 shadow-lg shadow-textPrimary/20">
-                            Hablar con un asesor <ArrowUpRight size={15} />
+                            Quiero asesoramiento <ArrowUpRight size={15} />
                         </button>
                         <div className="flex items-center gap-4">
                             <div className="w-11 h-11 rounded-full border border-secondaryLight flex items-center justify-center">
