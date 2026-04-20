@@ -558,7 +558,7 @@ export default function Nosotros() {
                     <div className="relative">
                         <div className="rounded-2xl overflow-hidden aspect-square">
                             <img
-                                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80"
+                                src="https://imgur.com/rHEibg0.jpg"
                                 alt="Servicios inmobiliarios Caramello Propiedades"
                                 className="w-full h-full object-cover"
                             />

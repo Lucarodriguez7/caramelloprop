@@ -3,6 +3,8 @@ import CountUpStats from '../components/CountUpStats'
 import { ArrowRight, Star, Home as HomeIcon, Key, BarChart2, Building2, Trees, FileText, MapPin, ChevronRight, Search, Shield, TrendingUp, Phone, Users, ArrowUpRight } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react'
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 import { supabase } from '../lib/supabaseClient'
 
 const Instagram = ({ size = 24, className = "" }) => (
@@ -119,36 +121,31 @@ const SERVICES = [
     },
 ]
 
-const INSTAGRAM_POSTS = [
+const INSTAGRAM_REELS = [
     {
-        img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80',
-        likes: '234',
-        caption: 'Nueva propiedad exclusiva en Playa Grande 🌊',
+        url: 'https://www.instagram.com/p/DT5uyOLDlHn/',
+        img: 'https://imgur.com/Xb8Bdqh.jpg',
+        caption: '✨ Nueva propiedad disponible — Consultá sin compromiso',
     },
     {
-        img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80',
-        likes: '187',
-        caption: 'Departamento con vista al mar disponible ✨',
+        url: 'https://www.instagram.com/p/DRsXNd8CS0N/',
+        img: 'https://imgur.com/lhzP2oq.jpg',
+        caption: '🏡 Recorrido exclusivo por esta joya inmobiliaria',
     },
     {
-        img: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80',
-        likes: '312',
-        caption: 'Servicio de tasación — consultá sin compromiso 📊',
+        url: 'https://www.instagram.com/p/DW2htX1DDQp/',
+        img: 'https://imgur.com/An7Z0xn.jpg',
+        caption: '📍 Nuevos ingresos de la semana — No te los pierdas',
     },
     {
-        img: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80',
-        likes: '156',
-        caption: 'Casa en Los Troncos, tranquilidad garantizada 🌿',
+        url: 'https://www.instagram.com/p/DWysR3PE7An/',
+        img: 'https://imgur.com/Yz7U3Mb.jpg',
+        caption: '🔑 Oportunidad única en zona premium',
     },
     {
-        img: 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=600&q=80',
-        likes: '278',
-        caption: 'El barrio Güemes crece y nosotros también 🚀',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
-        likes: '421',
-        caption: 'Tu próximo hogar te está esperando 🏡',
+        url: 'https://www.instagram.com/p/DWcVz0eExvr/',
+        img: 'https://imgur.com/XPvqVak.jpg',
+        caption: '🚀 El mercado crece y nosotros también',
     },
 ]
 
@@ -380,58 +377,276 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
     )
 }
 
-/* ── Instagram Post Card ────────────────────────────────────── */
-function InstagramCard({ post }) {
+/* ── Instagram Reel Card (Premium) ────────────────────────── */
+function InstagramReelCard({ reel }) {
     const [hovered, setHovered] = useState(false)
     return (
         <a
-            href="https://instagram.com/Caramellopropiedades3288"
+            href={reel.url}
             target="_blank"
             rel="noopener noreferrer"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            className="group relative rounded-2xl overflow-hidden block"
-            style={{
-                aspectRatio: '1/1',
-                boxShadow: hovered ? '0 12px_40px rgba(18,39,58,0.18)' : '0 2px_12px rgba(18,39,58,0.07)',
-                transition: 'box-shadow 0.35s, transform 0.35s',
-                transform: hovered ? 'scale(1.02)' : 'none',
-            }}
+            className="ig-reel-card group relative block rounded-2xl overflow-hidden"
+            style={{ aspectRatio: '9/16' }}
         >
+            {/* Thumbnail */}
             <img
-                src={post.img}
-                alt={post.caption}
-                className="w-full h-full object-cover"
+                src={reel.img}
+                alt={reel.caption}
+                className="absolute inset-0 w-full h-full object-cover"
                 style={{
-                    transform: hovered ? 'scale(1.07)' : 'scale(1)',
-                    transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    transform: hovered ? 'scale(1.08)' : 'scale(1)',
+                    transition: 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 }}
             />
+
+            {/* Dark overlay */}
             <div
-                className="absolute inset-0 flex flex-col items-center justify-center gap-2"
+                className="absolute inset-0"
                 style={{
-                    background: 'rgba(12,26,45,0.72)',
-                    opacity: hovered ? 1 : 0,
-                    transition: 'opacity 0.35s ease',
+                    background: hovered
+                        ? 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.12) 100%)'
+                        : 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.05) 50%, transparent 100%)',
+                    transition: 'background 0.5s ease',
                 }}
-            >
-                <Instagram size={26} className="text-white" />
-                <span className="text-white font-body font-bold text-[0.78rem] tracking-wider">Ver en Instagram</span>
-                <span className="text-white/60 text-[0.72rem] flex items-center gap-1">
-                    <Star size={10} fill="white" stroke="none" /> {post.likes}
-                </span>
+            />
+
+            {/* Reel icon indicator */}
+            <div className="absolute top-3 right-3 z-10">
+                <div
+                    className="flex items-center gap-1 px-2 py-1 rounded-full"
+                    style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)' }}
+                >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="opacity-90">
+                        <path d="m22 8-6 4 6 4V8Z" />
+                        <rect width="14" height="12" x="2" y="6" rx="2" ry="2" />
+                    </svg>
+                    <span className="text-white/80 text-[0.5rem] font-body font-semibold tracking-wider uppercase">Reel</span>
+                </div>
             </div>
+
+            {/* Play button center – appears on hover */}
             <div
-                className="absolute bottom-0 left-0 right-0 px-3 py-2.5"
+                className="absolute inset-0 flex items-center justify-center z-10"
                 style={{
-                    background: 'linear-gradient(to top, rgba(12,26,45,0.75), transparent)',
-                    opacity: hovered ? 0 : 1,
-                    transition: 'opacity 0.3s',
+                    opacity: hovered ? 1 : 0,
+                    transform: hovered ? 'scale(1)' : 'scale(0.6)',
+                    transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 }}
             >
-                <p className="text-white text-[0.68rem] leading-snug line-clamp-2">{post.caption}</p>
+                <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center"
+                    style={{
+                        background: 'rgba(255,255,255,0.12)',
+                        backdropFilter: 'blur(16px)',
+                        WebkitBackdropFilter: 'blur(16px)',
+                        border: '1.5px solid rgba(255,255,255,0.25)',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                    }}
+                >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" className="ml-0.5">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                </div>
+            </div>
+
+            {/* Instagram glow border on hover */}
+            <div
+                className="absolute inset-0 rounded-2xl pointer-events-none z-20"
+                style={{
+                    opacity: hovered ? 1 : 0,
+                    boxShadow: 'inset 0 0 0 2px rgba(225,48,108,0.55), 0 0 28px rgba(225,48,108,0.12)',
+                    transition: 'opacity 0.4s ease',
+                }}
+            />
+
+            {/* Bottom caption area */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+                <p
+                    className="text-white text-[0.76rem] font-body font-medium leading-snug line-clamp-2"
+                    style={{
+                        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
+                        transition: 'transform 0.4s ease',
+                    }}
+                >{reel.caption}</p>
+                <div
+                    className="flex items-center gap-1.5 mt-2.5"
+                    style={{
+                        opacity: hovered ? 1 : 0,
+                        transform: hovered ? 'translateY(0)' : 'translateY(10px)',
+                        transition: 'opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s',
+                    }}
+                >
+                    <Instagram size={12} className="text-white/70" />
+                    <span className="text-white/70 text-[0.6rem] font-body font-semibold tracking-[0.12em] uppercase">Ver en Instagram</span>
+                </div>
             </div>
         </a>
+    )
+}
+
+/* ── Premium Instagram Section ─────────────────────────────── */
+function PremiumInstagramSection() {
+    const sectionRef = useRef(null)
+    const headingRef = useRef(null)
+    const cardsWrapRef = useRef(null)
+    const ctaRef = useRef(null)
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Heading stagger
+            const headingEls = headingRef.current?.children
+            if (headingEls) {
+                gsap.fromTo(
+                    headingEls,
+                    { opacity: 0, y: 45 },
+                    {
+                        opacity: 1, y: 0, duration: 0.85, stagger: 0.13,
+                        ease: 'power3.out',
+                        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', toggleActions: 'play none none none' },
+                    }
+                )
+            }
+
+            // Cards stagger
+            const cards = cardsWrapRef.current?.querySelectorAll('.ig-reel-card')
+            if (cards?.length) {
+                gsap.fromTo(
+                    cards,
+                    { opacity: 0, y: 70, scale: 0.92 },
+                    {
+                        opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.1,
+                        ease: 'power3.out',
+                        scrollTrigger: { trigger: cardsWrapRef.current, start: 'top 85%', toggleActions: 'play none none none' },
+                    }
+                )
+            }
+
+            // CTA
+            if (ctaRef.current) {
+                gsap.fromTo(
+                    ctaRef.current,
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+                        scrollTrigger: { trigger: ctaRef.current, start: 'top 92%', toggleActions: 'play none none none' },
+                    }
+                )
+            }
+        }, sectionRef)
+
+        return () => ctx.revert()
+    }, [])
+
+    return (
+        <section
+            ref={sectionRef}
+            className="relative py-24 md:py-32 overflow-hidden bg-secondaryLight"
+        >
+            {/* Decorative ambient lights integrated with branding */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-0 right-[15%] w-[800px] h-[800px] rounded-full opacity-[0.4]"
+                    style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.7), transparent 70%)' }} />
+                <div className="absolute -bottom-32 left-[5%] w-[600px] h-[600px] rounded-full opacity-[0.06]"
+                    style={{ background: 'radial-gradient(circle, #12645F, transparent 70%)' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[400px] opacity-[0.05]"
+                    style={{ background: 'radial-gradient(ellipse, #12645F, transparent 70%)' }} />
+            </div>
+
+            <div className="relative z-10 px-[6%] md:px-[8%]">
+
+                {/* ── Heading ───────────────────────────── */}
+                <div ref={headingRef} className="text-center mb-14 md:mb-20">
+                    {/* Instagram badge */}
+                    <div className="inline-flex items-center gap-3 mb-6">
+                        <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center"
+                            style={{
+                                background: 'linear-gradient(135deg, #12645F 0%, #0A4441 100%)',
+                                boxShadow: '0 8px 24px rgba(18,100,95,0.2)',
+                            }}
+                        >
+                            <Instagram size={20} className="text-white" />
+                        </div>
+                        <span className="font-body text-[0.63rem] font-semibold tracking-[0.2em] uppercase text-secondary">
+                            @caramellopropiedades3288
+                        </span>
+                    </div>
+
+                    {/* Title */}
+                    <h2
+                        className="font-body font-black text-primary leading-tight mb-5"
+                        style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)' }}
+                    >
+                        Seguinos en{' '}
+                        <span
+                            className="inline-block relative text-metallic"
+                        >Instagram</span>
+                    </h2>
+
+                    {/* Subtitle */}
+                    <p className="text-textSecondary text-[0.92rem] font-body leading-[1.8] max-w-[420px] mx-auto">
+                        Recorridos exclusivos, nuevas propiedades y el día a día de Caramello Propiedades.
+                    </p>
+                </div>
+
+                {/* ── Cards ────────────────────────────── */}
+                <div ref={cardsWrapRef}>
+                    {/* Desktop: 5-col grid */}
+                    <div className="hidden md:grid grid-cols-5 gap-4 mb-14">
+                        {INSTAGRAM_REELS.map((reel, i) => (
+                            <InstagramReelCard key={i} reel={reel} />
+                        ))}
+                    </div>
+
+                    {/* Mobile: horizontal scroll */}
+                    <div className="md:hidden mb-14">
+                        <div
+                            className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory"
+                            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+                        >
+                            {INSTAGRAM_REELS.map((reel, i) => (
+                                <div key={i} className="snap-center flex-shrink-0" style={{ width: '52%', maxWidth: '220px' }}>
+                                    <InstagramReelCard reel={reel} />
+                                </div>
+                            ))}
+                        </div>
+                        <p className="text-center text-textSecondary text-[0.72rem] font-body tracking-wide mt-3">
+                            Deslizá para ver más →
+                        </p>
+                    </div>
+                </div>
+
+                {/* ── CTA ──────────────────────────────── */}
+                <div ref={ctaRef} className="flex justify-center">
+                    <a
+                        href="https://instagram.com/caramellopropiedades3288"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-3 px-9 py-[1.1rem] rounded-full font-body font-bold text-[0.75rem] tracking-[0.15em] uppercase text-white transition-all duration-300"
+                        style={{
+                            background: '#12645F',
+                            boxShadow: '0 8px 32px rgba(18,100,95,0.25)',
+                        }}
+                        onMouseEnter={e => {
+                            e.currentTarget.style.transform = 'translateY(-3px)'
+                            e.currentTarget.style.boxShadow = '0 14px 44px rgba(18,100,95,0.35)'
+                            e.currentTarget.style.background = '#0A4441'
+                        }}
+                        onMouseLeave={e => {
+                            e.currentTarget.style.transform = 'translateY(0)'
+                            e.currentTarget.style.boxShadow = '0 8px 32px rgba(18,100,95,0.25)'
+                            e.currentTarget.style.background = '#12645F'
+                        }}
+                    >
+                        <Instagram size={17} className="opacity-90" />
+                        Seguir en Instagram
+                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200 opacity-80" />
+                    </a>
+                </div>
+            </div>
+        </section>
     )
 }
 
@@ -858,11 +1073,11 @@ export default function Home() {
                 <div className="lg:w-[48%] relative w-full flex justify-center mt-8 lg:mt-0">
                     <div className="relative w-[90%] md:w-[85%] lg:w-full">
                         <div className="aspect-[4/3] rounded-[2rem] overflow-hidden relative shadow-[0_20px_50px_rgba(18,39,58,0.12)]">
-                            <img src="/about-main.png" className="w-full h-full object-cover" alt="Propiedad destacada" />
+                            <img src="https://i.pinimg.com/originals/d5/56/aa/d556aae57af00949662ac9d1f62d8ea4.png" className="w-full h-full object-cover" alt="Propiedad destacada" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                         </div>
                         <div className="absolute -top-10 -right-4 lg:-right-10 w-[45%] aspect-square rounded-[1.5rem] overflow-hidden shadow-[0_20px_40px_rgba(18,39,58,0.15)] border-[6px] border-white">
-                            <img src="/about-sub.png" className="w-full h-full object-cover" alt="Detalle propiedad" />
+                            <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/309881372.jpg?k=9386697f93507aeba29d78f53f4aaa029e71ff09305be3ac97e094a135d466eb&o=&hp=1" className="w-full h-full object-cover" alt="Detalle propiedad" />
                         </div>
                     </div>
                 </div>
@@ -1017,7 +1232,7 @@ export default function Home() {
                         </div>
                         <div data-aos="fade-left" data-aos-delay="200" className="relative">
                             <div className="rounded-[28px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
-                                <img src="https://imgur.com/A2QclK2.jpg" alt="Profesional inmobiliaria" className="w-full h-[420px] object-cover" />
+                                <img src="https://imgur.com/rHEibg0.jpg" alt="Profesional inmobiliaria" className="w-full h-[420px] object-cover" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                             </div>
                             <div className="absolute -bottom-6 -left-6 bg-white px-6 py-4 rounded-xl shadow-xl border border-neutral-200" data-aos="fade-up" data-aos-delay="400">
@@ -1035,58 +1250,65 @@ export default function Home() {
             </section>
 
             {/* ════ SEGUINOS EN INSTAGRAM ══════════════════════════ */}
-            <section data-aos="fade-up" className="py-20 px-[8%] bg-secondaryLight">
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center gap-2 mb-4">
-                        <div className="w-8 h-8 rounded-xl flex items-center justify-center"
-                            style={{ background: 'linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
-                            <Instagram size={16} className="text-white" />
-                        </div>
-                        <span className="font-body text-[0.63rem] font-bold tracking-[0.25em] uppercase text-textSecondary">@Caramellopropiedades3288</span>
-                    </div>
-                    <h2 className="font-body font-black text-primary leading-tight mb-3" style={{ fontSize: 'clamp(1.7rem,3vw,2.5rem)' }}>
-                        Seguinos en <span className="text-metallic">Instagram</span>
-                    </h2>
-                    <p className="text-[0.93rem] text-textSecondary max-w-[380px] mx-auto leading-[1.8]">
-                        Novedades, propiedades exclusivas y tips del mercado inmobiliario directo en tu feed.
-                    </p>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
-                    {INSTAGRAM_POSTS.map((post, i) => <InstagramCard key={i} post={post} />)}
-                </div>
-                <div className="flex justify-center">
-                    <a
-                        href="https://instagram.com/Caramellopropiedades3288"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-gradient bg-gradient-brand text-white shadow-lg shadow-secondary/30"
-                        style={{
-                            background: 'linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
-                            boxShadow: '0 6px 24px rgba(220,39,67,0.28)',
-                        }}
-                    >
-                        <Instagram size={16} />
-                        Seguir en Instagram
-                    </a>
-                </div>
-            </section>
+            <PremiumInstagramSection />
 
             {/* ════ CTA BANNER ══════════════════════════════════════ */}
-            <section data-aos="zoom-in" className="mx-[4%] my-16 rounded-3xl px-[6%] py-16 flex items-center justify-between gap-8 flex-wrap relative overflow-hidden">
-                <div className="absolute inset-0" style={{ backgroundImage: "url('')", backgroundSize: "cover", backgroundPosition: "center" }} />
-                <div className="absolute inset-0 bg-textPrimary/85" />
-                <div className="absolute right-0 top-0 w-[400px] h-full opacity-20 pointer-events-none"
-                    style={{ background: 'radial-gradient(circle at 80% 50%, #00FBFA, transparent 60%)' }} />
-                <div className="relative z-10">
-                    <p className="font-body text-[0.62rem] font-bold tracking-[0.2em] uppercase text-secondary mb-3">Servicio de tasación</p>
-                    <h2 className="font-body font-black text-white leading-tight mb-2" style={{ fontSize: 'clamp(1.5rem,2.5vw,2.1rem)' }}>
-                        ¿Querés saber cuánto vale<br />tu <span className="text-primary">propiedad</span>?
+            <section data-aos="zoom-in" className="mx-[4%] my-20 rounded-[2.5rem] px-[6%] py-16 lg:py-20 flex items-center justify-between gap-10 flex-wrap relative overflow-hidden shadow-2xl">
+                {/* Background image & gradient overlay */}
+                <div className="absolute inset-0" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80')", backgroundSize: "cover", backgroundPosition: "center" }} />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(8,16,28,0.96) 0%, rgba(18,100,95,0.88) 100%)' }} />
+                <div className="absolute inset-0" style={{ backdropFilter: 'blur(6px)' }} />
+
+                {/* Decorative radial gradients */}
+                <div className="absolute right-0 top-0 w-[500px] h-full opacity-40 pointer-events-none"
+                    style={{ background: 'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.12), transparent 60%)' }} />
+                <div className="absolute left-[-10%] bottom-[-20%] w-[400px] h-[400px] opacity-30 pointer-events-none"
+                    style={{ background: 'radial-gradient(circle at center, rgba(18,100,95,0.6), transparent 70%)' }} />
+
+                {/* Subtle grid texture */}
+                <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                    style={{
+                        backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
+                        backgroundSize: '40px 40px',
+                    }}
+                />
+
+                <div className="relative z-10 max-w-[650px]">
+                    <div className="inline-flex items-center gap-3 mb-5">
+                        <span className="w-8 h-[1px] bg-white/60"></span>
+                        <p className="font-body text-[0.68rem] font-bold tracking-[0.25em] uppercase text-white/80">Servicio de tasación</p>
+                    </div>
+                    <h2 className="font-body font-black text-white leading-[1.1] mb-5" style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.6rem)' }}>
+                        ¿Querés saber cuánto vale<br />tu <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #ffffff, rgba(255,255,255,0.5))' }}>propiedad</span>?
                     </h2>
-                    <p className="text-white/70 text-[0.93rem]">Sin compromiso. Resultados en 48 horas hábiles.</p>
+                    <p className="text-white/70 text-[1rem] font-light leading-relaxed max-w-[500px]">
+                        Análisis profesional basado en el mercado actual. <br className="hidden sm:block" />Sin compromiso y con resultados en 48 horas hábiles.
+                    </p>
                 </div>
-                <button onClick={() => navigate('/tasacion')} className="relative z-10 btn-primary cursor-pointer">
-                    Consultá sobre tu tasación <ArrowRight size={14} />
-                </button>
+
+                <div className="relative z-10">
+                    <button
+                        onClick={() => navigate('/tasacion')}
+                        className="group flex items-center justify-center gap-3 px-9 py-[1.1rem] rounded-full font-body font-bold text-[0.75rem] tracking-[0.15em] uppercase transition-all duration-300"
+                        style={{
+                            background: '#ffffff',
+                            color: '#12645F',
+                            boxShadow: '0 10px 32px rgba(8,16,28,0.4)',
+                        }}
+                        onMouseEnter={e => {
+                            e.currentTarget.style.transform = 'translateY(-3px)'
+                            e.currentTarget.style.boxShadow = '0 16px 40px rgba(8,16,28,0.5)'
+                            e.currentTarget.style.background = '#f8fafa'
+                        }}
+                        onMouseLeave={e => {
+                            e.currentTarget.style.transform = 'translateY(0)'
+                            e.currentTarget.style.boxShadow = '0 10px 32px rgba(8,16,28,0.4)'
+                            e.currentTarget.style.background = '#ffffff'
+                        }}
+                    >
+                        Solicitar tasación <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-200" />
+                    </button>
+                </div>
             </section>
 
         </div>
