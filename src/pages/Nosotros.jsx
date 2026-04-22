@@ -61,7 +61,7 @@ const TIMELINE = [
     { year: '2001', text: 'Con el acompañamiento constante de la familia y el valioso aporte de su esposa, la firma crece y se consolida como Caramello Propiedades en Güemes 3231.' },
     { year: '2008', text: 'Nueva etapa para la firma: traslado a la oficina de Alvarado 1218 e incorporación de Mariana Caramello como profesional matriculada, impulsando crecimiento y renovación.' },
     { year: '2019', text: 'Traslado a la actual oficina de calle Sarmiento, un espacio pensado para brindar mayor comodidad, calidez, confianza y atención personalizada.' },
-    { year: 'Hoy', text: 'Más de 25 años combinando legado familiar, experiencia y atención personalizada en Mar del Plata.' },
+    { year: 'Hoy', text: 'Atención personalizada por compromiso con cada cliente.' },
 ]
 
 /* ── Componente principal ──────────────────────────────── */
