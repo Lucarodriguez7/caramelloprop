@@ -353,13 +353,13 @@ const FilterPanel = memo(function FilterPanel({
             {/* Price USD — Venta */}
             <PriceRangeFilter
                 currency="USD"
-                min={50000}
-                max={1000000}
+                min={0}
+                max={2000000}
                 valueMin={minPriceUSD}
                 valueMax={maxPriceUSD}
                 onChangeMin={setMinPriceUSD}
                 onChangeMax={setMaxPriceUSD}
-                step={5000}
+                step={1000}
             />
 
             <div className="border-t border-secondaryLight" />
@@ -367,8 +367,8 @@ const FilterPanel = memo(function FilterPanel({
             {/* Price ARS — Alquiler */}
             <PriceRangeFilter
                 currency="ARS"
-                min={200000}
-                max={2000000}
+                min={0}
+                max={8000000}
                 valueMin={minPriceARS}
                 valueMax={maxPriceARS}
                 onChangeMin={setMinPriceARS}
@@ -500,10 +500,10 @@ export default function Properties() {
     const [selectedZones, setSelectedZones] = useState(
         searchParams.get('zona') ? [searchParams.get('zona').replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())] : []
     )
-    const [minPriceUSD, setMinPriceUSD] = useState(50000)
-    const [maxPriceUSD, setMaxPriceUSD] = useState(1000000)
-    const [minPriceARS, setMinPriceARS] = useState(200000)
-    const [maxPriceARS, setMaxPriceARS] = useState(2000000)
+    const [minPriceUSD, setMinPriceUSD] = useState(0)
+    const [maxPriceUSD, setMaxPriceUSD] = useState(2000000)
+    const [minPriceARS, setMinPriceARS] = useState(0)
+    const [maxPriceARS, setMaxPriceARS] = useState(8000000)
     const [minBeds, setMinBeds] = useState(0)
     const [minSqm, setMinSqm] = useState(0)
     const [onlyFeatured, setOnlyFeatured] = useState(false)
@@ -561,14 +561,14 @@ export default function Properties() {
 
     const activeFiltersCount = selectedOps.length + selectedTypes.length + selectedZones.length +
         (onlyFeatured ? 1 : 0) + (onlyNew ? 1 : 0) +
-        (minPriceUSD > 50000 || maxPriceUSD < 1000000 ? 1 : 0) +
-        (minPriceARS > 200000 || maxPriceARS < 2000000 ? 1 : 0) +
+        (minPriceUSD > 0 || maxPriceUSD < 2000000 ? 1 : 0) +
+        (minPriceARS > 0 || maxPriceARS < 8000000 ? 1 : 0) +
         (minBeds > 0 ? 1 : 0) + (minSqm > 0 ? 1 : 0)
 
     const clearAllFilters = useCallback(() => {
         setSelectedOps([]); setSelectedTypes([]); setSelectedZones([])
-        setMinPriceUSD(50000); setMaxPriceUSD(1000000)
-        setMinPriceARS(200000); setMaxPriceARS(2000000)
+        setMinPriceUSD(0); setMaxPriceUSD(2000000)
+        setMinPriceARS(0); setMaxPriceARS(8000000)
         setMinBeds(0); setMinSqm(0)
         setOnlyFeatured(false); setOnlyNew(false); setSearch('')
     }, [])

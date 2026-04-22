@@ -1211,7 +1211,7 @@ export default function Home() {
                             Más de dos décadas construyendo<span className="text-metallic"> confianza</span>
                         </h2>
                         <p className="mt-5 text-textSecondary text-[0.95rem] leading-[1.9] max-w-[520px]">
-                            Cada cliente y cada operación son únicos. Te brindamos experiencia real, procesos claros y acompañamiento cercano para avanzar con seguridad en cada paso.
+                            Detrás de cada operación inmobiliaria hay historias, objetivos y expectativas. En Caramello Propiedades ofrecemos un acompañamiento profesional, cercano y transparente en cada etapa.
                         </p>
                     </div>
                     <div className="grid lg:grid-cols-2 gap-14 items-center">
@@ -1242,7 +1242,7 @@ export default function Home() {
                     </div>
                     <div className="mt-20 flex justify-center" data-aos="fade-up" data-aos-delay="200">
                         <button onClick={() => navigate('/contacto')} className="btn-primary">
-                            Hablar con un profesional <ArrowRight size={14} />
+                            Hablar con Mariana <ArrowRight size={14} />
                         </button>
                     </div>
                 </div>

@@ -22,25 +22,25 @@ const VALUES = [
     {
         Icon: Shield,
         title: 'Transparencia',
-        desc: 'Cada operación se gestiona con absoluta claridad. Sin letra chica, sin sorpresas.',
+        desc: 'Cada operación se gestiona con claridad, información precisa y sin sorpresas.',
         num: '01',
     },
     {
         Icon: Award,
         title: 'Profesionalismo',
-        desc: 'Martillera y corredora pública matriculada. Respaldo legal y ético en cada transacción.',
+        desc: 'Respaldo marticulado, criterio legal y experiencia real en cada gestión.',
         num: '02',
     },
     {
         Icon: Users,
         title: 'Compromiso',
-        desc: 'Tu propiedad es única. La tratamos con la misma dedicación que si fuera nuestra.',
+        desc: 'Cada propiedad merece dedicación, seguimiento, y atención personalizada.',
         num: '03',
     },
     {
         Icon: Star,
         title: 'Trayectoria',
-        desc: 'Más de 25 años de experiencia en el mercado inmobiliario de Mar del Plata.',
+        desc: 'Más de 25 años de experiencia y confianza en el mercado inmobiliario de Mar del Plata.',
         num: '04',
     },
 ]
@@ -179,7 +179,7 @@ export default function Nosotros() {
             <div ref={headerRef} className="pt-[160px] pb-[80px] bg-gradient-to-b from-secondaryLight/80 to-white flex flex-col justify-center items-center opacity-0 border-b border-secondaryLight/60 overflow-hidden relative">
                 {/* Decoración de fondo */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/5 blur-[80px] rounded-full -z-10" />
-                
+
                 <div className="flex items-center gap-4 mb-3">
                     <span className="header-line w-16 h-[2px] block" style={{ background: 'linear-gradient(90deg, transparent, #12645F)' }}></span>
                     <h1 className="font-display text-primary uppercase" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', lineHeight: 1.1, letterSpacing: '0.05em' }}>
