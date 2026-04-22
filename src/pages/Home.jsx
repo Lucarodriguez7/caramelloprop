@@ -775,7 +775,7 @@ function HeroSection({ navigate }) {
                 ref={bgDesktopRef}
                 className="absolute inset-0 bg-cover bg-center hidden md:block will-change-transform"
                 style={{
-                    backgroundImage: 'url(https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=2000&q=80)',
+                    backgroundImage: 'url(https://imgur.com/q8kFDRi.jpg)',
                     backgroundPosition: '60% center',
                 }}
             />
@@ -1050,7 +1050,7 @@ export default function Home() {
                 tag: p.operacion,
                 featured: p.destacado,
                 new: p.nuevo_ingreso,
-                img: p.imagenes?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80',
+                img: p.imagenes?.[0] || 'https://imgur.com/q8kFDRi.jpg',
             })))
         }
         load()
