@@ -8,19 +8,32 @@ const IconIG = () => (
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
     </svg>
 )
-const IconFB = () => (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-)
+const PROPERTY_LINKS = [
+    { label: 'Departamentos', to: '/propiedades?tipo=departamento' },
+    { label: 'Casas', to: '/propiedades?tipo=casa' },
+    { label: 'Locales Comerciales', to: '/propiedades?tipo=local' },
+    { label: 'Oficinas Premium', to: '/propiedades?tipo=oficina' },
+    { label: 'Lotes y Terrenos', to: '/propiedades?tipo=terreno' },
+]
 
-const PROPERTY_LINKS = ['En venta', 'En alquiler', 'Alquiler temporario', 'Comerciales', 'Countries']
-const SERVICE_LINKS = ['Compra y venta', 'Administración', 'Tasaciones', 'Asesoramiento legal', 'Inversiones']
+const ZONE_LINKS = [
+    { label: 'Güemes', to: '/propiedades?zona=Guemes' },
+    { label: 'Playa Grande', to: '/propiedades?zona=Playa Grande' },
+    { label: 'Stella Maris', to: '/propiedades?zona=Stella Maris' },
+    { label: 'Chauvin', to: '/propiedades?zona=Chauvin' },
+    { label: 'La Perla', to: '/propiedades?zona=La perla' },
+]
+
+const USEFUL_LINKS = [
+    { label: 'Sobre mí', to: '/nosotros' },
+    { label: 'Solicitar Tasación', to: '/tasacion' },
+    { label: 'Contacto Directo', to: '/contacto' },
+    { label: 'Ver Catálogo', to: '/propiedades' },
+]
 
 const SOCIALS = [
-    { Icon: IconIG, label: 'Instagram', href: '#' },
-    { Icon: IconFB, label: 'Facebook', href: '#' },
-    { Icon: MessageCircle, label: 'WhatsApp', href: '#' },
+    { Icon: IconIG, label: 'Instagram', href: 'https://instagram.com/caramellopropiedades3288' },
+    { Icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/5492234487206' },
 ]
 
 const CONTACT_ITEMS = [
@@ -32,24 +45,29 @@ const CONTACT_ITEMS = [
 
 export default function Footer() {
     return (
-        <footer className="bg-textPrimary border-t border-primary/10 pt-14 pb-7 px-[8%]">
-            <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-9 mb-11">
+        <footer className="relative bg-[#0b1622] border-t border-primary/20 pt-16 pb-7 px-[8%] overflow-hidden">
+            {/* Textura premium de fondo */}
+            <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(circle at 80% 0%, rgba(18, 100, 95, 0.15), transparent 40%), radial-gradient(circle at 20% 100%, rgba(0, 251, 250, 0.05), transparent 40%)' }}></div>
+            
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr_1.2fr] gap-8 mb-11">
                 {/* Brand column */}
                 <div>
-                    <div className="flex items-center mb-6">
-                        <img src="/logo.png" alt="Caramello Propiedades" className="h-[50px] w-auto object-contain" />
+                    <div className="flex items-center mb-5">
+                        <img src="/logo.png" alt="Caramello Propiedades" className="h-[50px] w-auto object-contain drop-shadow-xl" />
                     </div>
-                    {/* MEJORA: Subimos opacidad de white/45 a white/70 para legibilidad */}
-                    <p className="text-white/70 text-[0.83rem] leading-[1.72] mb-5 max-w-[250px]">
-                        La llave para la felicidad empieza con la elección correcta de un hogar. Nuestra trayectoria desde 1998 acompaña a familias y empresas.
+                    <p className="text-white/70 text-[0.83rem] leading-[1.72] mb-6 max-w-[260px]">
+                        Especialista en bienes raíces en Mar del Plata. Brindando un servicio inmobiliario personalizado, profesional y de confianza desde 1998.
                     </p>
                     <div className="flex gap-2">
                         {SOCIALS.map(({ Icon, label, href }) => (
                             <a
                                 key={label}
                                 href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 aria-label={label}
-                                className="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 text-white/70 transition-all duration-300 hover:bg-primary hover:border-primary hover:text-textPrimary"
+                                className="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl text-white/70 transition-all duration-300 hover:-translate-y-1 hover:bg-primary hover:border-primary hover:text-textPrimary hover:shadow-[0_4px_12px_rgba(0,251,250,0.2)]"
                             >
                                 <Icon size={14} />
                             </a>
@@ -64,29 +82,52 @@ export default function Footer() {
                     </h4>
                     <ul className="flex flex-col gap-2.5 list-none m-0 p-0">
                         {PROPERTY_LINKS.map(item => (
-                            <li key={item}>
+                            <li key={item.label}>
                                 <Link
-                                    to="/propiedades"
+                                    to={item.to}
                                     className="text-[0.83rem] text-white/70 transition-all duration-200 hover:text-primary hover:pl-1.5 no-underline"
                                 >
-                                    {item}
+                                    {item.label}
                                 </Link>
                             </li>
                         ))}
                     </ul>
                 </div>
 
-                {/* Servicios */}
+                {/* Zonas Exclusivas */}
                 <div>
                     <h4 className="font-body font-bold text-[0.62rem] tracking-[0.2em] uppercase text-primary mb-4">
-                        Servicios
+                        Zonas VIP
                     </h4>
-                    <ul className="flex flex-col gap-2.5 list-none m-0 p-0">
-                        {SERVICE_LINKS.map(item => (
-                            <li key={item}>
-                                <span className="text-[0.83rem] text-white/70 cursor-pointer transition-all duration-200 hover:text-primary hover:pl-1.5">
-                                    {item}
-                                </span>
+                    <ul className="flex flex-col gap-3 list-none m-0 p-0">
+                        {ZONE_LINKS.map(item => (
+                            <li key={item.label}>
+                                <Link
+                                    to={item.to}
+                                    className="text-[0.83rem] text-white/70 transition-all duration-200 hover:text-primary hover:pl-1.5 no-underline flex items-center gap-1.5"
+                                >
+                                    <MapPin size={10} className="text-primary opacity-50" />
+                                    {item.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                {/* Enlaces Útiles */}
+                <div>
+                    <h4 className="font-body font-bold text-[0.62rem] tracking-[0.2em] uppercase text-primary mb-4">
+                        Enlaces
+                    </h4>
+                    <ul className="flex flex-col gap-3 list-none m-0 p-0">
+                        {USEFUL_LINKS.map(item => (
+                            <li key={item.label}>
+                                <Link
+                                    to={item.to}
+                                    className="text-[0.83rem] text-white/70 transition-all duration-200 hover:text-primary hover:pl-1.5 no-underline"
+                                >
+                                    {item.label}
+                                </Link>
                             </li>
                         ))}
                     </ul>
@@ -99,9 +140,11 @@ export default function Footer() {
                     </h4>
                     <ul className="flex flex-col gap-3 list-none m-0 p-0">
                         {CONTACT_ITEMS.map(({ Icon, text }) => (
-                            <li key={text} className="flex items-start gap-2.5 text-[0.83rem] text-white/80">
-                                <Icon size={13} className="text-primary shrink-0 mt-0.5" />
-                                <span>{text}</span>
+                            <li key={text} className="flex items-start gap-3 text-[0.83rem] text-white/80">
+                                <div className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                                    <Icon size={11} className="text-primary" />
+                                </div>
+                                <span className="mt-0.5 leading-relaxed">{text}</span>
                             </li>
                         ))}
                     </ul>
@@ -109,7 +152,7 @@ export default function Footer() {
             </div>
 
             {/* Bottom bar */}
-            <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 flex-wrap">
+            <div className="relative z-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 flex-wrap">
                 <div className="flex flex-col gap-1">
                     <p className="text-[0.76rem] text-white/50">
                         © 2025 <span className="text-white font-medium">Caramello Propiedades</span>. Todos los derechos reservados.
