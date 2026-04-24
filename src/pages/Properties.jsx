@@ -5,7 +5,7 @@ import PriceRangeFilter from '../components/PriceRangeFilter'
 import {
     Search, SlidersHorizontal, X, MapPin, Star, ArrowRight,
     Bed, Bath, Maximize2, ChevronDown, Grid3X3, List,
-    Heart, Share2, Eye, Filter, ChevronUp, ArrowUpDown,
+    Share2, Eye, Filter, ChevronUp, ArrowUpDown,
     Home, Building2, Store, Trees, CheckCircle2
 } from 'lucide-react'
 
@@ -47,7 +47,7 @@ function Badge({ children, variant = 'primary' }) {
 }
 
 /* ─── PROPERTY CARD — GRID VIEW (memoized) ─────────────────── */
-const PropertyCardGrid = memo(function PropertyCardGrid({ prop, onFavorite, isFavorite }) {
+const PropertyCardGrid = memo(function PropertyCardGrid({ prop }) {
     const navigate = useNavigate()
 
     return (
@@ -79,13 +79,22 @@ const PropertyCardGrid = memo(function PropertyCardGrid({ prop, onFavorite, isFa
 
                 {/* Actions top-right */}
                 <div className="absolute top-3 right-3 flex gap-2" onClick={e => e.stopPropagation()}>
-                    <button
-                        onClick={() => onFavorite(prop.id)}
+                    <button 
+                        onClick={() => {
+                            const url = `${window.location.origin}/propiedades/${prop.id}`;
+                            if (navigator.share) {
+                                navigator.share({
+                                    title: prop.title,
+                                    text: `Mirá esta propiedad en Caramello Propiedades: ${prop.title}`,
+                                    url: url
+                                }).catch(err => console.log('Error sharing', err));
+                            } else {
+                                navigator.clipboard.writeText(url);
+                                alert('Enlace copiado al portapapeles');
+                            }
+                        }}
                         className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm transition-all duration-200 hover:bg-white hover:scale-110"
                     >
-                        <Heart size={13} fill={isFavorite ? '#ef4444' : 'none'} stroke={isFavorite ? '#ef4444' : '#12273a'} />
-                    </button>
-                    <button className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm transition-all duration-200 hover:bg-white hover:scale-110">
                         <Share2 size={13} stroke="#12273a" />
                     </button>
                 </div>
@@ -161,7 +170,7 @@ const PropertyCardGrid = memo(function PropertyCardGrid({ prop, onFavorite, isFa
 })
 
 /* ─── PROPERTY CARD — LIST VIEW (memoized) ─────────────────── */
-const PropertyCardList = memo(function PropertyCardList({ prop, onFavorite, isFavorite }) {
+const PropertyCardList = memo(function PropertyCardList({ prop }) {
     const navigate = useNavigate()
     return (
         <div
@@ -516,10 +525,6 @@ export default function Properties() {
     /* Sidebar on mobile */
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
-    /* Favorites */
-    const [favorites, setFavorites] = useState([])
-
-    const toggleFav = useCallback((id) => setFavorites(prev => prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]), [])
     const toggleFilter = useCallback((arr, setArr, val) => setArr(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]), [])
 
     /* Apply zone from URL param on load */
@@ -779,13 +784,13 @@ export default function Properties() {
                     ) : viewMode === 'grid' ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                             {filtered.map(p => (
-                                <PropertyCardGrid key={p.id} prop={p} onFavorite={toggleFav} isFavorite={favorites.includes(p.id)} />
+                                <PropertyCardGrid key={p.id} prop={p} />
                             ))}
                         </div>
                     ) : (
                         <div className="flex flex-col gap-4">
                             {filtered.map(p => (
-                                <PropertyCardList key={p.id} prop={p} onFavorite={toggleFav} isFavorite={favorites.includes(p.id)} />
+                                <PropertyCardList key={p.id} prop={p} />
                             ))}
                         </div>
                     )}
