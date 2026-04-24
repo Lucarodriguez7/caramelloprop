@@ -58,7 +58,7 @@ const SERVICES = [
 
 const TIMELINE = [
     { year: '1998', text: 'Aldo Pedro Caramello inicia la actividad inmobiliaria en Güemes, con el Estudio Inmobiliario ubicado en Güemes casi Roca.' },
-    { year: '2001', text: 'Con el acompañamiento constante de la familia y el valioso aporte de su esposa, la firma crece y se consolida como Caramello Propiedades en Güemes 3231.' },
+    { year: '2001', text: 'Con el acompañamiento constante de la familia y el valioso aporte de Juana, su esposa, la firma crece y se consolida como Caramello Propiedades en Güemes 3231.' },
     { year: '2008', text: 'Nueva etapa para la firma: traslado a la oficina de Alvarado 1218 e incorporación de Mariana Caramello como profesional matriculada, impulsando crecimiento y renovación.' },
     { year: '2019', text: 'Traslado a la actual oficina de calle Sarmiento, un espacio pensado para brindar mayor comodidad, calidez, confianza y atención personalizada.' },
     { year: 'Hoy', text: 'Más de 25 años combinando legado familliar, experiencia y compromiso con cada cliente en Mar del Plata.' },
