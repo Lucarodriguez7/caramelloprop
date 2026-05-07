@@ -249,7 +249,7 @@ function GalleryModal({ imgs, startIndex, onClose }) {
             <div className="relative w-full h-full flex items-center justify-center py-20 px-4 md:px-16" onClick={onClose}>
                 <img
                     src={imgs[current]}
-                    alt=""
+                    alt={`Foto ${current + 1} de la galería`}
                     className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
                     onClick={e => e.stopPropagation()}
                     decoding="async"
@@ -284,7 +284,7 @@ function GalleryModal({ imgs, startIndex, onClose }) {
                                 opacity: i === current ? 1 : 0.5,
                             }}
                         >
-                            <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                            <img src={img} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         </button>
                     ))}
                 </div>
@@ -401,6 +401,34 @@ export default function Property() {
 
     return (
         <div className="bg-secondaryLight min-h-screen">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": property.type === 'Casa' ? 'SingleFamilyResidence' : property.type === 'Departamento' ? 'Apartment' : 'RealEstateListing',
+                "name": property.title,
+                "description": property.desc?.substring(0, 160) || property.title,
+                "image": property.imgs?.[0],
+                "url": window.location.href,
+                "offers": {
+                    "@type": "Offer",
+                    "priceCurrency": property.currency,
+                    "price": property.price,
+                    "availability": "https://schema.org/InStock"
+                },
+                "numberOfRooms": property.beds || 1,
+                "floorSize": {
+                    "@type": "QuantitativeValue",
+                    "value": property.sqmBuilt,
+                    "unitCode": "MTK"
+                },
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": property.address,
+                    "addressLocality": property.zone || "Mar del Plata",
+                    "addressRegion": "Buenos Aires",
+                    "addressCountry": "AR"
+                }
+            })}} />
+
 
             {/* ── BREADCRUMB BAR ── */}
             <div className="bg-white border-b border-secondaryLight sticky top-[70px] z-20" style={{ boxShadow: '0 2px 12px rgba(18,39,58,0.05)' }}>
@@ -511,7 +539,7 @@ export default function Property() {
                                                 boxShadow: i === activeImg ? '0 4px 12px rgba(18,100,95,0.25)' : 'none',
                                             }}
                                         >
-                                            <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                                            <img src={img} alt={`Miniatura ${i + 1} de ${property.title}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                                         </button>
                                     ))}
                                     <button

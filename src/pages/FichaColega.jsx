@@ -158,10 +158,10 @@ export default function FichaColega() {
             {imgs.slice(0, 3).map((img, i) => (
               i === 2 && imgs.length > 3 ? (
                 <div key={i} className="fc-gallery-more" data-count={`+${imgs.length - 2}`} onClick={() => openModal(i)}>
-                  <img className="fc-gallery-img" src={img} alt="" />
+                  <img className="fc-gallery-img" src={img} alt={`Imagen ${i + 1} de la propiedad`} />
                 </div>
               ) : (
-                <img key={i} className="fc-gallery-img" src={img} alt="" onClick={() => openModal(i)} />
+                <img key={i} className="fc-gallery-img" src={img} alt={`Imagen ${i + 1} de la propiedad`} onClick={() => openModal(i)} />
               )
             ))}
           </div>
@@ -213,7 +213,7 @@ export default function FichaColega() {
       {modal && imgs.length > 0 && (
         <div className="fc-modal" onClick={() => setModal(false)}>
           <div className="fc-modal-counter">{modalIdx + 1} / {imgs.length}</div>
-          <img src={imgs[modalIdx]} alt="" onClick={e => e.stopPropagation()} />
+          <img src={imgs[modalIdx]} alt={`Imagen ${modalIdx + 1} de la galería`} onClick={e => e.stopPropagation()} />
           <button className="fc-modal-close" onClick={() => setModal(false)}>✕</button>
           <button className="fc-modal-nav fc-modal-prev" onClick={e => { e.stopPropagation(); setModalIdx(i => (i - 1 + imgs.length) % imgs.length); }}>‹</button>
           <button className="fc-modal-nav fc-modal-next" onClick={e => { e.stopPropagation(); setModalIdx(i => (i + 1) % imgs.length); }}>›</button>
