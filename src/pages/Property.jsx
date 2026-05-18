@@ -198,24 +198,6 @@ function ContactSidebar({ property }) {
                 )}
             </div>
 
-            {/* Price card */}
-            <div className="bg-secondaryLight rounded-2xl p-5 border border-secondaryLight">
-                <p className="text-[0.65rem] font-body font-bold tracking-[0.18em] uppercase text-textSecondary mb-1">Precio</p>
-                <p className="font-body font-black text-secondary text-[1.6rem] leading-tight mb-1">
-                    {formatPrice(property.price, property.currency)}
-                </p>
-                {property.currency === 'USD' && (
-                    <p className="text-[0.72rem] text-textSecondary font-body">
-                        USD {Math.round(property.price / property.sqm).toLocaleString('es-AR')}/m² · {property.sqm} m² cubiertos
-                    </p>
-                )}
-                <div className="mt-3 pt-3 border-t border-gray-200">
-                    <p className="text-[0.72rem] text-textSecondary font-body flex items-center gap-1.5">
-                        <Shield size={11} className="text-primary shrink-0" />
-                        Consultá sobre tu tasación
-                    </p>
-                </div>
-            </div>
         </div>
     )
 }
@@ -473,7 +455,7 @@ export default function Property() {
                     <div className="flex-1 min-w-0">
 
                         {/* Title block */}
-                        <div className="mb-6">
+                        <div className="mb-5">
                             <div className="flex items-center gap-2.5 mb-3 flex-wrap">
                                 <span className={`text-[0.6rem] font-body font-black tracking-[0.16em] uppercase px-3 py-1.5 rounded-full ${property.operation === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                                     {property.operation}
@@ -496,6 +478,25 @@ export default function Property() {
                             <div className="flex items-center gap-1.5 text-[0.85rem] text-textSecondary">
                                 <MapPin size={13} className="text-primary shrink-0" />
                                 {property.address}
+                            </div>
+                        </div>
+
+                        {/* Premium Price Card */}
+                        <div className="mb-7 bg-gradient-to-br from-primary to-[#0A4441] px-6 py-5 sm:px-8 sm:py-6 rounded-2xl shadow-[0_8px_25px_rgba(18,100,95,0.25)] border border-[#1b827c] relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                            <div className="relative z-10 flex flex-col justify-center">
+                                <p className="text-[0.65rem] font-body font-black tracking-[0.2em] uppercase text-white/70 mb-1">Valor de la propiedad</p>
+                                <p 
+                                    className="font-body font-black text-[2rem] sm:text-[2.4rem] leading-none tracking-tight"
+                                    style={{
+                                        background: 'linear-gradient(to right, #b8b8b8 0%, #ffffff 35%, #dcdcdc 50%, #ffffff 65%, #b8b8b8 100%)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        textShadow: '0px 2px 12px rgba(255, 255, 255, 0.25)'
+                                    }}
+                                >
+                                    {formatPrice(property.price, property.currency)}
+                                </p>
                             </div>
                         </div>
 

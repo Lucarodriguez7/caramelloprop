@@ -154,11 +154,6 @@ const PropertyCardGrid = memo(function PropertyCardGrid({ prop }) {
                 <div className="flex items-center justify-between">
                     <div>
                         <div className="font-body font-black text-textPrimary text-[1.15rem]">{formatPrice(prop.price, prop.currency)}</div>
-                        {prop.sqm && prop.currency === 'USD' && (
-                            <div className="text-[0.65rem] text-textSecondary font-body">
-                                USD {Math.round(prop.price / prop.sqm).toLocaleString()}/m²
-                            </div>
-                        )}
                     </div>
                     <span className="flex items-center gap-1 text-primary font-body font-bold text-[0.65rem] tracking-widest uppercase group-hover:gap-2 transition-all duration-200">
                         Ver más <ArrowRight size={11} />
