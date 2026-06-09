@@ -135,21 +135,22 @@ export default async (request, context) => {
       ogTags += `
         <meta property="og:site_name" content="Caramello Propiedades" />
         <meta name="author" content="Caramello Propiedades" />
+        <link rel="canonical" href="${request.url}" />
       `;
     }
     
-    // Clean up standard/static meta tags to avoid conflicts
+    // Clean up standard/static meta tags and canonical to avoid conflicts
     let modifiedHtml = html
       .replace(/<title>[^<]*<\/title>/gi, "")
       .replace(/<meta\s+name=["']description["'][^>]*>/gi, "")
       .replace(/<meta\s+property=["']og:[^"']*["'][^>]*>/gi, "")
-      .replace(/<meta\s+name=["']twitter:[^"']*["'][^>]*>/gi, "");
+      .replace(/<meta\s+name=["']twitter:[^"']*["'][^>]*>/gi, "")
+      .replace(/<link\s+rel=["']canonical["'][^>]*>/gi, "");
 
     if (isWhitelabel) {
-      // Remove author, canonical and JSON-LD schema for whitelabel to avoid brand leakage
+      // Remove author and JSON-LD schema for whitelabel to avoid brand leakage
       modifiedHtml = modifiedHtml
         .replace(/<meta\s+name=["']author["'][^>]*>/gi, "")
-        .replace(/<link\s+rel=["']canonical["'][^>]*>/gi, "")
         .replace(/<script\s+type=["']application\/ld\+json["']>[\s\S]*?<\/script>/gi, "");
     }
     
