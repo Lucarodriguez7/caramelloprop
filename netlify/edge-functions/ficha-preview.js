@@ -83,21 +83,20 @@ export default async (request, context) => {
         ? `Ficha técnica de ${property.tipo} en ${property.operacion}. Consulte detalles.`
         : "Consulte los detalles de esta propiedad en el catálogo inmobiliario.";
     }
-      
     let imageUrl = property?.imagenes?.[0] || "";
     // Transform image URL to request 600x315 size using Supabase Image Transformation
     if (imageUrl && imageUrl.includes("/storage/v1/object/public/")) {
       imageUrl = imageUrl.replace("/storage/v1/object/public/", "/storage/v1/render/image/public/") + "?width=600&height=315&resize=cover";
     }
 
-    // Fetch the original index.html from Netlify CDN
-    let res = await context.next();
-    if (res.status !== 200) {
-      // Fallback: Fetch index.html directly from the origin CDN if context.next() is non-200 (virtual path)
-      const originIndex = new URL("/index.html", request.url);
-      res = await fetch(originIndex.toString());
+    // Read index.html base cleanly from origin, bypassing context.next() to avoid Range header 206 Partial Content.
+    const originUrl = new URL("/", request.url);
+    const originResponse = await fetch(originUrl.toString());
+    if (!originResponse.ok) {
+      console.warn("Failed to fetch base index.html from origin:", originResponse.status);
+      return; // Fallback to serving the standard page
     }
-    const html = await res.text();
+    const html = await originResponse.text();
     
     // Construct the customized metadata tags
     let ogTags = `
@@ -146,13 +145,12 @@ export default async (request, context) => {
     
     // Inject metadata into index.html head
     modifiedHtml = modifiedHtml.replace("<head>", `<head>${ogTags}`);
-    
-    const headers = new Headers(res.headers);
-    headers.set("content-type", "text/html; charset=utf-8");
       
     return new Response(modifiedHtml, {
-      status: 200, // Explicitly serve 200 OK
-      headers
+      status: 200, // Strictly return status 200 OK (no 206 Partial Content)
+      headers: { 
+        "content-type": "text/html; charset=utf-8" 
+      }
     });
   } catch (error) {
     console.error("Error in Edge Function:", error);
