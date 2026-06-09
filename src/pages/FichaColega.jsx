@@ -20,6 +20,7 @@ const PALETTES = {
     accent: '#18181b', // Zinc 900
     accentHover: '#27272a',
     bgLight: '#f4f4f5',
+    bgPage: '#fbfbfb',
     borderLight: '#e4e4e7',
     textAccent: '#09090b',
   },
@@ -28,34 +29,63 @@ const PALETTES = {
     accent: '#0f2d4a',
     accentHover: '#173f66',
     bgLight: '#f0f5fa',
-    borderLight: '#dbe7f2',
-    textAccent: '#0e263d',
+    bgPage: '#f5f8fa',
+    borderLight: '#e2eaf3',
+    textAccent: '#0a1c2e',
   },
   beige: {
     name: 'Beige Cálido',
     accent: '#5c4f43',
     accentHover: '#736354',
     bgLight: '#faf6f0',
+    bgPage: '#fdfbf9',
     borderLight: '#ebe3d5',
-    textAccent: '#4c4137',
+    textAccent: '#3d342c',
   },
   slate: {
     name: 'Gris Slate',
-    accent: '#475569', // Slate 600
-    accentHover: '#334155',
-    bgLight: '#f8fafc',
+    accent: '#334155', // Slate 700
+    accentHover: '#475569',
+    bgLight: '#f1f5f9',
+    bgPage: '#f8fafc',
     borderLight: '#e2e8f0',
-    textAccent: '#1e293b',
+    textAccent: '#0f172a',
   },
   olive: {
     name: 'Verde Oliva',
     accent: '#2e3a2f',
     accentHover: '#3c4d3e',
-    bgLight: '#f3f6f3',
+    bgLight: '#f1f4f1',
+    bgPage: '#f7f9f7',
     borderLight: '#e1e7e2',
-    textAccent: '#1e261f',
+    textAccent: '#1c241d',
   }
 };
+
+const ANIMATION_CSS = `
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-fade-in-up-delay-1 {
+    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  }
+  .animate-fade-in-up-delay-2 {
+    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+  .animate-fade-in-up-delay-3 {
+    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+  }
+`;
 
 export default function FichaColega() {
   const { id } = useParams();
@@ -67,8 +97,15 @@ export default function FichaColega() {
   const [copied, setCopied] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState('charcoal');
 
-  // Load theme from URL or pick a random one
+  // Load animation styles and selected theme
   useEffect(() => {
+    if (!document.getElementById('fc-animation-style')) {
+      const s = document.createElement('style');
+      s.id = 'fc-animation-style';
+      s.textContent = ANIMATION_CSS;
+      document.head.appendChild(s);
+    }
+
     const params = new URLSearchParams(window.location.search);
     const urlTheme = params.get('theme');
     if (urlTheme && PALETTES[urlTheme]) {
@@ -77,11 +114,14 @@ export default function FichaColega() {
       const keys = Object.keys(PALETTES);
       const randomKey = keys[Math.floor(Math.random() * keys.length)];
       setSelectedTheme(randomKey);
-      
-      // Update URL with selected random theme silently
       params.set('theme', randomKey);
       window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
     }
+
+    return () => {
+      const el = document.getElementById('fc-animation-style');
+      if (el) el.remove();
+    };
   }, []);
 
   useEffect(() => {
@@ -104,17 +144,17 @@ export default function FichaColega() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-neutral-400 text-sm font-medium tracking-wide">Cargando ficha de propiedad...</div>
+      <div className="min-h-screen bg-[#fbfbfd] flex items-center justify-center">
+        <div className="text-neutral-400 text-xs font-semibold tracking-[0.2em] uppercase animate-pulse">Cargando ficha...</div>
       </div>
     );
   }
   
   if (!p) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center flex-col gap-4">
-        <div className="text-neutral-400 text-sm font-medium tracking-wide">Propiedad no encontrada</div>
-        <button onClick={() => navigate('/')} className="px-5 py-2 border rounded-full text-xs font-semibold hover:bg-neutral-50">
+      <div className="min-h-screen bg-[#fbfbfd] flex items-center justify-center flex-col gap-4">
+        <div className="text-neutral-400 text-xs font-semibold tracking-[0.2em] uppercase">Propiedad no encontrada</div>
+        <button onClick={() => navigate('/')} className="px-6 py-2.5 border border-neutral-200 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-50 transition-colors">
           Volver al catálogo
         </button>
       </div>
@@ -143,8 +183,9 @@ export default function FichaColega() {
 
   return (
     <div 
-      className="min-h-screen bg-white text-neutral-800 font-sans antialiased selection:bg-neutral-900 selection:text-white"
+      className="min-h-screen transition-colors duration-[1000ms] text-neutral-800 font-sans antialiased selection:bg-neutral-900 selection:text-white"
       style={{
+        backgroundColor: palette.bgPage,
         '--fc-accent': palette.accent,
         '--fc-accent-hover': palette.accentHover,
         '--fc-bg-light': palette.bgLight,
@@ -152,32 +193,32 @@ export default function FichaColega() {
         '--fc-text-accent': palette.textAccent,
       }}
     >
-      <div className="max-w-4xl mx-auto px-6 py-10 print:py-2 print:px-0">
+      <div className="max-w-5xl mx-auto px-6 py-10 print:py-2 print:px-0">
         
-        {/* Actions Header (hidden in print) */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-6 border-b border-neutral-100 print:hidden">
+        {/* Editorial-style Top Bar (hidden in print) */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-14 pb-8 border-b border-neutral-200/50 print:hidden animate-fade-in-up">
           <button 
             onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')} 
-            className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-neutral-900 transition-colors"
+            className="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.25em] text-neutral-400 hover:text-neutral-900 transition-colors duration-300"
           >
-            <ArrowLeft size={14} />
+            <ArrowLeft size={13} strokeWidth={2} />
             <span>Volver</span>
           </button>
           
           <div className="flex flex-wrap items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
             {/* Palette Switcher */}
-            <div className="flex items-center gap-2.5">
-              <span className="text-[0.65rem] font-bold uppercase tracking-widest text-neutral-400">Diseño:</span>
+            <div className="flex items-center gap-3">
+              <span className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-neutral-400">Paleta:</span>
               <div className="flex gap-1.5">
                 {Object.entries(PALETTES).map(([key, item]) => (
                   <button
                     key={key}
                     onClick={() => handleThemeChange(key)}
                     title={item.name}
-                    className={`w-5 h-5 rounded-full border transition-all duration-200 ${
+                    className={`w-4 h-4 rounded-full border transition-all duration-300 ${
                       selectedTheme === key 
-                        ? 'scale-115 ring-2 ring-neutral-400 ring-offset-2' 
-                        : 'hover:scale-105'
+                        ? 'scale-125 ring-2 ring-neutral-450 ring-offset-2' 
+                        : 'hover:scale-110 opacity-70 hover:opacity-100'
                     }`}
                     style={{ 
                       backgroundColor: item.accent, 
@@ -188,85 +229,91 @@ export default function FichaColega() {
               </div>
             </div>
             
-            {/* Share / Print Buttons */}
+            {/* Action Buttons */}
             <div className="flex items-center gap-2">
               <button 
                 onClick={copyLink} 
-                className="flex items-center gap-1.5 px-4.5 py-2 border rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[0.65rem] font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-95"
                 style={{ 
-                  backgroundColor: 'var(--fc-bg-light)', 
-                  borderColor: 'var(--fc-border-light)', 
-                  color: 'var(--fc-text-accent)' 
+                  backgroundColor: 'var(--fc-accent)', 
+                  color: '#fff'
                 }}
               >
-                <Copy size={13} />
+                <Copy size={12} strokeWidth={2} />
                 <span>{copied ? '¡Copiado!' : 'Compartir'}</span>
               </button>
               <button 
                 onClick={() => window.print()} 
-                className="flex items-center gap-1.5 px-4.5 py-2 border border-neutral-200 bg-white hover:bg-neutral-50 rounded-full text-xs font-bold uppercase tracking-wider text-neutral-600 transition-all duration-200 shadow-sm active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 border border-neutral-250 bg-white hover:bg-neutral-50 rounded-full text-[0.65rem] font-bold uppercase tracking-[0.2em] text-neutral-500 transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-95"
               >
-                <Printer size={13} />
+                <Printer size={12} strokeWidth={2} />
                 <span>Imprimir / PDF</span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Title, operation status and price */}
-        <div className="mb-8">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="text-[0.62rem] font-black tracking-widest uppercase px-3 py-1 rounded-full bg-neutral-900 text-white">
+        {/* Property Magazine Header Block */}
+        <div className="mb-12 animate-fade-in-up-delay-1">
+          <div className="flex flex-wrap items-center gap-2.5 mb-4">
+            <span className="text-[0.62rem] font-black tracking-[0.25em] uppercase px-3.5 py-1.5 rounded-full bg-neutral-900 text-white">
               {p.operacion}
             </span>
             {p.nuevo_ingreso && (
-              <span className="text-[0.62rem] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+              <span className="text-[0.62rem] font-black tracking-[0.25em] uppercase px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-800 border border-amber-250/40">
                 Nuevo Ingreso
               </span>
             )}
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight leading-tight mb-3">
+          
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-neutral-950 tracking-tighter leading-[1.1] mb-6">
             {p.titulo}
           </h1>
-          <div className="flex flex-wrap items-center justify-between gap-4 mt-4">
-            <div className="text-[1.85rem] font-black tracking-tight" style={{ color: 'var(--fc-accent)' }}>
+
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 py-6 border-t border-b border-neutral-200/50">
+            <div className="text-4xl font-extrabold tracking-tighter" style={{ color: 'var(--fc-accent)' }}>
               {fmt()}
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-neutral-500 font-medium">
-              <MapPin size={14} className="opacity-60" />
-              <span>{p.tipo} · {p.zona || 'Mar del Plata'}{p.direccion ? `, ${p.direccion}` : ''}</span>
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-neutral-400">
+              <MapPin size={15} strokeWidth={1.5} className="opacity-80" />
+              <span>{p.tipo} · {p.zona || 'Mar del Plata'}{p.direccion ? ` · ${p.direccion}` : ''}</span>
             </div>
           </div>
         </div>
 
-        {/* Gallery */}
+        {/* Asymmetric Mosaic Gallery */}
         {imgs.length > 0 && (
-          <div className="mb-10 print:mb-6">
+          <div className="mb-12 animate-fade-in-up-delay-2 print:mb-8">
             {imgs.length === 1 && (
-              <div className="rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-neutral-100" onClick={() => openModal(0)}>
-                <img src={imgs[0]} alt="Propiedad" className="w-full h-96 object-cover hover:scale-[1.01] transition-transform duration-500" />
+              <div className="rounded-3xl overflow-hidden cursor-pointer shadow-md border border-neutral-100/50 bg-neutral-150" onClick={() => openModal(0)}>
+                <img src={imgs[0]} alt="Propiedad" className="w-full h-[460px] object-cover hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} />
               </div>
             )}
             {imgs.length === 2 && (
-              <div className="grid grid-cols-2 gap-2 rounded-2xl overflow-hidden shadow-sm border border-neutral-100">
-                <img src={imgs[0]} alt="Propiedad 1" className="w-full h-80 object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-500" onClick={() => openModal(0)} />
-                <img src={imgs[1]} alt="Propiedad 2" className="w-full h-80 object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-500" onClick={() => openModal(1)} />
+              <div className="grid grid-cols-2 gap-3 rounded-3xl overflow-hidden shadow-md border border-neutral-100/50">
+                <img src={imgs[0]} alt="Propiedad 1" className="w-full h-[400px] object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={() => openModal(0)} />
+                <img src={imgs[1]} alt="Propiedad 2" className="w-full h-[400px] object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={() => openModal(1)} />
               </div>
             )}
             {imgs.length >= 3 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 rounded-2xl overflow-hidden shadow-sm border border-neutral-100">
-                <div className="md:col-span-2 cursor-pointer overflow-hidden" onClick={() => openModal(0)}>
-                  <img src={imgs[0]} className="w-full h-[400px] object-cover hover:scale-[1.01] transition-transform duration-500" alt="Propiedad Principal" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rounded-3xl overflow-hidden shadow-sm border border-neutral-100/50 bg-neutral-100/30 p-2">
+                <div className="md:col-span-2 h-[320px] md:h-[520px] overflow-hidden rounded-2xl cursor-pointer" onClick={() => openModal(0)}>
+                  <img src={imgs[0]} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad Principal" />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-1 gap-2.5">
-                  <img src={imgs[1]} className="w-full h-48 md:h-[195px] object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-500" alt="Propiedad 2" onClick={() => openModal(1)} />
+                <div className="grid grid-cols-2 md:grid-cols-1 gap-2.5 h-44 md:h-[520px]">
+                  <div className="overflow-hidden rounded-2xl cursor-pointer">
+                    <img src={imgs[1]} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 2" onClick={() => openModal(1)} />
+                  </div>
                   {imgs.length === 3 ? (
-                    <img src={imgs[2]} className="w-full h-48 md:h-[195px] object-cover cursor-pointer hover:scale-[1.01] transition-transform duration-500" alt="Propiedad 3" onClick={() => openModal(2)} />
+                    <div className="overflow-hidden rounded-2xl cursor-pointer">
+                      <img src={imgs[2]} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 3" onClick={() => openModal(2)} />
+                    </div>
                   ) : (
-                    <div className="relative cursor-pointer overflow-hidden h-48 md:h-[195px]" onClick={() => openModal(2)}>
-                      <img src={imgs[2]} className="w-full h-full object-cover" alt="Propiedad 3" />
-                      <div className="absolute inset-0 bg-neutral-950/65 backdrop-blur-[1px] flex items-center justify-center text-white text-lg font-bold">
-                        +{imgs.length - 2} fotos
+                    <div className="relative overflow-hidden rounded-2xl cursor-pointer group h-full" onClick={() => openModal(2)}>
+                      <img src={imgs[2]} className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 3" />
+                      <div className="absolute inset-0 bg-neutral-950/45 backdrop-blur-[2px] flex flex-col items-center justify-center text-white transition-all duration-[600ms] group-hover:bg-neutral-950/55">
+                        <span className="text-xl md:text-2xl font-light tracking-wider">+{imgs.length - 2}</span>
+                        <span className="text-[0.58rem] md:text-[0.62rem] font-bold uppercase tracking-[0.2em] mt-1 text-white/80">Fotos</span>
                       </div>
                     </div>
                   )}
@@ -276,62 +323,63 @@ export default function FichaColega() {
           </div>
         )}
 
-        {/* Characteristics Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-10 print:mb-6">
+        {/* Specifications Editorial Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-14 animate-fade-in-up-delay-3 print:mb-8">
           {p.m2_cubiertos > 0 && (
-            <div className="bg-neutral-50 border border-neutral-150 rounded-xl p-4 text-center flex flex-col items-center justify-center">
-              <Maximize2 size={16} className="text-neutral-400 mb-2" />
-              <div className="text-lg font-extrabold text-neutral-900 leading-tight">{p.m2_cubiertos}</div>
-              <div className="text-[0.62rem] font-bold uppercase tracking-wider text-neutral-400 mt-1">m² Cubiertos</div>
+            <div className="bg-white/40 backdrop-blur-md border border-neutral-200/50 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs">
+              <Maximize2 size={16} strokeWidth={1.2} className="text-neutral-400 mb-2.5" />
+              <div className="text-xl font-bold tracking-tighter text-neutral-900 leading-none">{p.m2_cubiertos}</div>
+              <div className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-neutral-400 mt-2">m² Cubiertos</div>
             </div>
           )}
           {p.m2_lote > 0 && (
-            <div className="bg-neutral-50 border border-neutral-150 rounded-xl p-4 text-center flex flex-col items-center justify-center">
-              <Layers size={16} className="text-neutral-400 mb-2" />
-              <div className="text-lg font-extrabold text-neutral-900 leading-tight">{p.m2_lote}</div>
-              <div className="text-[0.62rem] font-bold uppercase tracking-wider text-neutral-400 mt-1">m² Lote</div>
+            <div className="bg-white/40 backdrop-blur-md border border-neutral-200/50 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs">
+              <Layers size={16} strokeWidth={1.2} className="text-neutral-400 mb-2.5" />
+              <div className="text-xl font-bold tracking-tighter text-neutral-900 leading-none">{p.m2_lote}</div>
+              <div className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-neutral-400 mt-2">m² Lote</div>
             </div>
           )}
           {p.dormitorios > 0 && (
-            <div className="bg-neutral-50 border border-neutral-150 rounded-xl p-4 text-center flex flex-col items-center justify-center">
-              <BedDouble size={18} className="text-neutral-400 mb-1.5" />
-              <div className="text-lg font-extrabold text-neutral-900 leading-tight">{p.dormitorios}</div>
-              <div className="text-[0.62rem] font-bold uppercase tracking-wider text-neutral-400 mt-1">Dormitorios</div>
+            <div className="bg-white/40 backdrop-blur-md border border-neutral-200/50 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs">
+              <BedDouble size={18} strokeWidth={1.2} className="text-neutral-400 mb-2" />
+              <div className="text-xl font-bold tracking-tighter text-neutral-900 leading-none">{p.dormitorios}</div>
+              <div className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-neutral-400 mt-2">Dormitorios</div>
             </div>
           )}
           {p.banos > 0 && (
-            <div className="bg-neutral-50 border border-neutral-150 rounded-xl p-4 text-center flex flex-col items-center justify-center">
-              <Bath size={16} className="text-neutral-400 mb-2" />
-              <div className="text-lg font-extrabold text-neutral-900 leading-tight">{p.banos}</div>
-              <div className="text-[0.62rem] font-bold uppercase tracking-wider text-neutral-400 mt-1">Baños</div>
+            <div className="bg-white/40 backdrop-blur-md border border-neutral-200/50 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs">
+              <Bath size={16} strokeWidth={1.2} className="text-neutral-400 mb-2.5" />
+              <div className="text-xl font-bold tracking-tighter text-neutral-900 leading-none">{p.banos}</div>
+              <div className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-neutral-400 mt-2">Baños</div>
             </div>
           )}
           {p.ambientes > 0 && (
-            <div className="bg-neutral-50 border border-neutral-150 rounded-xl p-4 text-center flex flex-col items-center justify-center">
-              <Grid size={16} className="text-neutral-400 mb-2" />
-              <div className="text-lg font-extrabold text-neutral-900 leading-tight">{p.ambientes}</div>
-              <div className="text-[0.62rem] font-bold uppercase tracking-wider text-neutral-400 mt-1">Ambientes</div>
+            <div className="bg-white/40 backdrop-blur-md border border-neutral-200/50 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs">
+              <Grid size={16} strokeWidth={1.2} className="text-neutral-400 mb-2.5" />
+              <div className="text-xl font-bold tracking-tighter text-neutral-900 leading-none">{p.ambientes}</div>
+              <div className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-neutral-400 mt-2">Ambientes</div>
             </div>
           )}
           {p.cochera && (
-            <div className="bg-neutral-50 border border-neutral-150 rounded-xl p-4 text-center flex flex-col items-center justify-center">
-              <Car size={16} className="text-neutral-400 mb-2" />
-              <div className="text-lg font-extrabold text-neutral-900 leading-tight">Sí</div>
-              <div className="text-[0.62rem] font-bold uppercase tracking-wider text-neutral-400 mt-1">Cochera</div>
+            <div className="bg-white/40 backdrop-blur-md border border-neutral-200/50 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs">
+              <Car size={16} strokeWidth={1.2} className="text-neutral-400 mb-2.5" />
+              <div className="text-xl font-bold tracking-tighter text-neutral-900 leading-none">Sí</div>
+              <div className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-neutral-400 mt-2">Cochera</div>
             </div>
           )}
         </div>
 
-        {/* Two Columns Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10 print:gap-4 print:mb-6">
+        {/* Detailed Info Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-14 print:gap-4 print:mb-8">
+          
           {/* Main Description */}
           <div className="md:col-span-2">
-            <h2 className="text-sm font-black uppercase tracking-widest text-neutral-400 mb-4 flex items-center gap-2">
-              <span>Descripción</span>
-              <span className="flex-1 h-px bg-neutral-100" />
+            <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-neutral-400 mb-6 flex items-center gap-3">
+              <span>Descripción del inmueble</span>
+              <span className="flex-1 h-px bg-neutral-200/60" />
             </h2>
             {p.descripcion ? (
-              <div className="text-[0.92rem] leading-relaxed text-neutral-600 space-y-4 whitespace-pre-line font-medium">
+              <div className="text-[0.95rem] leading-relaxed text-neutral-600 space-y-4 whitespace-pre-line font-normal">
                 {p.descripcion}
               </div>
             ) : (
@@ -339,49 +387,49 @@ export default function FichaColega() {
             )}
           </div>
 
-          {/* Technical Info & Amenities */}
-          <div className="flex flex-col gap-8">
+          {/* Technical Info & Amenities Side Block */}
+          <div className="flex flex-col gap-10">
             {/* Technical Sheet */}
             <div>
-              <h2 className="text-sm font-black uppercase tracking-widest text-neutral-400 mb-4 flex items-center gap-2">
+              <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-neutral-400 mb-6 flex items-center gap-3">
                 <span>Ficha Técnica</span>
-                <span className="flex-1 h-px bg-neutral-100" />
+                <span className="flex-1 h-px bg-neutral-200/60" />
               </h2>
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {p.antiguedad && (
-                  <div className="flex justify-between items-center py-2 border-b border-neutral-100 text-[0.82rem]">
-                    <span className="text-neutral-400 font-medium flex items-center gap-1.5"><Calendar size={13} /> Antigüedad</span>
-                    <span className="text-neutral-800 font-bold">{p.antiguedad}</span>
+                  <div className="flex justify-between items-center py-2.5 border-b border-neutral-200/40 text-[0.8rem]">
+                    <span className="text-neutral-400 font-medium flex items-center gap-2"><Calendar size={13} strokeWidth={1.5} /> Antigüedad</span>
+                    <span className="text-neutral-900 font-bold">{p.antiguedad}</span>
                   </div>
                 )}
                 {p.estado && (
-                  <div className="flex justify-between items-center py-2 border-b border-neutral-100 text-[0.82rem]">
-                    <span className="text-neutral-400 font-medium flex items-center gap-1.5"><Sparkles size={13} /> Estado</span>
-                    <span className="text-neutral-800 font-bold">{p.estado}</span>
+                  <div className="flex justify-between items-center py-2.5 border-b border-neutral-200/40 text-[0.8rem]">
+                    <span className="text-neutral-400 font-medium flex items-center gap-2"><Sparkles size={13} strokeWidth={1.5} /> Estado</span>
+                    <span className="text-neutral-900 font-bold">{p.estado}</span>
                   </div>
                 )}
                 {p.orientacion && (
-                  <div className="flex justify-between items-center py-2 border-b border-neutral-100 text-[0.82rem]">
-                    <span className="text-neutral-400 font-medium flex items-center gap-1.5"><Compass size={13} /> Orientación</span>
-                    <span className="text-neutral-800 font-bold">{p.orientacion}</span>
+                  <div className="flex justify-between items-center py-2.5 border-b border-neutral-200/40 text-[0.8rem]">
+                    <span className="text-neutral-400 font-medium flex items-center gap-2"><Compass size={13} strokeWidth={1.5} /> Orientación</span>
+                    <span className="text-neutral-900 font-bold">{p.orientacion}</span>
                   </div>
                 )}
                 {p.pisos > 0 && (
-                  <div className="flex justify-between items-center py-2 border-b border-neutral-100 text-[0.82rem]">
-                    <span className="text-neutral-400 font-medium flex items-center gap-1.5"><Layers3 size={13} /> Pisos</span>
-                    <span className="text-neutral-800 font-bold">{p.pisos}</span>
+                  <div className="flex justify-between items-center py-2.5 border-b border-neutral-200/40 text-[0.8rem]">
+                    <span className="text-neutral-400 font-medium flex items-center gap-2"><Layers3 size={13} strokeWidth={1.5} /> Pisos</span>
+                    <span className="text-neutral-900 font-bold">{p.pisos}</span>
                   </div>
                 )}
                 {p.m2_cubiertos > 0 && (
-                  <div className="flex justify-between items-center py-2 border-b border-neutral-100 text-[0.82rem]">
+                  <div className="flex justify-between items-center py-2.5 border-b border-neutral-200/40 text-[0.8rem]">
                     <span className="text-neutral-400 font-medium">Sup. cubierta</span>
-                    <span className="text-neutral-800 font-bold">{p.m2_cubiertos} m²</span>
+                    <span className="text-neutral-900 font-bold">{p.m2_cubiertos} m²</span>
                   </div>
                 )}
                 {p.m2_lote > 0 && (
-                  <div className="flex justify-between items-center py-2 border-b border-neutral-100 text-[0.82rem]">
+                  <div className="flex justify-between items-center py-2.5 border-b border-neutral-200/40 text-[0.8rem]">
                     <span className="text-neutral-400 font-medium">Sup. lote</span>
-                    <span className="text-neutral-800 font-bold">{p.m2_lote} m²</span>
+                    <span className="text-neutral-900 font-bold">{p.m2_lote} m²</span>
                   </div>
                 )}
               </div>
@@ -390,15 +438,15 @@ export default function FichaColega() {
             {/* Amenities Badges */}
             {p.amenities?.length > 0 && (
               <div>
-                <h2 className="text-sm font-black uppercase tracking-widest text-neutral-400 mb-4 flex items-center gap-2">
+                <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-neutral-400 mb-6 flex items-center gap-3">
                   <span>Comodidades</span>
-                  <span className="flex-1 h-px bg-neutral-100" />
+                  <span className="flex-1 h-px bg-neutral-200/60" />
                 </h2>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-2">
                   {p.amenities.map(a => (
                     <span 
                       key={a} 
-                      className="inline-flex items-center gap-1 px-3 py-1.5 border rounded-full text-xs font-semibold shadow-xs"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 border rounded-full text-xs font-bold tracking-wide shadow-2xs transition-transform duration-200 hover:scale-[1.01]"
                       style={{
                         backgroundColor: 'var(--fc-bg-light)',
                         borderColor: 'var(--fc-border-light)',
@@ -415,87 +463,87 @@ export default function FichaColega() {
           </div>
         </div>
 
-        {/* Location Map */}
+        {/* Location Map Section */}
         {mapUrl && (
-          <div className="mb-10 print:hidden">
-            <h2 className="text-sm font-black uppercase tracking-widest text-neutral-400 mb-4 flex items-center gap-2">
+          <div className="mb-14 print:hidden">
+            <h2 className="text-[0.7rem] font-black uppercase tracking-[0.3em] text-neutral-400 mb-6 flex items-center gap-3">
               <span>Ubicación</span>
-              <span className="flex-1 h-px bg-neutral-100" />
+              <span className="flex-1 h-px bg-neutral-200/60" />
             </h2>
-            <div className="h-72 rounded-2xl overflow-hidden border border-neutral-200 shadow-inner">
+            <div className="h-80 rounded-3xl overflow-hidden border border-neutral-200/50 shadow-inner">
               <iframe 
                 src={mapUrl} 
                 allowFullScreen 
                 loading="lazy" 
                 title="Ubicación de la propiedad"
-                className="w-full h-full border-none"
+                className="w-full h-full border-none filter grayscale hover:grayscale-0 transition-all duration-700"
               />
             </div>
           </div>
         )}
 
-        {/* Footer (Sin marcas) */}
-        <footer className="mt-16 pt-8 border-t border-neutral-100 text-center flex flex-col items-center justify-center gap-2 print:mt-8 print:pt-4">
-          <p className="text-[0.68rem] font-bold tracking-widest uppercase text-neutral-400">
-            Ficha de Inmueble para Intercambio Inmobiliario
+        {/* Elegant Footer (Sin marcas comerciales) */}
+        <footer className="mt-20 pt-10 border-t border-neutral-200/50 text-center flex flex-col items-center justify-center gap-2 print:mt-10 print:pt-4">
+          <p className="text-[0.68rem] font-bold tracking-[0.25em] uppercase text-neutral-450">
+            Ficha de Intercambio Profesional Inmobiliario
           </p>
-          <p className="text-[0.62rem] text-neutral-400">
-            Generada para uso exclusivo entre colegas. Sin datos comerciales ni información de contacto de origen.
+          <p className="text-[0.62rem] text-neutral-400 tracking-wider">
+            Exclusivo para uso entre colegas y profesionales del sector · Documento no comercial y sin datos de contacto del origen.
           </p>
         </footer>
 
       </div>
 
-      {/* Gallery Modal / Lightbox */}
+      {/* Gallery Lightbox / Fullscreen Modal */}
       {modal && imgs.length > 0 && (
         <div 
-          className="fixed inset-0 z-[10000] bg-neutral-950/96 backdrop-blur-md flex flex-col items-center justify-center select-none"
+          className="fixed inset-0 z-[10000] bg-neutral-950/98 backdrop-blur-lg flex flex-col items-center justify-center select-none"
           onClick={() => setModal(false)}
         >
           {/* Top Bar */}
-          <div className="absolute top-0 inset-x-0 h-16 px-6 flex items-center justify-between text-white bg-gradient-to-b from-neutral-950/80 to-transparent">
-            <span className="text-xs font-bold uppercase tracking-widest opacity-60">
+          <div className="absolute top-0 inset-x-0 h-20 px-8 flex items-center justify-between text-white bg-gradient-to-b from-neutral-950/90 to-transparent">
+            <span className="text-[0.68rem] font-bold uppercase tracking-[0.25em] text-white/50">
               {modalIdx + 1} / {imgs.length}
             </span>
             <button 
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 transition-all flex items-center justify-center text-white font-bold"
+              className="w-10 h-10 rounded-full bg-white/5 border border-white/15 hover:bg-white/10 active:scale-90 transition-all flex items-center justify-center text-white"
               onClick={() => setModal(false)}
             >
               ✕
             </button>
           </div>
 
-          {/* Main Image */}
-          <div className="relative w-full max-w-5xl px-4 flex items-center justify-center">
+          {/* Main Image View */}
+          <div className="relative w-full max-w-5xl px-6 flex items-center justify-center">
             <img 
               src={imgs[modalIdx]} 
               alt={`Foto ${modalIdx + 1}`} 
-              className="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl animate-fade-in"
+              className="max-h-[78vh] max-w-full object-contain rounded-xl shadow-2xl transition-all duration-[600ms] ease-out"
               onClick={e => e.stopPropagation()} 
             />
             
-            {/* Arrows */}
+            {/* Nav Arrows */}
             <button 
-              className="absolute left-6 w-12 h-12 rounded-full bg-white/5 hover:bg-white/15 active:scale-90 transition-all flex items-center justify-center text-white text-xl font-bold"
+              className="absolute left-6 w-14 h-14 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:scale-105 active:scale-90 transition-all flex items-center justify-center text-white text-2xl"
               onClick={e => { e.stopPropagation(); setModalIdx(i => (i - 1 + imgs.length) % imgs.length); }}
             >
               ‹
             </button>
             <button 
-              className="absolute right-6 w-12 h-12 rounded-full bg-white/5 hover:bg-white/15 active:scale-90 transition-all flex items-center justify-center text-white text-xl font-bold"
+              className="absolute right-6 w-14 h-14 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:scale-105 active:scale-90 transition-all flex items-center justify-center text-white text-2xl"
               onClick={e => { e.stopPropagation(); setModalIdx(i => (i + 1) % imgs.length); }}
             >
               ›
             </button>
           </div>
 
-          {/* Dots Indicator */}
-          <div className="absolute bottom-6 flex gap-1.5 max-w-[90vw] overflow-x-auto py-2 px-4 scrollbar-none" onClick={e => e.stopPropagation()}>
+          {/* Slide Dots Indicator */}
+          <div className="absolute bottom-8 flex gap-1.5 max-w-[90vw] overflow-x-auto py-2 px-4 scrollbar-none" onClick={e => e.stopPropagation()}>
             {imgs.map((_, i) => (
               <button 
                 key={i} 
-                className={`w-2 h-2 rounded-full transition-all duration-300 border-none shrink-0 ${
-                  i === modalIdx ? 'bg-white scale-125' : 'bg-white/30'
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 border-none shrink-0 ${
+                  i === modalIdx ? 'bg-white scale-150' : 'bg-white/20 hover:bg-white/40'
                 }`}
                 onClick={() => setModalIdx(i)}
               />

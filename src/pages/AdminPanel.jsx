@@ -357,7 +357,13 @@ export default function AdminPanel() {
             <aside className="cp-sidebar">
                 <div className="cp-sidebar-logo"><img src="/logo.png" alt="CP" style={{ height: 36 }} /></div>
                 <nav className="cp-sidebar-nav">
-                    {[{ id: 'dashboard', label: 'Dashboard', icon: <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /></svg> }, { id: 'properties', label: 'Propiedades', icon: <svg viewBox="0 0 20 20" fill="none"><path d="M3 8l7-5 7 5v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" stroke="currentColor" strokeWidth="1.3" /></svg> }, { id: 'leads', label: 'Consultas', icon: <svg viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.3" /><path d="M2 5l8 5 8-5" stroke="currentColor" strokeWidth="1.3" /></svg> }, { id: 'settings', label: 'Ajustes', icon: <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" strokeWidth="1.3" /><path d="M10 2v2M10 16v2M2 10h2M16 10h2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg> }].map(n => <button key={n.id} className={`cp-nav${view === n.id || (view === 'property-edit' && n.id === 'properties') ? ' active' : ''}`} onClick={() => { setView(n.id); setEditId(null); }}>{n.icon}{n.label}</button>)}
+                    {[
+                        { id: 'dashboard', label: 'Dashboard', icon: <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /><rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="1.3" /></svg> }, 
+                        { id: 'properties', label: 'Propiedades', icon: <svg viewBox="0 0 20 20" fill="none"><path d="M3 8l7-5 7 5v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" stroke="currentColor" strokeWidth="1.3" /></svg> }, 
+                        { id: 'leads', label: 'Consultas', icon: <svg viewBox="0 0 20 20" fill="none"><path d="M3 5h14a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.3" /><path d="M2 5l8 5 8-5" stroke="currentColor" strokeWidth="1.3" /></svg> }, 
+                        { id: 'instagram', label: 'Instagram', icon: <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="4" stroke="currentColor" strokeWidth="1.3" /><circle cx="10" cy="10" r="3" stroke="currentColor" strokeWidth="1.3" /><circle cx="14.5" cy="5.5" r="0.75" fill="currentColor" /></svg> },
+                        { id: 'settings', label: 'Ajustes', icon: <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" strokeWidth="1.3" /><path d="M10 2v2M10 16v2M2 10h2M16 10h2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg> }
+                    ].map(n => <button key={n.id} className={`cp-nav${view === n.id || (view === 'property-edit' && n.id === 'properties') ? ' active' : ''}`} onClick={() => { setView(n.id); setEditId(null); }}>{n.icon}{n.label}</button>)}
                 </nav>
                 <div className="cp-sidebar-footer">
                     <div className="cp-user"><div className="cp-avatar">{profile?.nombre?.[0]?.toUpperCase() || 'U'}</div><div><div className="cp-user-name">{profile?.nombre || 'Usuario'}</div><div className="cp-user-role">{profile?.rol || 'admin'}</div></div></div>
@@ -369,6 +375,7 @@ export default function AdminPanel() {
                 {view === 'properties' && <PropList setView={setView} setEditId={setEditId} />}
                 {view === 'property-edit' && <PropEditor id={editId} setView={setView} />}
                 {view === 'leads' && <Leads />}
+                {view === 'instagram' && <InstagramManager />}
                 {view === 'settings' && <Settings profile={profile} setProfile={setProfile} />}
             </main>
         </div>
@@ -399,7 +406,7 @@ function PropList({ setView, setEditId }) {
     const togPub = async (id, c) => { await supabase.from('properties').update({ publicado: !c }).eq('id', id); load(); };
     const fmt = (p) => p.moneda === 'USD' ? `USD ${Number(p.precio).toLocaleString('es-AR')}` : `$${Number(p.precio).toLocaleString('es-AR')}`;
     return (<><div className="cp-page-title">Propiedades</div><div className="cp-page-sub">Gestión del catálogo</div><div className="cp-table-wrap"><div className="cp-table-header"><span className="cp-table-title">{props.length} propiedad{props.length !== 1 ? 'es' : ''}</span><button className="cp-btn-new" onClick={() => { setEditId(null); setView('property-edit'); }}>+ Nueva</button></div>{loading ? <div className="cp-loading">Cargando...</div> : <table className="cp-table"><thead><tr><th></th><th>Título</th><th>Precio</th><th>Tipo</th><th>m² Cub.</th><th>m² Lote</th><th>Views</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>{props.map(p => <tr key={p.id}><td>{p.imagenes?.[0] ? <img className="cp-table-img" src={p.imagenes[0]} alt={`Miniatura de ${p.titulo}`} /> : <div style={{ width: 48, height: 36, background: 'var(--gray-100)', borderRadius: 6 }} />}</td><td style={{ fontWeight: 600, color: 'var(--gray-800)', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.titulo}{p.nuevo_ingreso && <span className="cp-badge cp-badge-nuevo" style={{ marginLeft: 6 }}>Nuevo</span>}</td><td>{fmt(p)}</td><td>{p.tipo}</td><td>{p.m2_cubiertos || '-'}</td><td>{p.m2_lote || '-'}</td><td><span className="cp-views"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" stroke="currentColor" strokeWidth="1.2" /><circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.2" /></svg>{p.views || 0}</span></td><td><span className={`cp-badge ${p.publicado ? 'cp-badge-pub' : 'cp-badge-draft'}`}>{p.publicado ? 'Publicada' : 'Borrador'}</span></td><td><div className="cp-actions"><button className="cp-btn-sm" onClick={() => { setEditId(p.id); setView('property-edit'); }}>Editar</button><button className="cp-btn-sm cp-btn-sm-ficha" onClick={() => setShareProp(p)}>Ficha Colega</button><button className="cp-btn-sm" onClick={() => togPub(p.id, p.publicado)}>{p.publicado ? 'Ocultar' : 'Publicar'}</button><button className="cp-btn-sm cp-btn-sm-danger" onClick={() => del(p.id)}>Eliminar</button></div></td></tr>)}{props.length === 0 && <tr><td colSpan={9} className="cp-empty">No hay propiedades</td></tr>}</tbody></table>}</div>
-    {shareProp && <ShareModal property={shareProp} onClose={() => setShareProp(null)} />}
+        {shareProp && <ShareModal property={shareProp} onClose={() => setShareProp(null)} />}
     </>);
 }
 
@@ -425,7 +432,7 @@ function ShareModal({ property, onClose }) {
         <div style={{ position: 'fixed', inset: 0, zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }} onClick={onClose} />
             <div style={{ position: 'relative', background: '#fff', borderRadius: 16, padding: 28, maxWidth: 540, width: '90%', boxShadow: '0 24px 60px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', gap: 20 }}>
-                
+
                 {/* Close Button */}
                 <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, width: 30, height: 30, borderRadius: '50%', border: '1px solid var(--gray-200)', background: 'var(--gray-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12, color: 'var(--gray-400)' }}>✕</button>
 
@@ -491,9 +498,6 @@ function ShareModal({ property, onClose }) {
                     </div>
                 </div>
 
-                <div style={{ fontSize: 10, color: 'var(--gray-450)', textAlign: 'center', lineHeight: 1.5 }}>
-                    💡 Si configurás un dominio de Netlify separado, definí la variable <code style={{ background: 'var(--gray-100)', padding: '2px 4px', borderRadius: 4 }}>VITE_WHITELABEL_URL</code> para generar enlaces directos a ese dominio.
-                </div>
             </div>
         </div>
     );
@@ -665,4 +669,170 @@ function Settings({ profile, setProfile }) {
     const [n, setN] = useState(profile?.nombre || ''); const [saving, setSaving] = useState(false); const [msg, setMsg] = useState('');
     const save = async () => { setSaving(true); await supabase.from('profiles').update({ nombre: n }).eq('id', profile.id); setProfile({ ...profile, nombre: n }); setMsg('Guardado'); setSaving(false); setTimeout(() => setMsg(''), 2000); };
     return (<><div className="cp-page-title">Ajustes</div><div className="cp-page-sub">Configuración de tu cuenta</div><div className="cp-editor" style={{ maxWidth: 460 }}><div className="cp-editor-title">Perfil</div><div className="cp-ig"><label>Nombre</label><input className="cp-input" value={n} onChange={e => setN(e.target.value)} /></div><div className="cp-ig"><label>Email</label><input className="cp-input" value={profile?.email || ''} disabled style={{ opacity: .5 }} /></div><div className="cp-form-actions"><button className="cp-btn-save" onClick={save} disabled={saving}>{saving ? 'Guardando...' : 'Guardar'}</button>{msg && <span style={{ color: 'var(--success)', fontSize: 12, alignSelf: 'center' }}>{msg}</span>}</div></div></>);
+}
+
+/* ── INSTAGRAM MANAGER ── */
+function InstagramManager() {
+    const [reels, setReels] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [url, setUrl] = useState('');
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState('');
+
+    const loadReels = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            const { data, error } = await supabase
+                .from('instagram_reels')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) throw error;
+            setReels(data || []);
+        } catch (err) {
+            console.error("Error loading reels:", err);
+            setError('Error al conectar con la base de datos de Instagram Reels.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadReels();
+    }, []);
+
+    const publishReel = async (e) => {
+        e.preventDefault();
+        if (!url) return;
+        setError('');
+        setSaving(true);
+        try {
+            let cleanUrl = url.trim().split('?')[0];
+            if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+                cleanUrl = 'https://' + cleanUrl;
+            }
+            if (!cleanUrl.endsWith('/')) {
+                cleanUrl += '/';
+            }
+
+            const { error } = await supabase
+                .from('instagram_reels')
+                .insert([{ url: cleanUrl }]);
+            
+            if (error) throw error;
+            setUrl('');
+            loadReels();
+        } catch (err) {
+            console.error("Error publishing reel:", err);
+            setError(err.message || 'Error al publicar el reel en la base de datos.');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const deleteReel = async (id) => {
+        if (!confirm('¿Seguro que deseas eliminar este Reel?')) return;
+        setError('');
+        try {
+            const { error } = await supabase
+                .from('instagram_reels')
+                .delete()
+                .eq('id', id);
+            if (error) throw error;
+            loadReels();
+        } catch (err) {
+            console.error("Error deleting reel:", err);
+            setError('Error al eliminar el Reel.');
+        }
+    };
+
+    const getShortcode = (url) => {
+        try {
+            const match = url.match(/(?:reel|p|tv)\/([^/]+)/);
+            return match ? match[1] : 'Reel';
+        } catch (e) {
+            return 'Reel';
+        }
+    };
+
+    return (
+        <>
+            <div className="cp-page-title">Instagram Feed</div>
+            <div className="cp-page-sub">Gestioná los Reels interactivos que se muestran en el sitio web público</div>
+            
+            {error && <div className="cp-error" style={{ marginBottom: 20 }}>{error}</div>}
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.8fr', gap: '32px', alignItems: 'start' }}>
+                <div style={{ background: 'var(--white)', border: '1px solid var(--gray-200)', borderRadius: 12, padding: 24 }}>
+                    <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 16, color: 'var(--gray-800)' }}>Publicar nuevo Reel</h3>
+                    <form onSubmit={publishReel}>
+                        <div className="cp-ig" style={{ marginBottom: 20 }}>
+                            <label>URL de Instagram</label>
+                            <input 
+                                className="cp-input" 
+                                type="url" 
+                                required
+                                placeholder="https://www.instagram.com/reel/C8W-8p-O4dF/" 
+                                value={url} 
+                                onChange={e => setUrl(e.target.value)} 
+                            />
+                            <span style={{ fontSize: 10, color: 'var(--gray-400)', marginTop: 6, display: 'block', lineHeight: 1.4 }}>
+                                Pegá la dirección completa del Reel (ej: https://www.instagram.com/reel/XXXXX/).
+                            </span>
+                        </div>
+                        <button 
+                            className="cp-btn" 
+                            type="submit" 
+                            disabled={saving || !url}
+                        >
+                            {saving ? 'Guardando...' : 'Publicar Reel'}
+                        </button>
+                    </form>
+                </div>
+
+                <div style={{ background: 'var(--white)', border: '1px solid var(--gray-200)', borderRadius: 12, padding: 24 }}>
+                    <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 16, color: 'var(--gray-800)' }}>Reels activos</h3>
+                    
+                    {loading ? (
+                        <div style={{ padding: '40px 0', textCenter: 'center', color: 'var(--gray-400)', fontSize: 13, textAlign: 'center' }}>
+                            Cargando lista...
+                        </div>
+                    ) : reels.length === 0 ? (
+                        <div style={{ padding: '40px 0', border: '1px dashed var(--gray-200)', borderRadius: 8, textAlign: 'center', color: 'var(--gray-400)', fontSize: 13 }}>
+                            No hay Reels activos. Ingresá una URL a la izquierda para empezar.
+                        </div>
+                    ) : (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '16px' }}>
+                            {reels.map(reel => {
+                                const embedUrl = `${reel.url.split('?')[0].replace(/\/$/, '')}/embed/`;
+                                return (
+                                    <div key={reel.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                        <div style={{ position: 'relative', width: '100%', aspectRatio: '9/16', background: 'var(--gray-50)', border: '1px solid var(--gray-250)', borderRadius: 10, overflow: 'hidden' }}>
+                                            <iframe
+                                                src={embedUrl}
+                                                style={{ width: '100%', height: '100%', border: 'none' }}
+                                                scrolling="no"
+                                                allowTransparency="true"
+                                            />
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 4px' }}>
+                                            <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--gray-500)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '75px' }}>
+                                                {getShortcode(reel.url)}
+                                            </span>
+                                            <button 
+                                                onClick={() => deleteReel(reel.id)} 
+                                                style={{ border: 'none', background: 'none', color: 'var(--danger)', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </>
+    );
 }

@@ -121,33 +121,6 @@ const SERVICES = [
     },
 ]
 
-const INSTAGRAM_REELS = [
-    {
-        url: 'https://www.instagram.com/p/DT5uyOLDlHn/',
-        img: 'https://imgur.com/Xb8Bdqh.jpg',
-        caption: '✨ Nueva propiedad disponible — Consultá sin compromiso',
-    },
-    {
-        url: 'https://www.instagram.com/p/DRsXNd8CS0N/',
-        img: 'https://imgur.com/lhzP2oq.jpg',
-        caption: '🏡 Recorrido exclusivo por esta joya inmobiliaria',
-    },
-    {
-        url: 'https://www.instagram.com/p/DW2htX1DDQp/',
-        img: 'https://imgur.com/An7Z0xn.jpg',
-        caption: '📍 Nuevos ingresos de la semana — No te los pierdas',
-    },
-    {
-        url: 'https://www.instagram.com/p/DWysR3PE7An/',
-        img: 'https://imgur.com/Yz7U3Mb.jpg',
-        caption: '🔑 Oportunidad única en zona premium',
-    },
-    {
-        url: 'https://www.instagram.com/p/DWcVz0eExvr/',
-        img: 'https://imgur.com/XPvqVak.jpg',
-        caption: '🚀 El mercado crece y nosotros también',
-    },
-]
 
 /* ── Property Card ─────────────────────────────────────────── */
 function PropertyCard({ prop }) {
@@ -378,111 +351,51 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
 }
 
 /* ── Instagram Reel Card (Premium) ────────────────────────── */
-function InstagramReelCard({ reel }) {
-    const [hovered, setHovered] = useState(false)
+function InstagramReelCard({ reel, onPlay }) {
+    let embedUrl = ''
+    if (reel.url) {
+        let cleanUrl = reel.url.split('?')[0]
+        if (!cleanUrl.endsWith('/')) cleanUrl += '/'
+        if (!cleanUrl.endsWith('/embed/')) cleanUrl += 'embed/'
+        embedUrl = cleanUrl
+    }
+
     return (
-        <a
-            href={reel.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            className="ig-reel-card group relative block rounded-2xl overflow-hidden"
+        <div 
+            onClick={() => onPlay(embedUrl)}
+            className="ig-reel-card group relative w-full rounded-[1.8rem] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.12)] bg-neutral-950 cursor-pointer transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03] hover:shadow-[0_20px_50px_rgba(0,0,0,0.22)]"
             style={{ aspectRatio: '9/16' }}
         >
-            {/* Thumbnail */}
-            <img
-                src={reel.img}
-                alt={reel.caption}
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{
-                    transform: hovered ? 'scale(1.08)' : 'scale(1)',
-                    transition: 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                }}
-            />
-
-            {/* Dark overlay */}
-            <div
-                className="absolute inset-0"
-                style={{
-                    background: hovered
-                        ? 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.12) 100%)'
-                        : 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.05) 50%, transparent 100%)',
-                    transition: 'background 0.5s ease',
-                }}
-            />
-
-            {/* Reel icon indicator */}
-            <div className="absolute top-3 right-3 z-10">
-                <div
-                    className="flex items-center gap-1 px-2 py-1 rounded-full"
-                    style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)' }}
-                >
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="opacity-90">
-                        <path d="m22 8-6 4 6 4V8Z" />
-                        <rect width="14" height="12" x="2" y="6" rx="2" ry="2" />
-                    </svg>
-                    <span className="text-white/80 text-[0.5rem] font-body font-semibold tracking-wider uppercase">Reel</span>
-                </div>
+            {/* Cropped iframe container using negative top/bottom margins */}
+            <div className="absolute inset-x-0 -top-[45px] -bottom-[90px] pointer-events-none select-none">
+                {embedUrl ? (
+                    <iframe
+                        src={embedUrl}
+                        className="w-full h-full border-none pointer-events-none"
+                        scrolling="no"
+                        allowTransparency="true"
+                        allow="encrypted-media"
+                        loading="lazy"
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-neutral-900 text-neutral-500 text-xs">
+                        No disponible
+                    </div>
+                )}
             </div>
 
-            {/* Play button center – appears on hover */}
-            <div
-                className="absolute inset-0 flex items-center justify-center z-10"
-                style={{
-                    opacity: hovered ? 1 : 0,
-                    transform: hovered ? 'scale(1)' : 'scale(0.6)',
-                    transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                }}
-            >
-                <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center"
-                    style={{
-                        background: 'rgba(255,255,255,0.12)',
-                        backdropFilter: 'blur(16px)',
-                        WebkitBackdropFilter: 'blur(16px)',
-                        border: '1.5px solid rgba(255,255,255,0.25)',
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-                    }}
-                >
+            {/* Dark unify overlay that fades on hover */}
+            <div className="absolute inset-0 bg-neutral-950/20 transition-colors duration-500 group-hover:bg-neutral-950/0 z-10" />
+
+            {/* Minimalist play icon overlay */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 scale-90 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:scale-100 z-20">
+                <div className="w-14 h-14 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center text-white shadow-md transition-transform duration-300 active:scale-95">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="white" className="ml-0.5">
                         <path d="M8 5v14l11-7z" />
                     </svg>
                 </div>
             </div>
-
-            {/* Instagram glow border on hover */}
-            <div
-                className="absolute inset-0 rounded-2xl pointer-events-none z-20"
-                style={{
-                    opacity: hovered ? 1 : 0,
-                    boxShadow: 'inset 0 0 0 2px rgba(225,48,108,0.55), 0 0 28px rgba(225,48,108,0.12)',
-                    transition: 'opacity 0.4s ease',
-                }}
-            />
-
-            {/* Bottom caption area */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
-                <p
-                    className="text-white text-[0.76rem] font-body font-medium leading-snug line-clamp-2"
-                    style={{
-                        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
-                        transition: 'transform 0.4s ease',
-                    }}
-                >{reel.caption}</p>
-                <div
-                    className="flex items-center gap-1.5 mt-2.5"
-                    style={{
-                        opacity: hovered ? 1 : 0,
-                        transform: hovered ? 'translateY(0)' : 'translateY(10px)',
-                        transition: 'opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s',
-                    }}
-                >
-                    <Instagram size={12} className="text-white/70" />
-                    <span className="text-white/70 text-[0.6rem] font-body font-semibold tracking-[0.12em] uppercase">Ver en Instagram</span>
-                </div>
-            </div>
-        </a>
+        </div>
     )
 }
 
@@ -493,7 +406,59 @@ function PremiumInstagramSection() {
     const cardsWrapRef = useRef(null)
     const ctaRef = useRef(null)
 
+    const [reels, setReels] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [activeReel, setActiveReel] = useState(null)
+
     useEffect(() => {
+        async function fetchReels() {
+            try {
+                const { data, error } = await supabase
+                    .from('instagram_reels')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                
+                if (!error && data && data.length > 0) {
+                    setReels(data)
+                } else {
+                    // Premium default fallback reels
+                    setReels([
+                        { id: 1, url: 'https://www.instagram.com/reel/C8W-8p-O4dF/' },
+                        { id: 2, url: 'https://www.instagram.com/reel/C7-c8uLO4t9/' },
+                        { id: 3, url: 'https://www.instagram.com/reel/C6hB5y-A1m3/' },
+                        { id: 4, url: 'https://www.instagram.com/reel/C5jA7v-L2k8/' },
+                        { id: 5, url: 'https://www.instagram.com/reel/C4zC3x-N5t4/' }
+                    ])
+                }
+            } catch (err) {
+                console.error("Error loading reels:", err)
+                setReels([
+                    { id: 1, url: 'https://www.instagram.com/reel/C8W-8p-O4dF/' },
+                    { id: 2, url: 'https://www.instagram.com/reel/C7-c8uLO4t9/' }
+                ])
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchReels()
+    }, [])
+
+    useEffect(() => {
+        if (!activeReel) return
+        const handleEsc = e => {
+            if (e.key === 'Escape') setActiveReel(null)
+        }
+        window.addEventListener('keydown', handleEsc)
+        document.body.style.overflow = 'hidden'
+        return () => {
+            window.removeEventListener('keydown', handleEsc)
+            document.body.style.overflow = ''
+        }
+    }, [activeReel])
+
+    useEffect(() => {
+        if (loading || reels.length === 0) return
+
         const ctx = gsap.context(() => {
             // Heading stagger
             const headingEls = headingRef.current?.children
@@ -537,13 +502,27 @@ function PremiumInstagramSection() {
         }, sectionRef)
 
         return () => ctx.revert()
-    }, [])
+    }, [loading, reels])
 
     return (
         <section
             ref={sectionRef}
             className="relative py-24 md:py-32 overflow-hidden bg-secondaryLight"
         >
+            {/* Custom keyframes for the modal animation */}
+            <style>{`
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px) scale(0.96);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+            `}</style>
+
             {/* Decorative ambient lights integrated with branding */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-[15%] w-[800px] h-[800px] rounded-full opacity-[0.4]"
@@ -593,29 +572,37 @@ function PremiumInstagramSection() {
 
                 {/* ── Cards ────────────────────────────── */}
                 <div ref={cardsWrapRef}>
-                    {/* Desktop: 5-col grid */}
-                    <div className="hidden md:grid grid-cols-5 gap-4 mb-14">
-                        {INSTAGRAM_REELS.map((reel, i) => (
-                            <InstagramReelCard key={i} reel={reel} />
-                        ))}
-                    </div>
-
-                    {/* Mobile: horizontal scroll */}
-                    <div className="md:hidden mb-14">
-                        <div
-                            className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory"
-                            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
-                        >
-                            {INSTAGRAM_REELS.map((reel, i) => (
-                                <div key={i} className="snap-center flex-shrink-0" style={{ width: '52%', maxWidth: '220px' }}>
-                                    <InstagramReelCard reel={reel} />
-                                </div>
-                            ))}
+                    {loading ? (
+                        <div className="text-center py-20 text-textSecondary text-xs font-semibold tracking-wider uppercase animate-pulse">
+                            Cargando Reels...
                         </div>
-                        <p className="text-center text-textSecondary text-[0.72rem] font-body tracking-wide mt-3">
-                            Deslizá para ver más →
-                        </p>
-                    </div>
+                    ) : (
+                        <>
+                            {/* Desktop: Grid up to 5 cols */}
+                            <div className="hidden md:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-14">
+                                {reels.map((reel, i) => (
+                                    <InstagramReelCard key={reel.id || i} reel={reel} onPlay={setActiveReel} />
+                                ))}
+                            </div>
+
+                            {/* Mobile: horizontal scroll */}
+                            <div className="md:hidden mb-14">
+                                <div
+                                    className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory"
+                                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+                                >
+                                    {reels.map((reel, i) => (
+                                        <div key={reel.id || i} className="snap-center flex-shrink-0" style={{ width: '52%', maxWidth: '220px' }}>
+                                            <InstagramReelCard reel={reel} onPlay={setActiveReel} />
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="text-center text-textSecondary text-[0.72rem] font-body tracking-wide mt-3">
+                                    Deslizá para ver más →
+                                </p>
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 {/* ── CTA ──────────────────────────────── */}
@@ -646,6 +633,42 @@ function PremiumInstagramSection() {
                     </a>
                 </div>
             </div>
+
+            {/* Fullscreen Interactive Reel Modal */}
+            {activeReel && (
+                <div 
+                    className="fixed inset-0 z-[1000] bg-neutral-950/90 backdrop-blur-xl flex items-center justify-center p-4 select-none"
+                    onClick={() => setActiveReel(null)}
+                    style={{
+                        animation: 'fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both'
+                    }}
+                >
+                    {/* Close button */}
+                    <button 
+                        className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center text-white text-lg z-50 cursor-pointer"
+                        onClick={() => setActiveReel(null)}
+                    >
+                        ✕
+                    </button>
+
+                    {/* Reel container */}
+                    <div 
+                        className="relative w-full max-w-[360px] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black"
+                        onClick={e => e.stopPropagation()}
+                        style={{
+                            animation: 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both'
+                        }}
+                    >
+                        <iframe
+                            src={activeReel}
+                            className="w-full h-full border-none"
+                            scrolling="no"
+                            allowTransparency="true"
+                            allow="encrypted-media"
+                        />
+                    </div>
+                </div>
+            )}
         </section>
     )
 }
