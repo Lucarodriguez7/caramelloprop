@@ -1,0 +1,14 @@
+[[edge-functions]]
+path = "/ficha/:id"
+function = "ficha-preview"
+
+# Default build configuration for Vite SPAs
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Ensure clean routing for the SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

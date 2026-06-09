@@ -392,12 +392,111 @@ function Dash({ setView }) {
 /* ── PROPERTIES LIST ── */
 function PropList({ setView, setEditId }) {
     const [props, setProps] = useState([]); const [loading, setLoading] = useState(true);
+    const [shareProp, setShareProp] = useState(null);
     const load = async () => { setLoading(true); const { data } = await supabase.from('properties').select('*').order('created_at', { ascending: false }); setProps(data || []); setLoading(false); };
     useEffect(() => { load(); }, []);
     const del = async (id) => { if (!confirm('¿Eliminar?')) return; await supabase.from('properties').delete().eq('id', id); load(); };
     const togPub = async (id, c) => { await supabase.from('properties').update({ publicado: !c }).eq('id', id); load(); };
     const fmt = (p) => p.moneda === 'USD' ? `USD ${Number(p.precio).toLocaleString('es-AR')}` : `$${Number(p.precio).toLocaleString('es-AR')}`;
-    return (<><div className="cp-page-title">Propiedades</div><div className="cp-page-sub">Gestión del catálogo</div><div className="cp-table-wrap"><div className="cp-table-header"><span className="cp-table-title">{props.length} propiedad{props.length !== 1 ? 'es' : ''}</span><button className="cp-btn-new" onClick={() => { setEditId(null); setView('property-edit'); }}>+ Nueva</button></div>{loading ? <div className="cp-loading">Cargando...</div> : <table className="cp-table"><thead><tr><th></th><th>Título</th><th>Precio</th><th>Tipo</th><th>m² Cub.</th><th>m² Lote</th><th>Views</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>{props.map(p => <tr key={p.id}><td>{p.imagenes?.[0] ? <img className="cp-table-img" src={p.imagenes[0]} alt={`Miniatura de ${p.titulo}`} /> : <div style={{ width: 48, height: 36, background: 'var(--gray-100)', borderRadius: 6 }} />}</td><td style={{ fontWeight: 600, color: 'var(--gray-800)', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.titulo}{p.nuevo_ingreso && <span className="cp-badge cp-badge-nuevo" style={{ marginLeft: 6 }}>Nuevo</span>}</td><td>{fmt(p)}</td><td>{p.tipo}</td><td>{p.m2_cubiertos || '-'}</td><td>{p.m2_lote || '-'}</td><td><span className="cp-views"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" stroke="currentColor" strokeWidth="1.2" /><circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.2" /></svg>{p.views || 0}</span></td><td><span className={`cp-badge ${p.publicado ? 'cp-badge-pub' : 'cp-badge-draft'}`}>{p.publicado ? 'Publicada' : 'Borrador'}</span></td><td><div className="cp-actions"><button className="cp-btn-sm" onClick={() => { setEditId(p.id); setView('property-edit'); }}>Editar</button><button className="cp-btn-sm cp-btn-sm-ficha" onClick={() => window.open('/ficha/' + p.id, '_blank')}>Ficha</button><button className="cp-btn-sm" onClick={() => togPub(p.id, p.publicado)}>{p.publicado ? 'Ocultar' : 'Publicar'}</button><button className="cp-btn-sm cp-btn-sm-danger" onClick={() => del(p.id)}>Eliminar</button></div></td></tr>)}{props.length === 0 && <tr><td colSpan={9} className="cp-empty">No hay propiedades</td></tr>}</tbody></table>}</div></>);
+    return (<><div className="cp-page-title">Propiedades</div><div className="cp-page-sub">Gestión del catálogo</div><div className="cp-table-wrap"><div className="cp-table-header"><span className="cp-table-title">{props.length} propiedad{props.length !== 1 ? 'es' : ''}</span><button className="cp-btn-new" onClick={() => { setEditId(null); setView('property-edit'); }}>+ Nueva</button></div>{loading ? <div className="cp-loading">Cargando...</div> : <table className="cp-table"><thead><tr><th></th><th>Título</th><th>Precio</th><th>Tipo</th><th>m² Cub.</th><th>m² Lote</th><th>Views</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>{props.map(p => <tr key={p.id}><td>{p.imagenes?.[0] ? <img className="cp-table-img" src={p.imagenes[0]} alt={`Miniatura de ${p.titulo}`} /> : <div style={{ width: 48, height: 36, background: 'var(--gray-100)', borderRadius: 6 }} />}</td><td style={{ fontWeight: 600, color: 'var(--gray-800)', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.titulo}{p.nuevo_ingreso && <span className="cp-badge cp-badge-nuevo" style={{ marginLeft: 6 }}>Nuevo</span>}</td><td>{fmt(p)}</td><td>{p.tipo}</td><td>{p.m2_cubiertos || '-'}</td><td>{p.m2_lote || '-'}</td><td><span className="cp-views"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1 8s3-5 7-5 7 5 7 5-3 5-7 5-7-5-7-5z" stroke="currentColor" strokeWidth="1.2" /><circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.2" /></svg>{p.views || 0}</span></td><td><span className={`cp-badge ${p.publicado ? 'cp-badge-pub' : 'cp-badge-draft'}`}>{p.publicado ? 'Publicada' : 'Borrador'}</span></td><td><div className="cp-actions"><button className="cp-btn-sm" onClick={() => { setEditId(p.id); setView('property-edit'); }}>Editar</button><button className="cp-btn-sm cp-btn-sm-ficha" onClick={() => setShareProp(p)}>Ficha Colega</button><button className="cp-btn-sm" onClick={() => togPub(p.id, p.publicado)}>{p.publicado ? 'Ocultar' : 'Publicar'}</button><button className="cp-btn-sm cp-btn-sm-danger" onClick={() => del(p.id)}>Eliminar</button></div></td></tr>)}{props.length === 0 && <tr><td colSpan={9} className="cp-empty">No hay propiedades</td></tr>}</tbody></table>}</div>
+    {shareProp && <ShareModal property={shareProp} onClose={() => setShareProp(null)} />}
+    </>);
+}
+
+/* ── SHARE MODAL FOR COLLEAGUE SHEETS ── */
+function ShareModal({ property, onClose }) {
+    const [selectedTheme, setSelectedTheme] = useState('charcoal');
+    const [copiedPub, setCopiedPub] = useState(false);
+    const [copiedWhitelabel, setCopiedWhitelabel] = useState(false);
+
+    const whitelabelBase = import.meta.env.VITE_WHITELABEL_URL || window.location.origin;
+    const publicBase = window.location.origin;
+
+    const publicUrl = `${publicBase}/propiedades/${property.id}`;
+    const whitelabelUrl = `${whitelabelBase}/ficha/${property.id}?theme=${selectedTheme}`;
+
+    const copyToClipboard = (text, setCopied) => {
+        navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }} onClick={onClose} />
+            <div style={{ position: 'relative', background: '#fff', borderRadius: 16, padding: 28, maxWidth: 540, width: '90%', boxShadow: '0 24px 60px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', gap: 20 }}>
+                
+                {/* Close Button */}
+                <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, width: 30, height: 30, borderRadius: '50%', border: '1px solid var(--gray-200)', background: 'var(--gray-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12, color: 'var(--gray-400)' }}>✕</button>
+
+                <div>
+                    <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--gray-400)', marginBottom: 4 }}>Compartir Inmueble</div>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--gray-900)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', paddingRight: 24 }}>{property.titulo}</div>
+                </div>
+
+                {/* Option 1: Public Commercial Sheet */}
+                <div style={{ border: '1px solid var(--gray-200)', borderRadius: 12, padding: 16, background: 'var(--gray-50)' }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--gray-700)', marginBottom: 8 }}>
+                        🏢 Ficha Pública Comercial <span style={{ fontSize: 9, color: 'var(--gray-400)', fontWeight: 500, textTransform: 'none' }}>(Con branding y contacto)</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                        <input readOnly value={publicUrl} style={{ flex: 1, padding: '8px 12px', fontSize: 12, border: '1px solid var(--gray-200)', borderRadius: 8, background: '#fff', color: 'var(--gray-600)' }} onClick={e => e.target.select()} />
+                        <button onClick={() => copyToClipboard(publicUrl, setCopiedPub)} style={{ padding: '8px 14px', background: 'var(--teal)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer', minWidth: 80 }}>
+                            {copiedPub ? '✓ Copiado' : 'Copiar'}
+                        </button>
+                        <button onClick={() => window.open(publicUrl, '_blank')} style={{ padding: '8px 12px', border: '1px solid var(--gray-200)', borderRadius: 8, background: '#fff', cursor: 'pointer', fontSize: 12 }}>
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                {/* Option 2: Whitelabel Colleague Sheet */}
+                <div style={{ border: '1px solid #bfdbfe', borderRadius: 12, padding: 16, background: '#eff6ff' }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.05em', color: '#1e40af', marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span>🤝 Ficha Colega Whitelabel <span style={{ fontSize: 9, color: '#60a5fa', fontWeight: 500, textTransform: 'none' }}>(100% Anónima)</span></span>
+                    </div>
+
+                    {/* Theme Selector inside sharing panel */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                        <span style={{ fontSize: 10, fontWeight: 600, color: '#1e3a8a', textTransform: 'uppercase' }}>Color Tema:</span>
+                        <div style={{ display: 'flex', gap: 6 }}>
+                            {['charcoal', 'petroleum', 'beige', 'slate', 'olive'].map(t => (
+                                <button
+                                    key={t}
+                                    onClick={() => setSelectedTheme(t)}
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                        borderRadius: '50%',
+                                        border: selectedTheme === t ? '2px solid #2563eb' : '1px solid #bfdbfe',
+                                        backgroundColor: t === 'charcoal' ? '#18181b' : t === 'petroleum' ? '#0f2d4a' : t === 'beige' ? '#5c4f43' : t === 'slate' ? '#475569' : '#2e3a2f',
+                                        cursor: 'pointer',
+                                        transform: selectedTheme === t ? 'scale(1.15)' : 'none',
+                                        transition: 'transform 0.1s'
+                                    }}
+                                    title={t}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: 8 }}>
+                        <input readOnly value={whitelabelUrl} style={{ flex: 1, padding: '8px 12px', fontSize: 12, border: '1px solid #bfdbfe', borderRadius: 8, background: '#fff', color: '#1e3a8a' }} onClick={e => e.target.select()} />
+                        <button onClick={() => copyToClipboard(whitelabelUrl, setCopiedWhitelabel)} style={{ padding: '8px 14px', background: '#2563eb', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer', minWidth: 80 }}>
+                            {copiedWhitelabel ? '✓ Copiado' : 'Copiar'}
+                        </button>
+                        <button onClick={() => window.open(whitelabelUrl, '_blank')} style={{ padding: '8px 12px', border: '1px solid #bfdbfe', borderRadius: 8, background: '#fff', cursor: 'pointer', fontSize: 12 }}>
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <div style={{ fontSize: 10, color: 'var(--gray-450)', textAlign: 'center', lineHeight: 1.5 }}>
+                    💡 Si configurás un dominio de Netlify separado, definí la variable <code style={{ background: 'var(--gray-100)', padding: '2px 4px', borderRadius: 4 }}>VITE_WHITELABEL_URL</code> para generar enlaces directos a ese dominio.
+                </div>
+            </div>
+        </div>
+    );
 }
 
 /* ── PROPERTY EDITOR ── */

@@ -14,13 +14,20 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 
 import FichaColega from './pages/FichaColega'
+import NeutralPortal from './pages/NeutralPortal'
 
 function AppContent() {
   const location = useLocation()
+  
+  const isWhitelabel = import.meta.env.VITE_IS_WHITELABEL === 'true' || 
+                       window.location.hostname.includes('anonimas') || 
+                       window.location.hostname.includes('listado-inmuebles') || 
+                       (window.location.hostname === 'localhost' && new URLSearchParams(window.location.search).get('whitelabel') === 'true');
+
   const isNoLayout = location.pathname.startsWith('/admin') || location.pathname.startsWith('/ficha')
 
   useEffect(() => {
-    if (!isNoLayout) {
+    if (!isNoLayout && !isWhitelabel) {
       AOS.init({
         once: true,
         duration: 800,
@@ -28,7 +35,17 @@ function AppContent() {
         easing: 'ease-in-out-cubic',
       })
     }
-  }, [isNoLayout])
+  }, [isNoLayout, isWhitelabel])
+
+  if (isWhitelabel) {
+    return (
+      <Routes>
+        <Route path="/" element={<NeutralPortal />} />
+        <Route path="/ficha/:id" element={<FichaColega />} />
+        <Route path="*" element={<NeutralPortal />} />
+      </Routes>
+    )
+  }
 
   return (
     <>
