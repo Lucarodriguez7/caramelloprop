@@ -21,6 +21,16 @@ export default async (request, context) => {
   const userAgent = request.headers.get("user-agent") || "";
   const isSocialBot = /facebookexternalhit|whatsapp|facebot|twitterbot|linkedinbot/i.test(userAgent);
 
+  // Si es un bot, eliminar cabeceras de rango que causen el HTTP 206
+  if (isSocialBot) {
+    try {
+      request.headers.delete("range");
+      request.headers.delete("if-range");
+    } catch (e) {
+      console.warn("Headers modification not supported or headers are read-only:", e);
+    }
+  }
+
   // Detect if the request is whitelabel/neutral
   const isWhitelabel = 
     url.hostname.includes("anonimas") || 
@@ -149,7 +159,8 @@ export default async (request, context) => {
     return new Response(modifiedHtml, {
       status: 200, // Strictly return status 200 OK (no 206 Partial Content)
       headers: { 
-        "content-type": "text/html; charset=utf-8" 
+        "content-type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store, no-cache, must-revalidate"
       }
     });
   } catch (error) {

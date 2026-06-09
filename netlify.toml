@@ -1,5 +1,5 @@
 [[edge-functions]]
-path = "/ficha/:id"
+path = "/ficha/*"
 function = "ficha-preview"
 
 # Default build configuration for Vite SPAs
