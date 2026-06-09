@@ -9,8 +9,8 @@ export default async (request, context) => {
   const propertyId = idMatch[1];
   
   // Retrieve environment variables (configured in Netlify dashboard)
-  const supabaseUrl = Deno.env.get("VITE_SUPABASE_URL");
-  const supabaseAnonKey = Deno.env.get("VITE_SUPABASE_PUBLISHABLE_KEY");
+  const supabaseUrl = Deno.env.get("SUPABASE_URL") || Deno.env.get("VITE_SUPABASE_URL");
+  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("VITE_SUPABASE_PUBLISHABLE_KEY");
   
   if (!supabaseUrl || !supabaseAnonKey) {
     console.warn("Supabase env variables missing in Edge Function context.");
