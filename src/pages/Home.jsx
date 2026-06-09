@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import CountUpStats from '../components/CountUpStats'
-import { ArrowRight, Star, Home as HomeIcon, Key, BarChart2, Building2, Trees, FileText, MapPin, ChevronRight, Search, Shield, TrendingUp, Phone, Users, ArrowUpRight } from 'lucide-react'
+import { ArrowRight, Star, Home as HomeIcon, Key, BarChart2, Building2, Trees, FileText, MapPin, ChevronRight, ChevronLeft, Search, Shield, TrendingUp, Phone, Users, ArrowUpRight } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react'
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -155,7 +155,7 @@ function PropertyCard({ prop }) {
     return (
         <div
             onClick={() => navigate(`/propiedades/${prop.id}`)}
-            className="group bg-white rounded-2xl overflow-hidden shadow-[0_2px_20px_rgba(18,39,58,0.08)] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(18,39,58,0.15)] flex-shrink-0 w-[300px] md:w-auto"
+            className="group bg-white rounded-2xl overflow-hidden shadow-[0_2px_20px_rgba(18,39,58,0.08)] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(18,39,58,0.15)] w-full h-full"
         >
             <div className="relative h-[210px] overflow-hidden">
                 <img src={prop.img} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -1025,6 +1025,29 @@ function HeroSection({ navigate }) {
 export default function Home() {
     const navigate = useNavigate()
     const [PROPERTIES, setProperties] = useState([])
+    const sliderRef = useRef(null)
+    const [scrollProgress, setScrollProgress] = useState(0)
+
+    const handleScroll = () => {
+        if (!sliderRef.current) return
+        const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current
+        const maxScroll = scrollWidth - clientWidth
+        if (maxScroll > 0) {
+            setScrollProgress((scrollLeft / maxScroll) * 100)
+        }
+    }
+
+    const scrollLeft = () => {
+        if (!sliderRef.current) return
+        const cardWidth = sliderRef.current.querySelector('.property-card-wrapper')?.clientWidth || 360
+        sliderRef.current.scrollBy({ left: -(cardWidth + 24), behavior: 'smooth' })
+    }
+
+    const scrollRight = () => {
+        if (!sliderRef.current) return
+        const cardWidth = sliderRef.current.querySelector('.property-card-wrapper')?.clientWidth || 360
+        sliderRef.current.scrollBy({ left: cardWidth + 24, behavior: 'smooth' })
+    }
 
     useEffect(() => {
         const load = async () => {
@@ -1178,7 +1201,7 @@ export default function Home() {
             </section>
 
             {/* ════ PROPIEDADES DESTACADAS ══════════════════════════ */}
-            <section data-aos="fade-up" className="py-20 px-[8%] bg-secondaryLight">
+            <section data-aos="fade-up" className="py-20 px-[8%] bg-secondaryLight overflow-hidden">
                 <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
                     <div>
                         <p className="font-body text-[0.63rem] font-bold tracking-[0.25em] uppercase text-secondary mb-2">Destacadas</p>
@@ -1186,16 +1209,62 @@ export default function Home() {
                             Propiedades <span className="text-metallic">seleccionadas</span>
                         </h2>
                     </div>
-                    <button onClick={() => navigate('/propiedades')} className="btn-secondary">Ver todas <ArrowRight size={13} /></button>
+                    <div className="flex items-center gap-4">
+                        {/* Navigation Arrows for Slider */}
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={scrollLeft}
+                                className="w-12 h-12 rounded-full border border-primary/20 text-primary flex items-center justify-center hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-sm bg-white"
+                                aria-label="Anterior"
+                            >
+                                <ChevronLeft size={20} />
+                            </button>
+                            <button
+                                onClick={scrollRight}
+                                className="w-12 h-12 rounded-full border border-primary/20 text-primary flex items-center justify-center hover:bg-primary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-sm bg-white"
+                                aria-label="Siguiente"
+                            >
+                                <ChevronRight size={20} />
+                            </button>
+                        </div>
+                        <button onClick={() => navigate('/propiedades')} className="hidden md:inline-flex btn-secondary py-3 px-6 text-[0.75rem]">
+                            Ver todas <ArrowRight size={13} />
+                        </button>
+                    </div>
                 </div>
-                <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {PROPERTIES.map(p => <PropertyCard key={p.id} prop={p} />)}
-                </div>
-                <div className="md:hidden">
-                    <HorizontalSwiper>
-                        {PROPERTIES.map(p => <PropertyCard key={p.id} prop={p} />)}
-                    </HorizontalSwiper>
-                    <p className="text-center text-[0.72rem] text-textSecondary mt-4 font-body tracking-wide">Deslizá para ver más →</p>
+
+                {/* Horizontal Slider Wrapper */}
+                <div className="relative">
+                    <div
+                        ref={sliderRef}
+                        onScroll={handleScroll}
+                        className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scroll-smooth"
+                        style={{
+                            scrollbarWidth: 'none',
+                            msOverflowStyle: 'none',
+                            WebkitOverflowScrolling: 'touch',
+                        }}
+                    >
+                        {PROPERTIES.map(p => (
+                            <div
+                                key={p.id}
+                                className="snap-start flex-shrink-0 w-[290px] sm:w-[325px] md:w-[350px] lg:w-[370px] property-card-wrapper"
+                            >
+                                <PropertyCard prop={p} />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Mobile "Ver todas" button - relocated and styled to be high-contrast & premium */}
+                    <div className="mt-8 flex justify-center md:hidden px-4">
+                        <button
+                            onClick={() => navigate('/propiedades')}
+                            className="group w-full max-w-[340px] inline-flex items-center justify-center gap-2.5 py-4 rounded-full font-body font-bold text-[0.78rem] tracking-[0.18em] uppercase text-white bg-primary transition-all duration-300 shadow-[0_6px_20px_rgba(18,100,95,0.22)] active:scale-[0.98] active:bg-primaryDark"
+                        >
+                            Ver todas las propiedades
+                            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200 text-white/90" />
+                        </button>
+                    </div>
                 </div>
             </section>
 
