@@ -155,12 +155,16 @@ export default async (request, context) => {
     
     // Inject metadata into index.html head
     modifiedHtml = modifiedHtml.replace("<head>", `<head>${ogTags}`);
+    
+    const encoder = new TextEncoder();
+    const htmlBytes = encoder.encode(modifiedHtml);
       
-    return new Response(modifiedHtml, {
+    return new Response(htmlBytes, {
       status: 200, // Strictly return status 200 OK (no 206 Partial Content)
       headers: { 
         "content-type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store, no-cache, must-revalidate"
+        "content-length": htmlBytes.byteLength.toString(),
+        "cache-control": "no-store, no-cache, must-revalidate"
       }
     });
   } catch (error) {
