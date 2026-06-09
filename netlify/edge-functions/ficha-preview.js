@@ -17,6 +17,10 @@ export default async (request, context) => {
     return; 
   }
 
+  // Detect if user agent is a social media / crawler bot (Meta/WhatsApp/Facebot/Twitter/etc.)
+  const userAgent = request.headers.get("user-agent") || "";
+  const isSocialBot = /facebookexternalhit|whatsapp|facebot|twitterbot|linkedinbot/i.test(userAgent);
+
   // Detect if the request is whitelabel/neutral
   const isWhitelabel = 
     url.hostname.includes("anonimas") || 
@@ -25,36 +29,46 @@ export default async (request, context) => {
     url.searchParams.get("neutro") === "true";
   
   try {
-    // Query Supabase directly via the REST API for maximum speed
-    const response = await fetch(
-      `${supabaseUrl}/rest/v1/properties?id=eq.${propertyId}&select=*`,
-      {
-        headers: {
-          apikey: supabaseAnonKey,
-          Authorization: `Bearer ${supabaseAnonKey}`,
-        },
+    let property = null;
+
+    try {
+      // Query Supabase directly via the REST API for maximum speed.
+      // Set a generic browser User-Agent when fetching outbound to avoid potential blockings.
+      const response = await fetch(
+        `${supabaseUrl}/rest/v1/properties?id=eq.${propertyId}&select=*`,
+        {
+          headers: {
+            apikey: supabaseAnonKey,
+            Authorization: `Bearer ${supabaseAnonKey}`,
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+        }
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.length > 0) {
+          property = data[0];
+        }
       }
-    );
-    
-    if (!response.ok) {
-      return;
+    } catch (err) {
+      console.error("Error fetching from Supabase:", err);
+    }
+
+    // If it's a social bot, we must serve the Open Graph HTML even if the property wasn't found.
+    // For regular users, if the property is missing, we fallback to serving the SPA page normally.
+    if (!property && !isSocialBot) {
+      return; 
     }
     
-    const data = await response.json();
-    if (!data || data.length === 0) {
-      return;
-    }
+    // Title: only the property title if whitelabel/bot
+    const cleanTitle = property
+      ? (isWhitelabel ? property.titulo : `${property.titulo} - Ficha Inmobiliaria`)
+      : "Propiedad - Catálogo Inmobiliario";
     
-    const property = data[0];
-    
-    // Title: only the property title if whitelabel
-    const cleanTitle = isWhitelabel 
-      ? property.titulo 
-      : `${property.titulo} - Ficha Inmobiliaria`;
-    
-    // Description: clean extract, omit "Caramello" if whitelabel
+    // Description: clean extract, omit "Caramello" if whitelabel/bot
     let cleanDesc = "";
-    if (property.descripcion) {
+    if (property && property.descripcion) {
       let desc = property.descripcion;
       if (isWhitelabel) {
         desc = desc
@@ -65,17 +79,24 @@ export default async (request, context) => {
       }
       cleanDesc = desc.slice(0, 150) + (desc.length > 150 ? "..." : "");
     } else {
-      cleanDesc = `Ficha técnica de ${property.tipo} en ${property.operacion}. Consulte detalles.`;
+      cleanDesc = property
+        ? `Ficha técnica de ${property.tipo} en ${property.operacion}. Consulte detalles.`
+        : "Consulte los detalles de esta propiedad en el catálogo inmobiliario.";
     }
       
-    let imageUrl = property.imagenes?.[0] || "";
+    let imageUrl = property?.imagenes?.[0] || "";
     // Transform image URL to request 600x315 size using Supabase Image Transformation
-    if (imageUrl.includes("/storage/v1/object/public/")) {
+    if (imageUrl && imageUrl.includes("/storage/v1/object/public/")) {
       imageUrl = imageUrl.replace("/storage/v1/object/public/", "/storage/v1/render/image/public/") + "?width=600&height=315&resize=cover";
     }
 
     // Fetch the original index.html from Netlify CDN
-    const res = await context.next();
+    let res = await context.next();
+    if (res.status !== 200) {
+      // Fallback: Fetch index.html directly from the origin CDN if context.next() is non-200 (virtual path)
+      const originIndex = new URL("/index.html", request.url);
+      res = await fetch(originIndex.toString());
+    }
     const html = await res.text();
     
     // Construct the customized metadata tags
@@ -84,17 +105,22 @@ export default async (request, context) => {
       <meta name="description" content="${cleanDesc}" />
       <meta property="og:title" content="${cleanTitle}" />
       <meta property="og:description" content="${cleanDesc}" />
-      <meta property="og:image" content="${imageUrl}" />
-      <meta property="og:image:width" content="600" />
-      <meta property="og:image:height" content="315" />
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="${cleanTitle}" />
       <meta name="twitter:description" content="${cleanDesc}" />
-      <meta name="twitter:image" content="${imageUrl}" />
       <meta property="og:url" content="${request.url}" />
       <meta name="twitter:url" content="${request.url}" />
     `;
+
+    if (imageUrl) {
+      ogTags += `
+        <meta property="og:image" content="${imageUrl}" />
+        <meta property="og:image:width" content="600" />
+        <meta property="og:image:height" content="315" />
+        <meta name="twitter:image" content="${imageUrl}" />
+      `;
+    }
 
     if (!isWhitelabel) {
       ogTags += `
@@ -120,12 +146,13 @@ export default async (request, context) => {
     
     // Inject metadata into index.html head
     modifiedHtml = modifiedHtml.replace("<head>", `<head>${ogTags}`);
+    
+    const headers = new Headers(res.headers);
+    headers.set("content-type", "text/html; charset=utf-8");
       
     return new Response(modifiedHtml, {
-      headers: {
-        ...Object.fromEntries(res.headers.entries()),
-        "content-type": "text/html; charset=utf-8"
-      }
+      status: 200, // Explicitly serve 200 OK
+      headers
     });
   } catch (error) {
     console.error("Error in Edge Function:", error);
