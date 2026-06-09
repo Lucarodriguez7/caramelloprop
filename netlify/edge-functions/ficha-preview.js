@@ -16,6 +16,13 @@ export default async (request, context) => {
     console.warn("Supabase env variables missing in Edge Function context.");
     return; 
   }
+
+  // Detect if the request is whitelabel/neutral
+  const isWhitelabel = 
+    url.hostname.includes("anonimas") || 
+    url.hostname.includes("listado-inmuebles") || 
+    url.searchParams.get("whitelabel") === "true" ||
+    url.searchParams.get("neutro") === "true";
   
   try {
     // Query Supabase directly via the REST API for maximum speed
@@ -39,10 +46,27 @@ export default async (request, context) => {
     }
     
     const property = data[0];
-    const cleanTitle = `${property.titulo} - Ficha Inmobiliaria`;
-    const cleanDesc = property.descripcion 
-      ? property.descripcion.slice(0, 150) + (property.descripcion.length > 150 ? "..." : "")
-      : `Ficha técnica de ${property.tipo} en ${property.operacion}. Consulte detalles.`;
+    
+    // Title: only the property title if whitelabel
+    const cleanTitle = isWhitelabel 
+      ? property.titulo 
+      : `${property.titulo} - Ficha Inmobiliaria`;
+    
+    // Description: clean extract, omit "Caramello" if whitelabel
+    let cleanDesc = "";
+    if (property.descripcion) {
+      let desc = property.descripcion;
+      if (isWhitelabel) {
+        desc = desc
+          .replace(/caramello\s*propiedades/gi, "")
+          .replace(/caramello/gi, "")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+      cleanDesc = desc.slice(0, 150) + (desc.length > 150 ? "..." : "");
+    } else {
+      cleanDesc = `Ficha técnica de ${property.tipo} en ${property.operacion}. Consulte detalles.`;
+    }
       
     let imageUrl = property.imagenes?.[0] || "";
     // Transform image URL to request 600x315 size using Supabase Image Transformation
@@ -55,7 +79,7 @@ export default async (request, context) => {
     const html = await res.text();
     
     // Construct the customized metadata tags
-    const ogTags = `
+    let ogTags = `
       <title>${cleanTitle}</title>
       <meta name="description" content="${cleanDesc}" />
       <meta property="og:title" content="${cleanTitle}" />
@@ -68,12 +92,34 @@ export default async (request, context) => {
       <meta name="twitter:title" content="${cleanTitle}" />
       <meta name="twitter:description" content="${cleanDesc}" />
       <meta name="twitter:image" content="${imageUrl}" />
+      <meta property="og:url" content="${request.url}" />
+      <meta name="twitter:url" content="${request.url}" />
     `;
+
+    if (!isWhitelabel) {
+      ogTags += `
+        <meta property="og:site_name" content="Caramello Propiedades" />
+        <meta name="author" content="Caramello Propiedades" />
+      `;
+    }
+    
+    // Clean up standard/static meta tags to avoid conflicts
+    let modifiedHtml = html
+      .replace(/<title>[^<]*<\/title>/gi, "")
+      .replace(/<meta\s+name=["']description["'][^>]*>/gi, "")
+      .replace(/<meta\s+property=["']og:[^"']*["'][^>]*>/gi, "")
+      .replace(/<meta\s+name=["']twitter:[^"']*["'][^>]*>/gi, "");
+
+    if (isWhitelabel) {
+      // Remove author, canonical and JSON-LD schema for whitelabel to avoid brand leakage
+      modifiedHtml = modifiedHtml
+        .replace(/<meta\s+name=["']author["'][^>]*>/gi, "")
+        .replace(/<link\s+rel=["']canonical["'][^>]*>/gi, "")
+        .replace(/<script\s+type=["']application\/ld\+json["']>[\s\S]*?<\/script>/gi, "");
+    }
     
     // Inject metadata into index.html head
-    const modifiedHtml = html
-      .replace(/<title>[^<]*<\/title>/i, "") // Remove static title
-      .replace("<head>", `<head>${ogTags}`);
+    modifiedHtml = modifiedHtml.replace("<head>", `<head>${ogTags}`);
       
     return new Response(modifiedHtml, {
       headers: {

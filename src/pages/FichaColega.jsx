@@ -96,6 +96,7 @@ export default function FichaColega() {
   const [modalIdx, setModalIdx] = useState(0);
   const [copied, setCopied] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState('charcoal');
+  const [showVolver, setShowVolver] = useState(false);
 
   // Load animation styles and selected theme
   useEffect(() => {
@@ -115,8 +116,21 @@ export default function FichaColega() {
       const randomKey = keys[Math.floor(Math.random() * keys.length)];
       setSelectedTheme(randomKey);
       params.set('theme', randomKey);
-      window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+      window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`);
     }
+
+    // Determine if user is navigating in whitelabel mode (checking hostname or ?whitelabel=true)
+    const isWhitelabelMode = 
+      import.meta.env.VITE_IS_WHITELABEL === 'true' || 
+      window.location.hostname.includes('anonimas') || 
+      window.location.hostname.includes('listado-inmuebles') || 
+      params.get('whitelabel') === 'true';
+    
+    // In React Router v6, window.history.state has an 'idx' field indicating position in history stack.
+    // If idx > 0, the user has internal navigation history (meaning they came from another page in the app, i.e., NeutralPortal).
+    const hasHistory = window.history.state && typeof window.history.state.idx === 'number' && window.history.state.idx > 0;
+    
+    setShowVolver(isWhitelabelMode && hasHistory);
 
     return () => {
       const el = document.getElementById('fc-animation-style');
@@ -170,7 +184,7 @@ export default function FichaColega() {
     setSelectedTheme(key);
     const params = new URLSearchParams(window.location.search);
     params.set('theme', key);
-    window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`);
   };
 
   const copyLink = () => {
@@ -197,13 +211,17 @@ export default function FichaColega() {
         
         {/* Editorial-style Top Bar (hidden in print) */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-14 pb-8 border-b border-neutral-200/50 print:hidden animate-fade-in-up">
-          <button 
-            onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')} 
-            className="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.25em] text-neutral-400 hover:text-neutral-900 transition-colors duration-300"
-          >
-            <ArrowLeft size={13} strokeWidth={2} />
-            <span>Volver</span>
-          </button>
+          {showVolver ? (
+            <button 
+              onClick={() => navigate(-1)} 
+              className="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.25em] text-neutral-400 hover:text-neutral-900 transition-colors duration-300"
+            >
+              <ArrowLeft size={13} strokeWidth={2} />
+              <span>Volver</span>
+            </button>
+          ) : (
+            <div />
+          )}
           
           <div className="flex flex-wrap items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">
             {/* Palette Switcher */}
