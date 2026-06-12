@@ -159,12 +159,12 @@ export default function NeutralPortal() {
                 className="group bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col h-full"
               >
                 {/* Image */}
-                <div className="relative h-56 overflow-hidden bg-neutral-950">
+                <div className="relative h-56 overflow-hidden bg-neutral-100">
                   {p.imagenes?.[0] ? (
                     <img
                       src={getOptimizedImageUrl(p.imagenes[0], 800)}
                       alt={p.titulo}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
                   ) : (

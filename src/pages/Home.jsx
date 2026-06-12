@@ -130,8 +130,8 @@ function PropertyCard({ prop }) {
             onClick={() => navigate(`/propiedades/${prop.id}`)}
             className="group bg-white rounded-2xl overflow-hidden shadow-[0_2px_20px_rgba(18,39,58,0.08)] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(18,39,58,0.15)] w-full h-full"
         >
-            <div className="relative h-[210px] overflow-hidden bg-neutral-950">
-                <img src={getOptimizedImageUrl(prop.img, 800)} alt={prop.title} className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div className="relative h-[210px] overflow-hidden">
+                <img src={getOptimizedImageUrl(prop.img, 800)} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                 <span className={`absolute top-3 left-3 text-[0.6rem] font-body font-bold tracking-[0.14em] uppercase px-3 py-1.5 rounded-full ${prop.tag === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                     {prop.tag}
                 </span>
@@ -372,7 +372,7 @@ function InstagramReelCard({ reel, onPlay }) {
                 {embedUrl ? (
                     <iframe
                         src={embedUrl}
-                        className="w-full h-full border-none pointer-events-none"
+                        className="w-full h-full border-none pointer-events-none object-cover object-top"
                         scrolling="no"
                         allowTransparency="true"
                         allow="encrypted-media"
