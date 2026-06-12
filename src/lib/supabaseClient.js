@@ -8,3 +8,12 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
+
+export function getOptimizedImageUrl(url, width = 800, quality = 80) {
+  if (!url || typeof url !== 'string') return url;
+  if (url.includes('/storage/v1/object/public/')) {
+    const newUrl = url.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
+    return `${newUrl}?width=${width}&quality=${quality}`;
+  }
+  return url;
+}

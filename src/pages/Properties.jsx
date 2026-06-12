@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useRef, memo, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { supabase } from '../lib/supabaseClient'
+import { supabase, getOptimizedImageUrl } from '../lib/supabaseClient'
 import PriceRangeFilter from '../components/PriceRangeFilter'
 import {
     Search, SlidersHorizontal, X, MapPin, Star, ArrowRight,
@@ -61,7 +61,7 @@ const PropertyCardGrid = memo(function PropertyCardGrid({ prop }) {
                 style={{ height: '220px' }}
             >
                 <img
-                    src={prop.img}
+                    src={getOptimizedImageUrl(prop.img, 800)}
                     alt={prop.title}
                     className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-[1.07]"
                     loading="lazy"
@@ -178,7 +178,7 @@ const PropertyCardList = memo(function PropertyCardList({ prop }) {
             {/* Image */}
             <div className="relative w-[200px] sm:w-[240px] shrink-0 overflow-hidden">
                 <img
-                    src={prop.img}
+                    src={getOptimizedImageUrl(prop.img, 800)}
                     alt={prop.title}
                     className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-105"
                     loading="lazy"

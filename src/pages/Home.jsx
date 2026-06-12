@@ -5,7 +5,7 @@ import { useRef, useState, useEffect } from 'react'
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
-import { supabase } from '../lib/supabaseClient'
+import { supabase, getOptimizedImageUrl } from '../lib/supabaseClient'
 
 const Instagram = ({ size = 24, className = "" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-instagram ${className}`}>
@@ -131,7 +131,7 @@ function PropertyCard({ prop }) {
             className="group bg-white rounded-2xl overflow-hidden shadow-[0_2px_20px_rgba(18,39,58,0.08)] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(18,39,58,0.15)] w-full h-full"
         >
             <div className="relative h-[210px] overflow-hidden">
-                <img src={prop.img} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                <img src={getOptimizedImageUrl(prop.img, 800)} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                 <span className={`absolute top-3 left-3 text-[0.6rem] font-body font-bold tracking-[0.14em] uppercase px-3 py-1.5 rounded-full ${prop.tag === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                     {prop.tag}
                 </span>

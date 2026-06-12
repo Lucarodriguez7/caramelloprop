@@ -8,7 +8,7 @@ import {
     Shield, Wifi, Dumbbell, Trees, Flame, Camera,
     ArrowRight, Copy, Check, ExternalLink
 } from 'lucide-react'
-import { supabase } from '../lib/supabaseClient'
+import { supabase, getOptimizedImageUrl } from '../lib/supabaseClient'
 const AMENITY_ICONS = {
     'Pileta climatizada': Layers,
     'Pileta': Layers,
@@ -59,7 +59,7 @@ function SimilarCard({ prop }) {
             onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 16px rgba(18,39,58,0.07)'; e.currentTarget.style.transform = 'none' }}
         >
             <div className="relative h-[160px] overflow-hidden">
-                <img src={prop.imgs[0]} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-105" loading="lazy" decoding="async" />
+                <img src={getOptimizedImageUrl(prop.imgs[0], 800)} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-105" loading="lazy" decoding="async" />
                 <span className={`absolute top-2.5 left-2.5 text-[0.55rem] font-body font-black tracking-[0.14em] uppercase px-2.5 py-1.5 rounded-full ${prop.operation === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                     {prop.operation}
                 </span>
@@ -230,7 +230,7 @@ function GalleryModal({ imgs, startIndex, onClose }) {
             {/* Main image */}
             <div className="relative w-full h-full flex items-center justify-center py-20 px-4 md:px-16" onClick={onClose}>
                 <img
-                    src={imgs[current]}
+                    src={getOptimizedImageUrl(imgs[current], 1920)}
                     alt={`Foto ${current + 1} de la galería`}
                     className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
                     onClick={e => e.stopPropagation()}
@@ -266,7 +266,7 @@ function GalleryModal({ imgs, startIndex, onClose }) {
                                 opacity: i === current ? 1 : 0.5,
                             }}
                         >
-                            <img src={img} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                            <img src={getOptimizedImageUrl(img, 300)} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         </button>
                     ))}
                 </div>
@@ -509,7 +509,7 @@ export default function Property() {
                                 onClick={() => openModal(activeImg)}
                             >
                                 <img
-                                    src={property.imgs[activeImg]}
+                                    src={getOptimizedImageUrl(property.imgs[activeImg], 1920)}
                                     alt={property.title}
                                     className="w-full h-full object-cover transition-transform duration-700 will-change-transform group-hover:scale-[1.02]"
                                     loading="lazy"
@@ -541,7 +541,7 @@ export default function Property() {
                                                 boxShadow: i === activeImg ? '0 4px 12px rgba(18,100,95,0.25)' : 'none',
                                             }}
                                         >
-                                            <img src={img} alt={`Miniatura ${i + 1} de ${property.title}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                                            <img src={getOptimizedImageUrl(img, 300)} alt={`Miniatura ${i + 1} de ${property.title}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                                         </button>
                                     ))}
                                     <button

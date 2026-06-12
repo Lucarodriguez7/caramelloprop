@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabaseClient';
+import { supabase, getOptimizedImageUrl } from '../lib/supabaseClient';
 import { Search, MapPin, Maximize2, BedDouble, Bath, SlidersHorizontal, Home, ArrowUpRight } from 'lucide-react';
 
 export default function NeutralPortal() {
@@ -162,7 +162,7 @@ export default function NeutralPortal() {
                 <div className="relative h-56 overflow-hidden bg-neutral-100">
                   {p.imagenes?.[0] ? (
                     <img
-                      src={p.imagenes[0]}
+                      src={getOptimizedImageUrl(p.imagenes[0], 800)}
                       alt={p.titulo}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"

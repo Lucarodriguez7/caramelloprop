@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabaseClient';
+import { supabase, getOptimizedImageUrl } from '../lib/supabaseClient';
 import { 
   ArrowLeft, Copy, Printer, Maximize2, Layers, BedDouble, 
   Bath, Grid, Car, MapPin, Calendar, Compass, Layers3, Sparkles 
@@ -304,31 +304,31 @@ export default function FichaColega() {
           <div className="mb-12 animate-fade-in-up-delay-2 print:mb-8">
             {imgs.length === 1 && (
               <div className="rounded-3xl overflow-hidden cursor-pointer shadow-md border border-neutral-100/50 bg-neutral-150" onClick={() => openModal(0)}>
-                <img src={imgs[0]} alt="Propiedad" className="w-full h-[460px] object-cover hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} loading="lazy" />
+                <img src={getOptimizedImageUrl(imgs[0], 1920)} alt="Propiedad" className="w-full h-[460px] object-cover hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} loading="lazy" />
               </div>
             )}
             {imgs.length === 2 && (
               <div className="grid grid-cols-2 gap-3 rounded-3xl overflow-hidden shadow-md border border-neutral-100/50">
-                <img src={imgs[0]} alt="Propiedad 1" className="w-full h-[400px] object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={() => openModal(0)} loading="lazy" />
-                <img src={imgs[1]} alt="Propiedad 2" className="w-full h-[400px] object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={() => openModal(1)} loading="lazy" />
+                <img src={getOptimizedImageUrl(imgs[0], 800)} alt="Propiedad 1" className="w-full h-[400px] object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={() => openModal(0)} loading="lazy" />
+                <img src={getOptimizedImageUrl(imgs[1], 800)} alt="Propiedad 2" className="w-full h-[400px] object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-[1200ms]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={() => openModal(1)} loading="lazy" />
               </div>
             )}
             {imgs.length >= 3 && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 rounded-3xl overflow-hidden shadow-sm border border-neutral-100/50 bg-neutral-100/30 p-2">
                 <div className="md:col-span-2 h-[320px] md:h-[520px] overflow-hidden rounded-2xl cursor-pointer" onClick={() => openModal(0)}>
-                  <img src={imgs[0]} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad Principal" loading="lazy" />
+                  <img src={getOptimizedImageUrl(imgs[0], 1920)} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad Principal" loading="lazy" />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-1 gap-2.5 h-44 md:h-[520px]">
                   <div className="overflow-hidden rounded-2xl cursor-pointer">
-                    <img src={imgs[1]} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 2" onClick={() => openModal(1)} loading="lazy" />
+                    <img src={getOptimizedImageUrl(imgs[1], 800)} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 2" onClick={() => openModal(1)} loading="lazy" />
                   </div>
                   {imgs.length === 3 ? (
                     <div className="overflow-hidden rounded-2xl cursor-pointer">
-                      <img src={imgs[2]} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 3" onClick={() => openModal(2)} loading="lazy" />
+                      <img src={getOptimizedImageUrl(imgs[2], 800)} className="w-full h-full object-cover transition-transform duration-[1200ms] hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 3" onClick={() => openModal(2)} loading="lazy" />
                     </div>
                   ) : (
                     <div className="relative overflow-hidden rounded-2xl cursor-pointer group h-full" onClick={() => openModal(2)}>
-                      <img src={imgs[2]} className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 3" loading="lazy" />
+                      <img src={getOptimizedImageUrl(imgs[2], 800)} className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-[1.03]" style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }} alt="Propiedad 3" loading="lazy" />
                       <div className="absolute inset-0 bg-neutral-950/45 backdrop-blur-[2px] flex flex-col items-center justify-center text-white transition-all duration-[600ms] group-hover:bg-neutral-950/55">
                         <span className="text-xl md:text-2xl font-light tracking-wider">+{imgs.length - 2}</span>
                         <span className="text-[0.58rem] md:text-[0.62rem] font-bold uppercase tracking-[0.2em] mt-1 text-white/80">Fotos</span>
@@ -534,7 +534,7 @@ export default function FichaColega() {
           {/* Main Image View */}
           <div className="relative w-full max-w-5xl px-6 flex items-center justify-center">
             <img 
-              src={imgs[modalIdx]} 
+              src={getOptimizedImageUrl(imgs[modalIdx], 1920)} 
               alt={`Foto ${modalIdx + 1}`} 
               className="max-h-[78vh] max-w-full object-contain rounded-xl shadow-2xl transition-all duration-[600ms] ease-out"
               onClick={e => e.stopPropagation()} 
