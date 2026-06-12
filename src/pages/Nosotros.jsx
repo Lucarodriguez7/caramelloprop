@@ -206,6 +206,7 @@ export default function Nosotros() {
                                 style={{
                                     boxShadow: 'inset 0 4px 20px rgba(0,0,0,0.1)'
                                 }}
+                                loading="lazy"
                             />
                         </div>
                         {/* Decorative background elements */}
@@ -439,6 +440,7 @@ export default function Nosotros() {
                                 src="https://imgur.com/rHEibg0.jpg"
                                 alt="Servicios inmobiliarios Caramello Propiedades"
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                             />
                             <div
                                 className="absolute inset-0"

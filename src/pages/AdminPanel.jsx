@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabaseClient';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -509,7 +510,42 @@ function PropEditor({ id, setView }) {
     const [f, setF] = useState(empty); const [saving, setSaving] = useState(false); const [uploading, setUploading] = useState(false); const fileRef = useRef(null); const [dragIdx, setDragIdx] = useState(null);
     useEffect(() => { if (!id) { setF(empty); return; } supabase.from('properties').select('*').eq('id', id).single().then(({ data }) => { if (data) setF({ ...empty, ...data, precio: String(data.precio), lat: String(data.lat || ''), lng: String(data.lng || ''), m2_cubiertos: String(data.m2_cubiertos || ''), m2_lote: String(data.m2_lote || ''), ambientes: String(data.ambientes || ''), dormitorios: String(data.dormitorios || ''), banos: String(data.banos || ''), pisos: String(data.pisos || '') }); }); }, [id]);
     const s = (k, v) => setF(p => ({ ...p, [k]: v }));
-    const upload = async (files) => { setUploading(true); const urls = [...f.imagenes]; for (const file of files) { const ext = file.name.split('.').pop(); const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`; const { error } = await supabase.storage.from('property-images').upload(path, file); if (!error) { const { data } = supabase.storage.from('property-images').getPublicUrl(path); urls.push(data.publicUrl); } } s('imagenes', urls); setUploading(false); };
+    const upload = async (files) => {
+        setUploading(true);
+        const urls = [...f.imagenes];
+        const options = {
+            maxWidthOrHeight: 1920,
+            fileType: 'image/webp',
+            initialQuality: 0.8,
+            useWebWorker: true
+        };
+
+        for (const file of files) {
+            try {
+                const compressedFile = await imageCompression(file, options);
+                
+                const originalName = file.name;
+                const dotIdx = originalName.lastIndexOf('.');
+                const nameWithoutExt = dotIdx !== -1 ? originalName.substring(0, dotIdx) : originalName;
+                const newFileName = `${nameWithoutExt}.webp`;
+
+                const finalFile = new File([compressedFile], newFileName, { type: 'image/webp' });
+                const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
+                
+                const { error } = await supabase.storage.from('property-images').upload(path, finalFile);
+                if (!error) {
+                    const { data } = supabase.storage.from('property-images').getPublicUrl(path);
+                    urls.push(data.publicUrl);
+                } else {
+                    console.error("Upload error:", error);
+                }
+            } catch (err) {
+                console.error("Compression/Upload error for file:", file.name, err);
+            }
+        }
+        s('imagenes', urls);
+        setUploading(false);
+    };
     const save = async () => { setSaving(true); const p = { ...f, precio: Number(f.precio) || 0, lat: Number(f.lat) || null, lng: Number(f.lng) || null, m2_cubiertos: Number(f.m2_cubiertos) || 0, m2_lote: Number(f.m2_lote) || 0, ambientes: Number(f.ambientes) || 0, dormitorios: Number(f.dormitorios) || 0, banos: Number(f.banos) || 0, pisos: Number(f.pisos) || 0 }; delete p.id; delete p.created_at; delete p.updated_at; delete p.slug; delete p.created_by; delete p.views; if (id) await supabase.from('properties').update(p).eq('id', id); else await supabase.from('properties').insert(p); setSaving(false); setView('properties'); };
     const Check = ({ k, label }) => <div className="cp-check" onClick={() => s(k, !f[k])}><div className={`cp-check-box${f[k] ? ' on' : ''}`}>{f[k] && <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 6l2 2 4-4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" /></svg>}</div><span className="cp-check-label">{label}</span></div>;
 

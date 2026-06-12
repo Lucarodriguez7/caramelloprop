@@ -131,7 +131,7 @@ function PropertyCard({ prop }) {
             className="group bg-white rounded-2xl overflow-hidden shadow-[0_2px_20px_rgba(18,39,58,0.08)] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(18,39,58,0.15)] w-full h-full"
         >
             <div className="relative h-[210px] overflow-hidden">
-                <img src={prop.img} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img src={prop.img} alt={prop.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                 <span className={`absolute top-3 left-3 text-[0.6rem] font-body font-bold tracking-[0.14em] uppercase px-3 py-1.5 rounded-full ${prop.tag === 'Venta' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                     {prop.tag}
                 </span>
@@ -193,6 +193,7 @@ function ZoneCard({ zone, onClick }) {
                 src={zone.img}
                 alt={zone.name}
                 className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
                 style={{
                     transform: hovered ? 'scale(1.08)' : 'scale(1)',
                     transition: 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -258,7 +259,7 @@ function ZoneSwiperCard({ zone, onClick }) {
             className="relative rounded-2xl overflow-hidden cursor-pointer flex-shrink-0 w-[260px] h-[320px]"
             style={{ boxShadow: '0 4px 24px rgba(18,39,58,0.14)' }}
         >
-            <img src={zone.img} alt={zone.name} className="absolute inset-0 w-full h-full object-cover" />
+            <img src={zone.img} alt={zone.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(12,26,45,0.92) 0%, rgba(12,26,45,0.2) 60%, transparent 100%)' }} />
             <div className="absolute top-3 left-3">
                 <span className="text-[0.5rem] font-body font-black tracking-[0.18em] uppercase bg-primary text-white px-2.5 py-1.5 rounded-full">{zone.tag}</span>
@@ -1119,11 +1120,11 @@ export default function Home() {
                 <div className="lg:w-[48%] relative w-full flex justify-center mt-8 lg:mt-0">
                     <div className="relative w-[90%] md:w-[85%] lg:w-full">
                         <div className="aspect-[4/3] rounded-[2rem] overflow-hidden relative shadow-[0_20px_50px_rgba(18,39,58,0.12)]">
-                            <img src="https://i.pinimg.com/originals/d5/56/aa/d556aae57af00949662ac9d1f62d8ea4.png" className="w-full h-full object-cover" alt="Propiedad destacada" />
+                            <img src="https://i.pinimg.com/originals/d5/56/aa/d556aae57af00949662ac9d1f62d8ea4.png" className="w-full h-full object-cover" alt="Propiedad destacada" loading="lazy" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                         </div>
                         <div className="absolute -top-10 -right-4 lg:-right-10 w-[45%] aspect-square rounded-[1.5rem] overflow-hidden shadow-[0_20px_40px_rgba(18,39,58,0.15)] border-[6px] border-white">
-                            <img src="https://img.freepik.com/fotos-premium/sala-estar-gran-ventanal-que-tiene-vista-al-mar_865967-32087.jpg" className="w-full h-full object-cover" alt="Detalle propiedad" />
+                            <img src="https://img.freepik.com/fotos-premium/sala-estar-gran-ventanal-que-tiene-vista-al-mar_865967-32087.jpg" className="w-full h-full object-cover" alt="Detalle propiedad" loading="lazy" />
                         </div>
                     </div>
                 </div>
@@ -1323,7 +1324,7 @@ export default function Home() {
                         </div>
                         <div data-aos="fade-left" data-aos-delay="200" className="relative">
                             <div className="rounded-[28px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
-                                <img src="https://imgur.com/rHEibg0.jpg" alt="Profesional inmobiliaria" className="w-full h-[420px] object-cover" />
+                                <img src="https://imgur.com/rHEibg0.jpg" alt="Profesional inmobiliaria" className="w-full h-[420px] object-cover" loading="lazy" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                             </div>
                             <div className="absolute -bottom-6 -left-6 bg-white px-6 py-4 rounded-xl shadow-xl border border-neutral-200" data-aos="fade-up" data-aos-delay="400">
