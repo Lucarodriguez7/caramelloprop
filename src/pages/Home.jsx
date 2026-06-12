@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 import { supabase, getOptimizedImageUrl } from '../lib/supabaseClient'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
 
 const Instagram = ({ size = 24, className = "" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-instagram ${className}`}>
@@ -561,38 +563,39 @@ function PremiumInstagramSection() {
                     </p>
                 </div>
 
-                {/* ── Cards ────────────────────────────── */}
-                <div ref={cardsWrapRef}>
+                {/* ── Cards Slider ──────────────────────── */}
+                <div ref={cardsWrapRef} className="mb-14">
                     {loading ? (
                         <div className="text-center py-20 text-textSecondary text-xs font-semibold tracking-wider uppercase animate-pulse">
                             Cargando Reels...
                         </div>
                     ) : (
-                        <>
-                            {/* Desktop: Grid up to 5 cols */}
-                            <div className="hidden md:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-14">
-                                {reels.map((reel, i) => (
-                                    <InstagramReelCard key={reel.id || i} reel={reel} />
-                                ))}
-                            </div>
-
-                            {/* Mobile: horizontal scroll */}
-                            <div className="md:hidden mb-14">
-                                <div
-                                    className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory"
-                                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
-                                >
-                                    {reels.map((reel, i) => (
-                                        <div key={reel.id || i} className="snap-center flex-shrink-0" style={{ width: '52%', maxWidth: '220px' }}>
-                                            <InstagramReelCard reel={reel} />
-                                        </div>
-                                    ))}
-                                </div>
-                                <p className="text-center text-textSecondary text-[0.72rem] font-body tracking-wide mt-3">
-                                    Deslizá para ver más →
-                                </p>
-                            </div>
-                        </>
+                        <Swiper
+                            grabCursor={true}
+                            spaceBetween={24}
+                            slidesPerView={1.2}
+                            breakpoints={{
+                                640: {
+                                    slidesPerView: 2.5,
+                                    spaceBetween: 24,
+                                },
+                                1024: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 24,
+                                },
+                                1280: {
+                                    slidesPerView: 5,
+                                    spaceBetween: 24,
+                                }
+                            }}
+                            className="w-full"
+                        >
+                            {reels.map((reel, i) => (
+                                <SwiperSlide key={reel.id || i}>
+                                    <InstagramReelCard reel={reel} />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
                     )}
                 </div>
 
