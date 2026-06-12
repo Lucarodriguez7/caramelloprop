@@ -57,13 +57,13 @@ const PropertyCardGrid = memo(function PropertyCardGrid({ prop }) {
         >
             {/* Image */}
             <div
-                className="relative overflow-hidden"
+                className="relative overflow-hidden bg-neutral-950"
                 style={{ height: '220px' }}
             >
                 <img
                     src={getOptimizedImageUrl(prop.img, 800)}
                     alt={prop.title}
-                    className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-[1.07]"
+                    className="w-full h-full object-contain transition-transform duration-500 will-change-transform group-hover:scale-[1.07]"
                     loading="lazy"
                     decoding="async"
                 />
@@ -176,11 +176,11 @@ const PropertyCardList = memo(function PropertyCardList({ prop }) {
             <div className="w-1 bg-primary shrink-0 rounded-l-2xl" />
 
             {/* Image */}
-            <div className="relative w-[200px] sm:w-[240px] shrink-0 overflow-hidden">
+            <div className="relative w-[200px] sm:w-[240px] shrink-0 overflow-hidden bg-neutral-950">
                 <img
                     src={getOptimizedImageUrl(prop.img, 800)}
                     alt={prop.title}
-                    className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-105"
+                    className="w-full h-full object-contain transition-transform duration-500 will-change-transform group-hover:scale-105"
                     loading="lazy"
                     decoding="async"
                 />
