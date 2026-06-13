@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 import { supabase, getOptimizedImageUrl } from '../lib/supabaseClient'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
 
 const Instagram = ({ size = 24, className = "" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-instagram ${className}`}>
@@ -550,25 +552,39 @@ function PremiumInstagramSection() {
                     </p>
                 </div>
 
-                {/* ── Cards Grid (Iframe nativo) ─────────── */}
+                {/* ── Reels Swiper (Iframe nativo) ─────────── */}
                 <div ref={cardsWrapRef} className="mb-14">
                     {loading ? (
                         <div className="text-center py-20 text-textSecondary text-xs font-semibold tracking-wider uppercase animate-pulse">
                             Cargando Reels...
                         </div>
                     ) : (
-                        <div
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(5, 1fr)',
-                                gap: '24px',
+                        <Swiper
+                            grabCursor={true}
+                            spaceBetween={24}
+                            slidesPerView={1.2}
+                            breakpoints={{
+                                640: {
+                                    slidesPerView: 2.5,
+                                    spaceBetween: 24,
+                                },
+                                1024: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 24,
+                                },
+                                1280: {
+                                    slidesPerView: 5,
+                                    spaceBetween: 24,
+                                },
                             }}
-                            className="ig-grid"
+                            className="w-full"
                         >
                             {reels.map((reel, i) => (
-                                <InstagramReelCard key={reel.id || i} reel={reel} />
+                                <SwiperSlide key={reel.id || i}>
+                                    <InstagramReelCard reel={reel} />
+                                </SwiperSlide>
                             ))}
-                        </div>
+                        </Swiper>
                     )}
                 </div>
 
@@ -1076,30 +1092,30 @@ export default function Home() {
                         Por eso brindamos un acompañamiento cercano, profesional y transparente, con experiencia real en el mercado inmobiliario.
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10 mb-14">
-                        <div>
-                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
-                                <Search size={17} className="text-secondary" />
+                        <div className="group transition-all duration-300 ease-out hover:-translate-y-1">
+                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-[#12645F]/10">
+                                <Search size={17} className="text-secondary transition-all duration-500 group-hover:scale-110 group-hover:text-[#12645F]" />
                             </div>
                             <h4 className="font-body font-bold text-primary mb-2 text-[0.95rem]">Búsqueda precisa</h4>
                             <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Selección cuidada de oportunidades según cada necesidad.</p>
                         </div>
-                        <div>
-                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
-                                <BarChart2 size={17} className="text-secondary" />
+                        <div className="group transition-all duration-300 ease-out hover:-translate-y-1">
+                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-[#12645F]/10">
+                                <BarChart2 size={17} className="text-secondary transition-all duration-500 group-hover:scale-110 group-hover:text-[#12645F]" />
                             </div>
                             <h4 className="font-body font-bold text-primary mb-2 text-[0.95rem]">Tasación profesional</h4>
                             <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Análisis basado en datos reales del mercado local.</p>
                         </div>
-                        <div>
-                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
-                                <Shield size={17} className="text-secondary" />
+                        <div className="group transition-all duration-300 ease-out hover:-translate-y-1">
+                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-[#12645F]/10">
+                                <Shield size={17} className="text-secondary transition-all duration-500 group-hover:scale-110 group-hover:text-[#12645F]" />
                             </div>
                             <h4 className="font-body font-bold text-primary mb-2 text-[0.95rem]">Seguridad jurídica</h4>
                             <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Procesos claros y respaldo en cada operación.</p>
                         </div>
-                        <div>
-                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4">
-                                <TrendingUp size={17} className="text-secondary" />
+                        <div className="group transition-all duration-300 ease-out hover:-translate-y-1">
+                            <div className="w-10 h-10 rounded-lg bg-secondaryLight flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-[#12645F]/10">
+                                <TrendingUp size={17} className="text-secondary transition-all duration-500 group-hover:scale-110 group-hover:text-[#12645F]" />
                             </div>
                             <h4 className="font-body font-bold text-primary mb-2 text-[0.95rem]">Visión estratégica</h4>
                             <p className="text-textSecondary text-[0.82rem] leading-[1.8]">Enfoque en decisiones sostenibles y bien fundamentadas.</p>
