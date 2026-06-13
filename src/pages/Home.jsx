@@ -356,7 +356,7 @@ function ServiceCard({ Icon, title, desc, detail, num, iconBg }) {
 const getShortcode = (url) => {
     if (!url) return '';
     try {
-        const match = url.match(/(?:reel|p|tv)\/([^/]+)/);
+        const match = url.match(/(?:reel|p|tv)\/([a-zA-Z0-9_-]+)/);
         return match ? match[1] : '';
     } catch (e) {
         return '';
@@ -366,7 +366,6 @@ const getShortcode = (url) => {
 /* ── Instagram Reel Card (Premium) ────────────────────────── */
 function InstagramReelCard({ reel }) {
     const shortcode = getShortcode(reel.url)
-    const imgUrl = shortcode ? `https://www.instagram.com/p/${shortcode}/media/?size=l` : ''
 
     return (
         <a 
@@ -376,18 +375,12 @@ function InstagramReelCard({ reel }) {
             className="ig-reel-card block group relative w-full rounded-[1.8rem] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.12)] bg-neutral-950 cursor-pointer transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03] hover:shadow-[0_20px_50px_rgba(0,0,0,0.22)]"
             style={{ aspectRatio: '9/16' }}
         >
-            {imgUrl ? (
-                <img
-                    src={imgUrl}
-                    alt="Cover de Reel"
-                    className="w-full h-full object-scale-down bg-neutral-950 transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
-                />
-            ) : (
-                <div className="w-full h-full flex items-center justify-center bg-neutral-900 text-neutral-500 text-xs">
-                    No disponible
-                </div>
-            )}
+            <img
+                src={`https://www.instagram.com/p/${shortcode}/media/?size=l`}
+                alt="Cover de Reel"
+                className="w-full h-full object-scale-down bg-neutral-950 transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+            />
 
             {/* Dark unify overlay that fades on hover */}
             <div className="absolute inset-0 bg-neutral-950/20 transition-colors duration-500 group-hover:bg-neutral-950/0 z-10" />

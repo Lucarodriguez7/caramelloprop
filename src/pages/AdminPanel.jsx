@@ -784,7 +784,7 @@ function InstagramManager() {
 
     const getShortcode = (url) => {
         try {
-            const match = url.match(/(?:reel|p|tv)\/([^/]+)/);
+            const match = url.match(/(?:reel|p|tv)\/([a-zA-Z0-9_-]+)/);
             return match ? match[1] : 'Reel';
         } catch (e) {
             return 'Reel';
