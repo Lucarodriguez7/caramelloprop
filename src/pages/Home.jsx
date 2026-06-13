@@ -6,8 +6,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 import { supabase, getOptimizedImageUrl } from '../lib/supabaseClient'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
 
 const Instagram = ({ size = 24, className = "" }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-instagram ${className}`}>
@@ -363,37 +361,33 @@ const getShortcode = (url) => {
     }
 };
 
-/* ── Instagram Reel Card (Premium) ────────────────────────── */
+/* ── Instagram Reel Card (Iframe nativo) ─────────────────── */
 function InstagramReelCard({ reel }) {
     const shortcode = getShortcode(reel.url)
+    const embedSrc = `https://www.instagram.com/p/${shortcode}/embed/`
 
     return (
-        <a 
-            href={reel.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ig-reel-card block group relative w-full rounded-[1.8rem] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.12)] bg-neutral-950 cursor-pointer transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03] hover:shadow-[0_20px_50px_rgba(0,0,0,0.22)]"
-            style={{ aspectRatio: '9/16' }}
+        <div
+            className="ig-reel-card"
+            style={{
+                width: '100%',
+                borderRadius: '1rem',
+                overflow: 'hidden',
+                boxShadow: '0 8px 32px rgba(18,39,58,0.12)',
+                background: '#fff',
+            }}
         >
-            <img
-                src={`https://www.instagram.com/p/${shortcode}/media/?size=l`}
-                alt="Cover de Reel"
-                className="w-full h-full object-scale-down bg-neutral-950 transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
+            <iframe
+                src={embedSrc}
+                width="100%"
+                height="560"
+                frameBorder="0"
+                scrolling="no"
+                allowTransparency="true"
+                allow="encrypted-media"
+                style={{ display: 'block', border: 'none' }}
             />
-
-            {/* Dark unify overlay that fades on hover */}
-            <div className="absolute inset-0 bg-neutral-950/20 transition-colors duration-500 group-hover:bg-neutral-950/0 z-10" />
-
-            {/* Minimalist play icon overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 scale-90 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:scale-100 z-20">
-                <div className="w-14 h-14 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center text-white shadow-md transition-transform duration-300 active:scale-95">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" className="ml-0.5">
-                        <path d="M8 5v14l11-7z" />
-                    </svg>
-                </div>
-            </div>
-        </a>
+        </div>
     )
 }
 
@@ -461,13 +455,13 @@ function PremiumInstagramSection() {
             }
 
             // Cards stagger
-            const cards = cardsWrapRef.current?.querySelectorAll('.ig-reel-card')
+            const cards = cardsWrapRef.current?.querySelectorAll('.ig-grid .ig-reel-card')
             if (cards?.length) {
                 gsap.fromTo(
                     cards,
-                    { opacity: 0, y: 70, scale: 0.92 },
+                    { opacity: 0, y: 50, scale: 0.95 },
                     {
-                        opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.1,
+                        opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.08,
                         ease: 'power3.out',
                         scrollTrigger: { trigger: cardsWrapRef.current, start: 'top 85%', toggleActions: 'play none none none' },
                     }
@@ -556,39 +550,25 @@ function PremiumInstagramSection() {
                     </p>
                 </div>
 
-                {/* ── Cards Slider ──────────────────────── */}
+                {/* ── Cards Grid (Iframe nativo) ─────────── */}
                 <div ref={cardsWrapRef} className="mb-14">
                     {loading ? (
                         <div className="text-center py-20 text-textSecondary text-xs font-semibold tracking-wider uppercase animate-pulse">
                             Cargando Reels...
                         </div>
                     ) : (
-                        <Swiper
-                            grabCursor={true}
-                            spaceBetween={24}
-                            slidesPerView={1.2}
-                            breakpoints={{
-                                640: {
-                                    slidesPerView: 2.5,
-                                    spaceBetween: 24,
-                                },
-                                1024: {
-                                    slidesPerView: 4,
-                                    spaceBetween: 24,
-                                },
-                                1280: {
-                                    slidesPerView: 5,
-                                    spaceBetween: 24,
-                                }
+                        <div
+                            style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(5, 1fr)',
+                                gap: '24px',
                             }}
-                            className="w-full"
+                            className="ig-grid"
                         >
                             {reels.map((reel, i) => (
-                                <SwiperSlide key={reel.id || i}>
-                                    <InstagramReelCard reel={reel} />
-                                </SwiperSlide>
+                                <InstagramReelCard key={reel.id || i} reel={reel} />
                             ))}
-                        </Swiper>
+                        </div>
                     )}
                 </div>
 
